@@ -238,13 +238,12 @@ Like in the following example:
 {"aliases":["ALIAS1","ALIAS2","ALIAS3"],"ids":[12345,23456,34567]}
 ```
 
-
 <table>
   <tr>
       <th> . </th>
       <th> 8 </th>
       <th> 16 </th>
-      <th> 24
+      <th> 24 </th>
       <th> [...] </th>
   </tr>
 
@@ -267,23 +266,29 @@ The Error Type field contains the reason opcode:
 Error packages have the same format.
 
 
-- **000** - malformed package
-<br>An error has occured while attempting to interpret the package.
+**000** - malformed package
 
-- **100** - alias already in use
-<br>The given alias is aready in use by another client.
+An error has occured while attempting to interpret the package.
 
-- **101** - unvalid alias
-<br>The given alias breaks alias constrictions.
+**100** - alias already in use
 
-- **200** - chat denied
-<br>You have been denied the access to a chat. Can be sent in a cient to client connection.
+The given alias is aready in use by another client.
 
-- **202** - maximum clients reached
-<br>Server cannot answer your request because the maximum amount of users has been reached.
+**101** - unvalid alias
 
-- **255** - unspecified exception
-<br>An error has occured, in this extreme case the server will probably not answer correctly anymore.
+The given alias breaks alias constrictions.
+
+**200** - chat denied
+
+You have been denied the access to a chat. Can be sent in a cient to client connection.
+
+**202** - maximum clients reached
+
+Server cannot answer your request because the maximum amount of users has been reached.
+
+**255** - unspecified exception
+
+An error has occured, in this extreme case the server will probably not answer correctly anymore.
 
 
 <table>
