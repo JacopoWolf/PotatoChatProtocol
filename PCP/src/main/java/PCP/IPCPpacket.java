@@ -8,7 +8,9 @@ package PCP;
  *
  * @author Jacopo_Wolf
  */
-public interface NewInterface1
+public interface IPCPpacket
 {
+    
+    byte[] ToBytes();
     
 }
