@@ -1,6 +1,6 @@
 <h1>
 Potato Chat Protocol<br>
-PTP-Minimal
+PCP-Minimal
 </h1>
 
 ![](https://img.shields.io/badge/Status-discussion-red?style=flat-square)

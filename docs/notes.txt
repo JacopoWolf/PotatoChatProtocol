@@ -12,4 +12,5 @@
 - tipo di aggiornamento
 - pacchetto cambio alias
 
-- errore di esplosione 250
+- errore di esplosione del server 250
+- gli id sono privati
