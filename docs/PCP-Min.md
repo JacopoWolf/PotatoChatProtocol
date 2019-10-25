@@ -1,138 +1,156 @@
 <h1>
 Potato Chat Protocol<br>
-PTP-Minimal
+PCP-Minimal
 </h1>
 
-![](https://img.shields.io/badge/Status-discussion-red?style=flat-square)
-![](https://img.shields.io/badge/Latest%20version-Min.0-informational?style=flat-square)
+![](https://img.shields.io/badge/Status-early%20development-brown?style=for-the-badge)
+![](https://img.shields.io/badge/Latest%20version-none-red?style=for-the-badge)
 
 
 
 ---
 
-1. [Specifics](#specifics)
-2. [0x - messages](#0x---messages)
-   1. [00 - user to user](#00---user-to-user)
-   2. [05 - user to chat](#05---user-to-chat)
-3. [1x - client status](#1x---client-status)
-   1. [10 - registration](#10---registration)
-   2. [11 - disconnection](#11---disconnection)
-      1. [client](#client)
-      2. [from server](#from-server)
-4. [2x - acknowledgments](#2x---acknowledgments)
-   1. [21 - registration hack](#21---registration-hack)
-5. [5x - control messages](#5x---control-messages)
-   1. [50 - group users list](#50---group-users-list)
-6. [255 - errors](#255---errors)
+- [Specifics](#specifics)
+  - [General](#general)
+  - [Naming](#naming)
+- [0x - messages](#0x---messages)
+  - [01 - user to user](#01---user-to-user)
+  - [05 - user to chat](#05---user-to-chat)
+- [1x - client status](#1x---client-status)
+  - [10 - registration](#10---registration)
+  - [11 - disconnection](#11---disconnection)
+    - [client](#client)
+    - [server](#server)
+  - [18 - change of alias](#18---change-of-alias)
+- [2x to 5x - control messages](#2x-to-5x---control-messages)
+  - [20 - registration hack](#20---registration-hack)
+  - [50 - group users list request](#50---group-users-list-request)
+  - [51 - group users list](#51---group-users-list)
+- [255 - errors](#255---errors)
 
 ---
 
 
 ## Specifics
 
-- The protocol uses a TCP connection
-- Package maximum lenght is 2048 bytes
-- Text encoding is UTF-8
+### General
+- The protocol uses a **TCP** connection
+- Package maximum lenght is **2048 bytes**
+- Text encoding is **ISO/IEC-8859-1**
+- Text must not contain an all to 0 character
+
+### Naming
+- Names *must not* contain spaces
+- Alias lenght is min **6** to max **32** characters.
+- Topics lenght is min **3** to max **64** characters
+
+
 
 ## 0x - messages
 
-### 00 - user to user
+### 01 - user to user
 once connected to the server, the user will have to know the other user's name to directly chat with him.
 
-If message lenght is greater than [ 2016 - ( source lenght + destination lenght ) ] it means the message has been splitted between multiple packages.
-Last package is notified with a lenght lesser than 2016.
-If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
+It also sends it's unique id sent when initializing the connection.
 
-<table style="width:100%">
-   <tr>
-      <th> . </th>
-      <th> 8 </th>
-      <th> 16 </th>
-      <th> 24 </th>
-      <th> 32 </th>
-      <th> [...] </th>
-   </tr>
-
-   <tr>
-      <td colspan="1"> opcode (00) </td>
-      <td colspan="1"> source alias lenght </td>
-      <td colspan="1"> destination alias lenght </td>
-      <td colspan="2"> message lenght </td>
-   </tr>
-   <tr>
-      <td colspan="10"> source alias  </td>
-   </tr>
-   <tr>  
-      <td colspan="10"> destination alias </td>
-   </tr>
-   <tr>
-      <td colspan="10"> message </td>
-   </tr>
-</table>
-
-
-### 05 - user to chat
-The server has already server a list of all the users in the chat.
-
-If message lenght is greater than 2016 it means the message has been splitted between multiple packages.
-Last package is notified with a lenght lesser than 2016.
+If message lenght is greater than [ 2044 - alias lenght ] it means the message has been splitted between multiple packages.
+Last package is notified with a message lenght lesser than 2044.
 If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
 
 
 <table>
-  <tr>
-      <th> . </th>
-      <th> 8 </th>
-      <th> 16 </th>
-      <th> 24 </th>
-      <th> 32 </th>
-      <th> [...] </th>
-  </tr>
-  <tr>
-      <td colspan="1"> opcode (05) </td>
-      <td colspan="2"> message lenght </td>
-      <td colspan="2"> sender id </td>
-  </tr>
-  <tr>
-      <td colspan="6"> message </td>
-  </tr>
+   <tr>
+        <th> 1 byte </th>
+        <th> 2 bytes </th>
+        <th> string </th>
+        <th> 1 byte </th>
+        <th> string </th>
+        <th> 1 byte </th>
+   </tr>
+   <tr>
+      <td> opcode (01) </td>
+      <td> sender id</td>
+      <td> destination alias </td>
+      <td> 0 </td>
+      <td> message </td>
+      <td> 0 </td>
+    </tr>
 </table>
+<br>
+
+The destination client will then recieve a package with the destination alias changed to the source alias and no id.
+
+<table>
+   <tr>
+      <th> 1 byte </th>
+      <th> string </th>
+      <th> 1 byte </th>
+      <th> string </th>
+      <th> 1 byte </th>
+   </tr>
+   <tr>
+      <td> opcode (01) </td>
+      <td> source alias </td>
+      <td> 0 </td>
+      <td> message </td>
+      <td> 0 </td>
+    </tr>
+</table>
+
+
+### 05 - user to chat
+The user sends this message to the chat room it's last connected to.
+
+If message lenght is greater than [ 2045 ] it means the message has been splitted between multiple packages.
+Last package is notified with a message lenght lesser than 2045.
+If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
+
+
+<table>
+    <tr>
+        <th> 1 byte </th>
+        <th> 2 bytes </th>
+        <th> string </th>
+        <th> 1 byte </th>
+    </tr>
+    <tr>
+        <td > opcode (05) </td>
+        <td > id </td>
+        <td > message </td>
+        <td > 0 </td>
+    </tr>
+</table>
+
 
 
 ## 1x - client status
 
 ### 10 - registration
-
 The first package sent to the local superclient-server by the client is a registration package.
-This package tells to the server the user's alias ( nickname ), used to uniquily identify a user in a domain.
-Alias lenght is min 6 to max 32 characters.
+This package tells to the server the user's alias ( nickname ), used to uniquily identify a user in a domain, and the optional topic to be connected to.
 
-There are 2 registration types in PTP-Min
-- 0
-  <br>request to connect to the server. Ready to send and recieve messages from other users.
-  Answered with a [reg ack](#21---registration-hack)
-- 1
-  <br>request to connect to the server's general room.
-  Answered with a [users list]()
+If no topic is passed, then the server will assume a private conversations only connection.
 
+Default topic to connecto to the general room is "general", other topics generate an error in this version of the protocol.
 
 
 <table>
+    <tr>
+        <th> 1 byte </th>
+        <th> 1 byte </th>
+        <th> string </th>
+        <th> 1 byte </th>
+        <th> string </th>
+        <th> 1 byte </th>
+    </tr>
   <tr>
-      <th> . </th>
-      <th> 8 </th>
-      <th> 16 </th>
-      <th> [...] </th>
-  </tr>
-
-  <tr>
-      <td colspan="1"> opcode ( 10 ) </td>
-      <td colspan="1"> type </td>
-      <td colspan="1"> alias lenght </td>
-  </tr>
-  <tr>  
-      <td colspan="5"> alias  </td>
-  </tr>
+        <td> opcode ( 10 ) </td>
+        <td> version ( 0 ) </td>
+        <td> alias </td>
+        <td> 0 </td>
+        <td> topic (optional) </td>
+        <td> 0 </td>
+  </tr>  
 </table>
 
 
@@ -149,78 +167,108 @@ Sent when the client wants to disconnect from the server.
 
 <table>
   <tr>
-      <th> . </th>
-      <th> 8 </th>
-      <th> 16 </th>
-      <th> [...] </th>
+      <th> 1 byte </th>
+      <th> 2 bytes </th>
   </tr>
-
   <tr>
-      <td colspan="1"> opcode ( 11 )</td>
-      <td colspan="1"> type</td>
-      <td colspan="1"> alias lenght</td>
-  </tr>
-  <tr>  
-      <td colspan="10"> alias </td>
+      <td> opcode ( 11 )</td>
+      <td> id </td>
   </tr>
 </table>
 
 
-#### from server
+#### server
 
 sent by the server with the following possible opcodes:
 - 0 no reason
-- 1 timeot
+- 1 timeout
   <br>This package is sent after 15 minutes client inactivity.
-- 2 server offline
+- 2 server gone offline
 
 
 
 <table>
   <tr>
-      <th> . </th>
-      <th> 8 </th>
+      <th> 1 byte </th>
+      <th> 1 byte </th>
   </tr>
 
   <tr>
-      <td colspan="1"> opcode ( 11 ) </td>
-      <td colspan="1"> reason </td>
+      <td > opcode ( 11 ) </td>
+      <td > reason </td>
   </tr>
 </table>
 
 
----
 
 
-## 2x - acknowledgments
+
+### 18 - change of alias
+A user might want to change its alias. This package allows to do that.
+
+
+<table>
+    <tr>
+        <th> 1 byte </th>
+        <th> 2 byte </th>
+        <th> string </th>
+        <th> 1 byte </th>
+        <th> string </th>
+        <th> 1 byte </th>
+    </tr>
+  <tr>
+        <td> opcode ( 18 ) </td>
+        <td> private id </td>
+        <td> old alias </td>
+        <td> 0 </td>
+        <td> new alias </td>
+        <td> 0 </td>
+  </tr>  
+</table>
+
+
+
+## 2x to 5x - control messages
 
 Those packages are sent by the server to acknowledge client actions.
 
-### 21 - registration hack
-sent after a user has connected with a 0 connection type
+### 20 - registration hack
+sent after a user has requested a connection.
+Assigns an id to the user and re-sends the alias to confirm it's correctness.
 
 <table>
-  <tr>
-      <th> . </th>
-      <th> 8 </th>
-      <th> 16 </th>
-      <th> [...] </th>
-  </tr>
+    <tr>
+        <th> 1 byte </th>
+        <th> 2 bytes </th>
+        <th> string </th>
+        <th> 1 byte </th>
+    </tr>
 
   <tr>
-      <td colspan="1"> opcode ( 20 ) </td>
-      <td colspan="1"> ackCode ( 1 ) </td>
-      <td colspan="1"> alias lenght </td>
-  </tr>
-  <tr>
-      <td colspan="10"> alias </td>
+      <td > opcode ( 20 ) </td>
+      <td > assigned id </td>
+      <td > alias confirmation </td>
+      <td> 0 </td>
   </tr>
 </table>
 
 
-## 5x - control messages
+### 50 - group users list request
+Sent to request the whole group users list
 
-### 50 - group users list
+<table>
+    <tr>
+        <th> 1 byte </th>
+        <th> 2 bytes </th>
+    </tr>
+
+  <tr>
+      <td > opcode ( 50 ) </td>
+      <td > assigned id </td>
+  </tr>
+</table>
+
+### 51 - group users list
 When connecting to a group, instead of wasting time in sending the user alias for every message, the server will assign a 16bit intger **ID** to every client.
 To allow name solving for clients, the group user list is sent.
 
@@ -228,32 +276,33 @@ If message lenght is greater than 2024 it means the message has been splitted be
 Last package is notified with a lenght lesser than 2024.
 If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
 
-The names and IDs are sent in two plaintext JSON lists of the same lenght.
-One for the names, and one for the IDs. 
-
+The names are sended in a JSON list.
 Like in the following example:
 
+Types:
+- 0 complete users list
+- 1 joined user
+- 2 disconnected user
 
 ```json
-{"aliases":["ALIAS1","ALIAS2","ALIAS3"],"ids":[12345,23456,34567]}
+["ALIAS1","ALIAS2","ALIAS3"]
 ```
 
 <table>
-  <tr>
-      <th> . </th>
-      <th> 8 </th>
-      <th> 16 </th>
-      <th> 24 </th>
-      <th> [...] </th>
-  </tr>
+    <tr>
+        <th> 1 byte </th>
+        <th> 1 byte </th>
+        <th> 1 byte </th>
+        <th> string </th>
+        <th> 1 byte </th>
+    </tr>
 
   <tr>
-      <td colspan="1"> opcode ( 50 ) </td>
-      <td colspan="1"> list lenght </td>
-      <td colspan="2"> content lenght </td>
-  </tr>
-  <tr>  
-      <td colspan="10"> json content </td>
+      <td > opcode ( 51 ) </td>
+      <td > type  </td>
+      <td > list lenght </td>
+      <td > json content </td>
+      <td > 0 </td>
   </tr>
 </table>
 
@@ -278,13 +327,21 @@ The given alias is aready in use by another client.
 
 The given alias breaks alias constrictions.
 
+**102** - invalid room name
+
+given room name is invalid
+
 **200** - chat denied
 
-You have been denied the access to a chat. Can be sent in a cient to client connection.
+You have been denied the access to a chat. Can be sent in a client to client connection.
 
 **202** - maximum clients reached
 
 Server cannot answer your request because the maximum amount of users has been reached.
+
+**254** - server exploded
+
+because of meme reasons
 
 **255** - unspecified exception
 
@@ -293,8 +350,8 @@ An error has occured, in this extreme case the server will probably not answer c
 
 <table>
   <tr>
-      <th> . </th>
-      <th> 8 </th>
+      <th> 1 byte </th>
+      <th> 1 byte </th>
   </tr>
 
   <tr>
