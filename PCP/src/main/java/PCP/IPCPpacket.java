@@ -3,6 +3,8 @@
  */
 package PCP;
 
+import java.util.*;
+
 
 /**
  *
@@ -11,6 +13,10 @@ package PCP;
 public interface IPCPpacket
 {
     
-    byte[] ToBytes();
+    OpCode getOpCode();
     
+    Collection<byte[]> toBytes();
+    
+    int size();
+ 
 }
