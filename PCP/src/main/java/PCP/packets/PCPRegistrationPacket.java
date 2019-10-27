@@ -40,19 +40,23 @@ public class PCPRegistrationPacket implements IPCPpacket
         Collection<byte[]> out = new ArrayList<>();
         
         byte[] buffer = new byte[4 + alias.length() + topic.length()];
-        buffer[0] = OpCode.Registration.getByte();
+        //Pointer
+        int i = 0;
+        buffer[i++] = OpCode.Registration.getByte();
         //Version, for now 0
-        buffer[1] = 0;
+        buffer[i++] = 0;
         
         //Alias
-        System.arraycopy(buffer, 2, alias.getBytes(), 0, alias.getBytes().length);
+        for(byte b : alias.getBytes())
+            buffer[i++] = b;
         //Delimitator
-        buffer[2 + alias.length()] = 0;
+        buffer[i++] = 0;
         
         //Topic
-        System.arraycopy(buffer, 3 + alias.length(), topic.getBytes(), 0, topic.getBytes().length);
+        for(byte b : topic.getBytes())
+            buffer[i++] = b;
         //Delimitator
-        buffer[3 + alias.length() + topic.length()] = 0;
+        buffer[i++] = 0;
         
         out.add(buffer);
         
