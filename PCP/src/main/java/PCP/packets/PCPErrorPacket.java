@@ -1,7 +1,7 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packages;
+package PCP.packets;
 
 import PCP.*;
 import PCP.errors.*;
@@ -11,7 +11,7 @@ import java.util.*;
  *
  * @author Jacopo_Wolf
  */
-public class PCPErrorPackage implements IPCPpacket
+public class PCPErrorPacket implements IPCPpacket
 {
     private ErrorCode errorCode;
 
@@ -20,7 +20,7 @@ public class PCPErrorPackage implements IPCPpacket
         return errorCode;
     }
 
-    public PCPErrorPackage( ErrorCode errorCode )
+    public PCPErrorPacket( ErrorCode errorCode )
     {
         this.errorCode = errorCode;
     }
@@ -41,7 +41,16 @@ public class PCPErrorPackage implements IPCPpacket
     @Override
     public Collection<byte[]> toBytes()
     {
-        throw new UnsupportedOperationException();
+        Collection<byte[]> out = new ArrayList<>();
+        
+        byte[] buffer = new byte[2];
+        buffer[0] = OpCode.Error.getByte();
+        buffer[1] = this.errorCode.getByte();
+        
+        out.add(buffer);
+        
+        return out;
+        
     }
     
 }

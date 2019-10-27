@@ -33,7 +33,7 @@ public enum ErrorCode
         this.code = (byte)code;
     }
     
-    public byte toByte()
+    public byte getByte()
     {
         return this.code;
     }

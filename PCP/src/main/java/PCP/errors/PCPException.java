@@ -3,6 +3,8 @@
  */
 package PCP.errors;
 
+import PCP.packets.*;
+
 
 /**
  *
@@ -24,7 +26,10 @@ public class PCPException extends Exception
     }
     
     
-    //public IPCPpacket generatePacket()
+    public PCPErrorPacket generatePacket()
+    {
+        throw new UnsupportedOperationException();
+    }
     
     
 }
