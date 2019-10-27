@@ -39,7 +39,7 @@ public class PCPRegistrationPacket implements IPCPpacket
     {
         Collection<byte[]> out = new ArrayList<>();
         
-        byte[] buffer = new byte[4 + alias.length() + topic.length()];
+        byte[] buffer = new byte[this.size()];
         //Pointer
         int i = 0;
         buffer[i++] = OpCode.Registration.getByte();
