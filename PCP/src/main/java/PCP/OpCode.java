@@ -11,7 +11,7 @@ package PCP;
 public enum OpCode
 {
     // Messages
-    MsgUserToUser           (00),
+    MsgUserToUser           (01),
     MsgUserToGroup          (05),
     
     // User status

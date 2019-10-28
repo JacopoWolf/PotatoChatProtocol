@@ -4,6 +4,7 @@
 
 package PCP.packets;
 import PCP.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -65,46 +66,61 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
     public Collection<byte[]> toBytes()
     {
         Collection<byte[]> out = new ArrayList<>();
-        byte[] buffer = new byte[this.size()];
         
-        int i = 0;
-        //Opcode
-        buffer[i++] = OpCode.MsgUserToUser.getByte();
-        //SenderID
-        for(byte b : senderId)
-            buffer[i++] = b;
         
-        //destinationAlias
-        for(byte b : destinationAlias.getBytes())
-            buffer[i++] = b;
-        //Delimitator
-        buffer[i++] = 0;
-
-        //Message
-        for(byte b : message.getBytes())
-            buffer[i++] = b;
-        //Delimitator
-        buffer[i++] = 0;
+        byte[] messageB = message.getBytes( StandardCharsets.ISO_8859_1 );
         
-        //Control variable
-        int size = buffer.length;
-        int x = 2048;
-        int y = 0;
+        int NpacketsToSent = 
+                (
+                    this.message.length() / 
+                    (IPCPpacket.MAX_PACKET_LENGHT - 5 - this.destinationAlias.length())
+                ) 
+                + 1 ;
         
-        //If necessary split the packet
-        while(size > 2048)
-        {           
-            byte[] splittedBuffer = Arrays.copyOfRange(buffer, y, x);
-            y = x;
-            x += 2048;
-            size -= 2048;
+        int messageRelativeMaxLenght = IPCPpacket.MAX_PACKET_LENGHT - 5 - destinationAlias.length();
+        
+        
+        int messagePointer = 0;
+        for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
+        {
+        
+            byte[] buffer = new byte[this.size()];
+            int i = 0;
+            //Opcode
+            buffer[i++] = OpCode.MsgUserToUser.getByte();
             
-            out.add(splittedBuffer);
+            //SenderID
+            for(byte b : senderId)
+                buffer[i++] = b;
+
+            //destinationAlias
+            for(byte b : destinationAlias.getBytes())
+                buffer[i++] = b;
+            
+            //Delimitator
+            buffer[i++] = 0;
+
+            //Message
+            for 
+            ( 
+                int relPointer = 0; 
+                relPointer < messageRelativeMaxLenght 
+                    && 
+                messagePointer < messageB.length;
+                relPointer++, messagePointer++
+            )
+            {
+                buffer[i++] = messageB[ messagePointer ];
+            }
+            
+            //Delimitator
+            buffer[i++] = 0;
+            
+
+            out.add(buffer);
         }
-        //Create the last packet or the unique packet (if <= 2048)
-        byte[] splittedBuffer = Arrays.copyOfRange(buffer, y, y + size);
         
-        out.add(splittedBuffer);
+        
         
         return out;
     }
