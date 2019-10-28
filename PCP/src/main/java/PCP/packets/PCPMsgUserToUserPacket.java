@@ -10,6 +10,7 @@ import java.util.*;
 /**
  *
  * @author gfurri20
+ * @author Jacopo_Wolf
  */
 public class PCPMsgUserToUserPacket implements IPCPpacket
 {
