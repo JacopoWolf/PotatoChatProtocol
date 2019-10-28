@@ -84,9 +84,27 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
         for(byte b : message.getBytes())
             buffer[i++] = b;
         //Delimitator
-        buffer[i++] = 0;   
+        buffer[i++] = 0;
         
-        out.add(buffer);
+        //Control variable
+        int size = buffer.length;
+        int x = 2048;
+        int y = 0;
+        
+        //If necessary split the packet
+        while(size > 2048)
+        {           
+            byte[] splittedBuffer = Arrays.copyOfRange(buffer, y, x);
+            y = x;
+            x += 2048;
+            size -= 2048;
+            
+            out.add(splittedBuffer);
+        }
+        //Create the last packet or the unique packet (if <= 2048)
+        byte[] splittedBuffer = Arrays.copyOfRange(buffer, y, y + size);
+        
+        out.add(splittedBuffer);
         
         return out;
     }
