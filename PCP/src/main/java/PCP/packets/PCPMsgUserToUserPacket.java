@@ -3,7 +3,7 @@
  */
 
 package PCP.packets;
-import PCP.OpCode;
+import PCP.*;
 import java.util.*;
 
 /**
@@ -13,14 +13,40 @@ import java.util.*;
 public class PCPMsgUserToUserPacket implements IPCPpacket
 {
     private byte[] senderId;
-    private String dstAlias;
-    private String msg;
+    private String destinationAlias;
+    private String message;
 
+
+//<editor-fold defaultstate="collapsed" desc="getter and setters">
+    
+    public String getDestinationAlias()
+    {
+        return destinationAlias;
+    }
+    
+    public void setDestinationAlias( String destinationAlias )
+    {
+        this.destinationAlias = destinationAlias;
+    }
+    
+    public String getMessage()
+    {
+        return message;
+    }
+    
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
+    
+//</editor-fold>
+    
+    
     public PCPMsgUserToUserPacket( byte[] senderId, String dstAlias, String msg )
     {
         this.senderId = senderId;
-        this.dstAlias = dstAlias;
-        this.msg = msg;
+        this.destinationAlias = dstAlias;
+        this.message = msg;
     }
         
     @Override
@@ -32,7 +58,7 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
     @Override
     public int size()
     {
-        return 5 + dstAlias.length() + msg.length();
+        return 5 + destinationAlias.length() + message.length();
     }
 
     @Override
@@ -49,13 +75,13 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
             buffer[i++] = b;
         
         //destinationAlias
-        for(byte b : dstAlias.getBytes())
+        for(byte b : destinationAlias.getBytes())
             buffer[i++] = b;
         //Delimitator
         buffer[i++] = 0;
 
         //Message
-        for(byte b : msg.getBytes())
+        for(byte b : message.getBytes())
             buffer[i++] = b;
         //Delimitator
         buffer[i++] = 0;   

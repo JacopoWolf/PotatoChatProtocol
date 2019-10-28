@@ -24,7 +24,7 @@ public enum OpCode
     GroupUsersListRrq       (50),
     GroupUsersList          (51),
     
-    
+    // 
     Error                   (255);
     
     

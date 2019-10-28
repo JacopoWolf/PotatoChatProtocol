@@ -8,11 +8,16 @@ import java.util.*;
 
 
 /**
- *
+ *  base interface for all packets
  * @author Jacopo_Wolf
  */
 public interface IPCPpacket
 {
+    /**
+     * maximum lenght of a single package
+     */
+    public static final int MAX_PACKET_LENGHT = 2048;
+    
     /**
      * @return the opcode of this packet
      */
@@ -26,7 +31,7 @@ public interface IPCPpacket
     Collection<byte[]> toBytes();
     
     /**
-     * @return total size of this packet
+     * @return the total size of this packet
      */
     int size();
  

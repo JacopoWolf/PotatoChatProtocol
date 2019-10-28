@@ -4,7 +4,7 @@
 
 package PCP.packets;
 
-import PCP.OpCode;
+import PCP.*;
 import java.util.*;
 
 /**
@@ -14,12 +14,22 @@ import java.util.*;
 public class PCPMsgUserToGroupPacket implements IPCPpacket
 {
     private byte[] senderId;
-    private String msg;
+    private String message;
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public void setMessage( String message )
+    {
+        this.message = message;
+    }
 
     public PCPMsgUserToGroupPacket( byte[] senderId, String msg )
     {
         this.senderId = senderId;
-        this.msg = msg;
+        this.message = msg;
     }
         
     @Override
@@ -31,7 +41,7 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
     @Override
     public int size()
     {
-        return 4 + msg.length();
+        return 4 + message.length();
     }
 
     @Override
@@ -48,7 +58,7 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
             buffer[i++] = b;
         
         //Message
-        for(byte b : msg.getBytes())
+        for(byte b : message.getBytes())
             buffer[i++] = b;
         //Delimitator
         buffer[i++] = 0;
