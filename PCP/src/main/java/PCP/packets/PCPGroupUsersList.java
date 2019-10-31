@@ -4,12 +4,14 @@
 package PCP.packets;
 
 import PCP.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
 /**
  *
  * @author Alessio789
+ * @author gfurri20
  */
 public class PCPGroupUsersList implements IPCPpacket 
 {
@@ -75,24 +77,54 @@ public class PCPGroupUsersList implements IPCPpacket
     {
         Collection<byte[]> out = new ArrayList<>();
         
-        byte[] buffer = new byte[this.size()];
+        byte[] jsonList = jsonContent.getBytes( StandardCharsets.ISO_8859_1 );
         
-        int i = 0;
+        int NpacketsToSent = 
+                (
+                    this.jsonContent.length() /
+                    (IPCPpacket.MAX_PACKET_LENGHT - 4)
+                ) 
+                + 1 ;
         
-        buffer[i++] = OpCode.GroupUsersList.getByte();
+        int messageRelativeMaxLenght = IPCPpacket.MAX_PACKET_LENGHT - 4;
         
-        buffer[i++] = (byte) type;
         
-        buffer[i++] = (byte) listLenght;
+        int messagePointer = 0;
+        for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
+        {
+            byte[] buffer = new byte[this.size()];
+
+            int i = 0;
+            //OpCode
+            buffer[i++] = OpCode.GroupUsersList.getByte();
+            //Reason
+            buffer[i++] = (byte) type;
+            //JSON content lenght
+            buffer[i++] = (byte) listLenght;
+
+            //JSON content
+            for 
+            ( 
+                int relPointer = 0; 
+                relPointer < messageRelativeMaxLenght 
+                    && 
+                messagePointer < jsonList.length;
+                relPointer++, messagePointer++
+            )
+            {
+                buffer[i++] = jsonList[ messagePointer ];
+            }
+            
+            //Delimitator
+            buffer[i++] = 0;
+            
+
+            out.add(buffer);
+        }
         
-        for( byte b : jsonContent.getBytes())
-            buffer[i++] = b;
         
-        //Delimitator
-        buffer[i++] = 0;
-        
-        out.add(buffer);
         
         return out;
-    }
+    }   
+    
 }

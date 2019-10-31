@@ -1,34 +1,34 @@
 /*
  * this is a school project under "The Unlicence".
  */
+
 package PCP.packets;
 
-import java.util.ArrayList;
+import java.util.*;
 import org.junit.*;
 
 /**
  *
- * @author JacopoWolf
+ * @author gfurri20
  */
-public class PCPMsgUserToUserPacket_TEST
+public class PCPGroupUserList_TEST
 {
     @Test
     public void testToBytesSingle()
     {
-        PCPMsgUserToUserPacket packet = new PCPMsgUserToUserPacket
-        (   
-            new byte[]{0,0},
-            "testme",
-            "this is simple text"
+        PCPGroupUsersList packet = new PCPGroupUsersList
+        (
+            0,
+            3,
+            "[\"ALIAS1\",\"ALIAS2\",\"ALIAS3\"]"
         );
         
         byte[] expectedResult = new byte[]
         { 
-            01, 
-            0,0,
-            116,101,115,116,109,101,
-            0,
-            116,104,105,115,32,105,115,32,115,105,109,112,108,101,32,116,101,120,116,
+            51,
+            0, 
+            3,
+            91, 34, 65, 76, 73, 65, 83, 49, 34, 44, 34, 65, 76, 73, 65, 83, 50, 34, 44, 34, 65, 76, 73, 65, 83, 51, 34, 93, 
             0
         };
         
@@ -38,7 +38,5 @@ public class PCPMsgUserToUserPacket_TEST
             Assert.fail();
         
         Assert.assertArrayEquals( expectedResult, results.get(0) );
-        
     }
-    
 }

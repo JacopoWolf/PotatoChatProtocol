@@ -5,6 +5,7 @@
 package PCP.packets;
 
 import PCP.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -61,26 +62,56 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
 
     @Override
     public Collection<byte[]> toBytes()
-    {
+    {      
         Collection<byte[]> out = new ArrayList<>();
-        byte[] buffer = new byte[this.size()];
         
-        int i = 0;
-        //Opcode
-        buffer[i++] = OpCode.MsgUserToUser.getByte();
-        //SenderId
-        for(byte b : senderId)
-            buffer[i++] = b;
+        byte[] messageB = message.getBytes( StandardCharsets.ISO_8859_1 );
         
-        //Message
-        for(byte b : message.getBytes())
-            buffer[i++] = b;
-        //Delimitator
-        buffer[i++] = 0;
+        int NpacketsToSent = 
+                (
+                    this.message.length() / 
+                    (IPCPpacket.MAX_PACKET_LENGHT - 4)
+                ) 
+                + 1 ;
         
-        out.add(buffer);
+        int messageRelativeMaxLenght = IPCPpacket.MAX_PACKET_LENGHT - 4;
+        
+        
+        int messagePointer = 0;
+        for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
+        {
+            byte[] buffer = new byte[this.size()];
+
+            int i = 0;
+            //Opcode
+            buffer[i++] = OpCode.MsgUserToGroup.getByte();
+            //SenderId
+            for(byte b : senderId)
+                buffer[i++] = b;
+
+            //Message
+            for 
+            ( 
+                int relPointer = 0; 
+                relPointer < messageRelativeMaxLenght 
+                    && 
+                messagePointer < messageB.length;
+                relPointer++, messagePointer++
+            )
+            {
+                buffer[i++] = messageB[ messagePointer ];
+            }
+            
+            //Delimitator
+            buffer[i++] = 0;
+            
+
+            out.add(buffer);
+        }
+        
+        
         
         return out;
-    }
-
+    }        
+                
 }
