@@ -28,6 +28,40 @@ public class PCPDisconnectionPacket implements IPCPpacket
         this.reason = reason;
         this.byClient = false;
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+
+    public String getId() 
+    {
+        return id;
+    }
+
+    public void setId( String id ) 
+    {
+        this.id = id;
+    }
+
+    public int getReason() 
+    {
+        return reason;
+    }
+
+    public void setReason( int reason ) 
+    {
+        this.reason = reason;
+    }
+
+    public boolean isByClient() 
+    {
+        return byClient;
+    }
+
+    public void setByClient( boolean byClient ) 
+    {
+        this.byClient = byClient;
+    }
+    
+   //</editor-fold>
 
     @Override
     public OpCode getOpCode() 

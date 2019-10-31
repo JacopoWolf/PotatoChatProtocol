@@ -9,6 +9,7 @@ import java.util.*;
 /**
  *
  * @author gfurri20
+ * @author Alessio789
  */
 public class PCPGroupUserListRrqPacket implements IPCPpacket
 {
@@ -18,7 +19,21 @@ public class PCPGroupUserListRrqPacket implements IPCPpacket
     {
         this.senderId = senderId;
     }
+
+    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    
+    public byte[] getSenderId() 
+    {
+        return senderId;
+    }
+
+    public void setSenderId( byte[] senderId ) 
+    {
+        this.senderId = senderId;
+    }
         
+    //</editor-fold>
+    
     @Override
     public OpCode getOpCode()
     {

@@ -10,15 +10,24 @@ import java.util.*;
 /**
  *
  * @author Jacopo_Wolf
+ * @author Alessio789
  */
 public class PCPErrorPacket implements IPCPpacket
 {
     private ErrorCode errorCode;
-
+    
+    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    public void setErrorCode( ErrorCode errorCode ) 
+    {
+        this.errorCode = errorCode;
+    }
+    
     public ErrorCode getErrorCode()
     {
         return errorCode;
     }
+    
+    //</editor-fold>
 
     public PCPErrorPacket( ErrorCode errorCode )
     {

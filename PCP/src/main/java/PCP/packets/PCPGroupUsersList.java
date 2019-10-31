@@ -24,6 +24,40 @@ public class PCPGroupUsersList implements IPCPpacket
         this.jsonContent = jsonContent;
     }
 
+     //<editor-fold defaultstate="collapsed" desc="getter and setters">
+
+    public int getType() 
+    {
+        return type;
+    }
+
+    public void setType( int type ) 
+    {
+        this.type = type;
+    }
+
+    public int getListLenght() 
+    {
+        return listLenght;
+    }
+
+    public void setListLenght( int listLenght ) 
+    {
+        this.listLenght = listLenght;
+    }
+
+    public String getJsonContent() 
+    {
+        return jsonContent;
+    }
+
+    public void setJsonContent( String jsonContent ) 
+    {
+        this.jsonContent = jsonContent;
+    }
+    
+    //</editor-fold>
+    
     @Override
     public OpCode getOpCode() 
     {

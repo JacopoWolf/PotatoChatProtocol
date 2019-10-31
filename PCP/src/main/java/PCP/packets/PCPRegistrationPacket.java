@@ -10,6 +10,7 @@ import java.util.*;
 /**
  *
  * @author gfurri20
+ * @author Alessio789
  */
 public class PCPRegistrationPacket implements IPCPpacket
 {
@@ -22,6 +23,30 @@ public class PCPRegistrationPacket implements IPCPpacket
         this.topic = topic;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+
+    public String getAlias() 
+    {
+        return alias;
+    }
+
+    public void setAlias( String alias ) 
+    {
+        this.alias = alias;
+    }
+
+    public String getTopic() 
+    {
+        return topic;
+    }
+
+    public void setTopic( String topic ) 
+    {
+        this.topic = topic;
+    }
+    
+    //</editor-fold> 
+    
     @Override
     public OpCode getOpCode()
     {

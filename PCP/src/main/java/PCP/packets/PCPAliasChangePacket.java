@@ -10,6 +10,7 @@ import java.util.*;
 /**
  *
  * @author gfurri20
+ * @author Alessio789
  */
 public class PCPAliasChangePacket implements IPCPpacket
 {
@@ -23,6 +24,40 @@ public class PCPAliasChangePacket implements IPCPpacket
         this.oldAlias = oldAlias;
         this.newAlias = newAlias;
     }     
+    
+    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+
+    public byte[] getId() 
+    {
+        return id;
+    }
+
+    public void setId( byte[] id ) 
+    {
+        this.id = id;
+    }
+
+    public String getOldAlias() 
+    {
+        return oldAlias;
+    }
+
+    public void setOldAlias( String oldAlias ) 
+    {
+        this.oldAlias = oldAlias;
+    }
+
+    public String getNewAlias() 
+    {
+        return newAlias;
+    }
+
+    public void setNewAlias( String newAlias ) 
+    {
+        this.newAlias = newAlias;
+    }
+    
+    //</editor-fold>
 
     @Override
     public OpCode getOpCode()

@@ -21,7 +21,31 @@ public class PCPRegHack implements IPCPpacket
         this.assignedId = assignedId;
         this.alias = alias;
     }
+    
+    //<editor-fold defaultstate="collapsed" desc="getter and setters">
 
+    public String getAssignedId() 
+    {
+        return assignedId;
+    }
+
+    public void setAssignedId( String assignedId ) 
+    {
+        this.assignedId = assignedId;
+    }
+
+    public String getAlias() 
+    {
+        return alias;
+    }
+
+    public void setAlias( String alias ) 
+    {
+        this.alias = alias;
+    }
+    
+    //</editor-fold>
+    
     @Override
     public OpCode getOpCode() 
     {

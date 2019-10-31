@@ -11,6 +11,7 @@ import java.util.*;
  *
  * @author gfurri20
  * @author Jacopo_Wolf
+ * @author Alessio789
  */
 public class PCPMsgUserToUserPacket implements IPCPpacket
 {

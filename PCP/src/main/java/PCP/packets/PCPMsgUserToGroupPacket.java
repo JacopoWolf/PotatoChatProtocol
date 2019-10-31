@@ -10,13 +10,26 @@ import java.util.*;
 /**
  *
  * @author gfurri20
+ * @author Alessio789
  */
 public class PCPMsgUserToGroupPacket implements IPCPpacket
 {
     private byte[] senderId;
     private String message;
+    
+    public byte[] getSenderId()
+    {
+        return senderId;
+    }
 
-    public String getMessage()
+    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    
+    public void setSenderId( byte[] senderId ) 
+    {
+        this.senderId = senderId;
+    }
+
+    public String getMessage() 
     {
         return message;
     }
@@ -32,6 +45,8 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
         this.message = msg;
     }
         
+    //</editor-fold>
+    
     @Override
     public OpCode getOpCode()
     {
