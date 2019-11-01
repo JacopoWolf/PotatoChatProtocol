@@ -13,10 +13,10 @@ import java.util.*;
 public class PCPRegHack implements IPCPpacket
 {
     
-    private String assignedId;
+    private byte[] assignedId;
     private String alias;
 
-    public PCPRegHack( String assignedId, String alias ) 
+    public PCPRegHack( byte[] assignedId, String alias ) 
     {
         this.assignedId = assignedId;
         this.alias = alias;
@@ -24,12 +24,12 @@ public class PCPRegHack implements IPCPpacket
     
     //<editor-fold defaultstate="collapsed" desc="getter and setters">
 
-    public String getAssignedId() 
+    public byte[] getAssignedId() 
     {
         return assignedId;
     }
 
-    public void setAssignedId( String assignedId ) 
+    public void setAssignedId( byte[] assignedId ) 
     {
         this.assignedId = assignedId;
     }
@@ -69,7 +69,7 @@ public class PCPRegHack implements IPCPpacket
         
         buffer[i++] = OpCode.RegAck.getByte();
        
-        for( byte b : assignedId.getBytes() ) 
+        for( byte b : assignedId ) 
             buffer[i++] = b;
         
         for( byte b : alias.getBytes() )

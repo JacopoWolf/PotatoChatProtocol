@@ -13,11 +13,11 @@ import java.util.*;
  */
 public class PCPDisconnectionPacket implements IPCPpacket
 {
-    private String id;
+    private byte[] id;
     private int reason;
     private boolean byClient; //It's true if the disconnection has been required by the client
 
-    public PCPDisconnectionPacket( String id ) 
+    public PCPDisconnectionPacket( byte[] id ) 
     {
         this.id = id;
         this.byClient = true;
@@ -31,12 +31,12 @@ public class PCPDisconnectionPacket implements IPCPpacket
     
     //<editor-fold defaultstate="collapsed" desc="getter and setters">
 
-    public String getId() 
+    public byte[] getId() 
     {
         return id;
     }
 
-    public void setId( String id ) 
+    public void setId( byte[] id ) 
     {
         this.id = id;
     }
@@ -91,7 +91,7 @@ public class PCPDisconnectionPacket implements IPCPpacket
         
         if( byClient ) 
         {
-            for(byte b : id.getBytes()) 
+            for(byte b : id) 
                 buffer[i++] = b;
         }
         else
