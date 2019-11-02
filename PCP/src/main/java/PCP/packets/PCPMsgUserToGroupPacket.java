@@ -5,7 +5,7 @@
 package PCP.packets;
 
 import PCP.*;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.*;
 import java.util.*;
 
 /**
@@ -70,11 +70,11 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
         int NpacketsToSent = 
                 (
                     this.message.length() / 
-                    (IPCPpacket.MAX_PACKET_LENGHT - 4)
+                    (PCP.MAX_PACKET_LENGHT - 4)
                 ) 
                 + 1 ;
         
-        int messageRelativeMaxLenght = IPCPpacket.MAX_PACKET_LENGHT - 4;
+        int messageRelativeMaxLenght = PCP.MAX_PACKET_LENGHT - 4;
         
         
         int messagePointer = 0;
