@@ -1,35 +1,70 @@
+<center>
 <h1>
 Potato Chat Protocol<br>
 PCP-Minimal
 </h1>
+</center>
 
-![](https://img.shields.io/badge/Status-early%20development-brown?style=for-the-badge)
-![](https://img.shields.io/badge/Latest%20version-none-red?style=for-the-badge)
-
-
+- [Overview](#overview)
+  - [Description](#description)
+  - [Connect to a server](#connect-to-a-server)
+  - [Messaging](#messaging)
+- [Packets](#packets)
+  - [Specifics](#specifics)
+    - [General](#general)
+    - [Naming](#naming)
+  - [0x - messages](#0x---messages)
+    - [01 - user to user](#01---user-to-user)
+    - [05 - user to chat](#05---user-to-chat)
+  - [1x - client status](#1x---client-status)
+    - [10 - registration](#10---registration)
+    - [11 - disconnection](#11---disconnection)
+      - [client](#client)
+      - [server](#server)
+    - [18 - change of alias](#18---change-of-alias)
+  - [2x to 5x - control messages](#2x-to-5x---control-messages)
+    - [20 - registration hack](#20---registration-hack)
+    - [50 - group users list request](#50---group-users-list-request)
+    - [51 - group users list](#51---group-users-list)
+  - [255 - errors](#255---errors)
 
 ---
 
-- [Specifics](#specifics)
-  - [General](#general)
-  - [Naming](#naming)
-- [0x - messages](#0x---messages)
-  - [01 - user to user](#01---user-to-user)
-  - [05 - user to chat](#05---user-to-chat)
-- [1x - client status](#1x---client-status)
-  - [10 - registration](#10---registration)
-  - [11 - disconnection](#11---disconnection)
-    - [client](#client)
-    - [server](#server)
-  - [18 - change of alias](#18---change-of-alias)
-- [2x to 5x - control messages](#2x-to-5x---control-messages)
-  - [20 - registration hack](#20---registration-hack)
-  - [50 - group users list request](#50---group-users-list-request)
-  - [51 - group users list](#51---group-users-list)
-- [255 - errors](#255---errors)
+# Overview
+
+## Description
+The PCP-Minimal version of the PCP protocol is its stupid version, implementing an extremely easy, unprotected, channel-based and volatile LAN chat.
+
+It in fact does not have any encryption system, except for the id system, which is used as a base level to avoid client impersonation;
+all packets are sent in plain text over the network, and ways to manage logs, chat cronology and statuses are not planned.
+
+## Connect to a server
+First things first, the client needs to register to the server and have it acknowledge its existence.
+
+The client will have to directly know the IP address of the server or have it solved by a DNS, and connect to the port **53101**.
+
+Then it will proceed to choose an alias (nickname) used to uniquely identify an user from another and send a [registration request](#10---registration), then await a [registration ack](#20---registration-hack) from the server or
+an [alias already in use](#255---errors) error (error code 100).
+
+The registration ack will contain it's unique ID, a basic security measure because not having it would've been criminous.
+
+At this point the PCP connection is established.
+
+## Messaging
+Once connected, the clients will simply send messages to the server, and the server, knowing all other clients, will deliver the message.
+
+Messages can also be sent to a general group named "general", wich is essentially a public chat room.
+No other chat rooms are available.
+
+A client can be connected to the server and recieve just private messages, or connect to the server and also chat in the general room.
+
+When the clients connects to the public room it will recieve an additional package, after the [registration ack](#20---registration-hack), containing the [online users list](#51---group-users-list), withouth having the client request it. Those are the users online in the current chatroom.
+
+Now clients can freely send messages between them as long as they remain connected to the server.
 
 ---
 
+# Packets
 
 ## Specifics
 
@@ -45,11 +80,10 @@ PCP-Minimal
 - Topics lenght is min **3** to max **64** characters
 
 
-
 ## 0x - messages
 
 ### 01 - user to user
-once connected to the server, the user will have to know the other user's name to directly chat with him.
+Once connected to the server, the user will have to know the other user's name to directly chat with him.
 
 It also sends it's unique id sent when initializing the connection.
 
@@ -254,7 +288,7 @@ Assigns an id to the user and re-sends the alias to confirm it's correctness.
 
 
 ### 50 - group users list request
-Sent to request the whole group users list
+Sent to request the whole group users list by a client.
 
 <table>
     <tr>

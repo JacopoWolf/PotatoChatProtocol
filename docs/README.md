@@ -1,21 +1,22 @@
 # PCP Versions
 
+![](https://img.shields.io/badge/warning-School%20Project-important?style=for-the-badge)
 
-![](https://img.shields.io/badge/That's%20a-School%20Project-important?style=for-the-badge)
+![](https://img.shields.io/github/license/JacopoWolf/PotatoChatProtocol?style=for-the-badge)
 
+![](https://img.shields.io/jitpack/v/github/jacopowolf/potatochatprotocol?label=Jitpack%20latest%20release&style=for-the-badge)
+
+![](https://img.shields.io/github/commit-activity/m/JacopoWolf/PotatoChatProtocol?color=blueviolet&style=for-the-badge)
 
 ---
 
-[general description](PCP.md)
+read the [general description](PCP.md) of the initial protocol idea
 
+---
 
-## [PCP-Minimal](PCP-Min.md)
+## [PCP-Minimal](PCP-Min.md) ![](https://img.shields.io/github/labels/jacopowolf/potatochatprotocol/PCP-Min?style=flat-square)
+
+![](https://img.shields.io/badge/status-development-informational?style=flat-square) 
+![](https://img.shields.io/github/issues/jacopowolf/potatochatprotocol/PCP-Min?style=flat-square)
 
 Minimal implementation of the protocol.
-
-![](https://img.shields.io/badge/Status-discussion-red?style=flat-square)
-![](https://img.shields.io/badge/Latest%20version-Min.0-informational?style=flat-square)
-
-<br>
-
-*Nothing yet. Classmates are lazy, dammit.*

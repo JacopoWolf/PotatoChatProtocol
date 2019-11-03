@@ -8,11 +8,13 @@
 
 </h1>
 
+![](https://img.shields.io/badge/warning-School%20Project-important?style=for-the-badge)
 
-:warning: **DISCLAIMER** :warning:
+![](https://img.shields.io/github/license/JacopoWolf/PotatoChatProtocol?style=for-the-badge)
 
-![](https://img.shields.io/badge/That's%20a-School%20Project-important?style=for-the-badge)
+![](https://img.shields.io/jitpack/v/github/jacopowolf/potatochatprotocol?label=Jitpack%20latest%20release&style=for-the-badge)
 
+![](https://img.shields.io/github/commit-activity/m/JacopoWolf/PotatoChatProtocol?color=blueviolet&style=for-the-badge)
 
 </center>
 
