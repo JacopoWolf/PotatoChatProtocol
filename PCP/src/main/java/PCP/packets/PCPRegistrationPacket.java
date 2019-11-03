@@ -54,17 +54,10 @@ public class PCPRegistrationPacket implements IPCPpacket
     }
 
     @Override
-    public int size()
+    public byte[] header()
     {
-        return 4 + alias.length() + topic.length();
-    }
-
-    @Override
-    public Collection<byte[]> toBytes()
-    {
-        Collection<byte[]> out = new ArrayList<>();
-        
         byte[] buffer = new byte[this.size()];
+        
         //Pointer
         int i = 0;
         buffer[i++] = OpCode.Registration.getByte();
@@ -83,7 +76,22 @@ public class PCPRegistrationPacket implements IPCPpacket
         //Delimitator
         buffer[i++] = 0;
         
-        out.add(buffer);
+        return buffer;
+    }
+
+    @Override
+    public int size()
+    {
+        return 4 + alias.length() + topic.length();
+    }
+
+    @Override
+    public Collection<byte[]> toBytes()
+    {
+        Collection<byte[]> out = new ArrayList<>();
+        
+        //Add the header to the collection
+        out.add(this.header());
         
         return out;
     }

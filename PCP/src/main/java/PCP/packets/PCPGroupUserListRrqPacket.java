@@ -41,6 +41,21 @@ public class PCPGroupUserListRrqPacket implements IPCPpacket
     }
 
     @Override
+    public byte[] header()
+    {
+                byte[] buffer = new byte[this.size()];
+        
+        int i = 0;
+        //Opcode
+        buffer[i++] = OpCode.GroupUsersListRrq.getByte();
+        //SenderId
+        for(byte b : senderId)
+            buffer[i++] = b;
+        
+        return buffer;
+    }
+
+    @Override
     public int size()
     {
         return 3;
@@ -50,16 +65,9 @@ public class PCPGroupUserListRrqPacket implements IPCPpacket
     public Collection<byte[]> toBytes()
     {
         Collection<byte[]> out = new ArrayList<>();
-        byte[] buffer = new byte[this.size()];
-        
-        int i = 0;
-        //Opcode
-        buffer[i++] = OpCode.GroupUsersListRrq.getByte();
-        //SenderId
-        for(byte b : senderId)
-            buffer[i++] = b;
-        
-        out.add(buffer);
+
+        //Add the header to the collection
+        out.add(this.header());
         
         return out;
     }

@@ -67,6 +67,22 @@ public class PCPGroupUsersList implements IPCPpacket
     }
 
     @Override
+    public byte[] header()
+    {
+        byte[] buffer = new byte[this.size()];
+
+        int i = 0;
+        //OpCode
+        buffer[i++] = OpCode.GroupUsersList.getByte();
+        //Reason
+        buffer[i++] = (byte) type;
+        //JSON content lenght
+        buffer[i++] = (byte) listLenght;
+        
+        return buffer;
+    }
+
+    @Override
     public int size() 
     {
         return 4 + jsonContent.length();
@@ -92,16 +108,11 @@ public class PCPGroupUsersList implements IPCPpacket
         int messagePointer = 0;
         for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
         {
-            byte[] buffer = new byte[this.size()];
-
-            int i = 0;
-            //OpCode
-            buffer[i++] = OpCode.GroupUsersList.getByte();
-            //Reason
-            buffer[i++] = (byte) type;
-            //JSON content lenght
-            buffer[i++] = (byte) listLenght;
-
+            byte[] buffer = this.header();
+            
+            //Static index after the header
+            int i = 3;
+            
             //JSON content
             for 
             ( 

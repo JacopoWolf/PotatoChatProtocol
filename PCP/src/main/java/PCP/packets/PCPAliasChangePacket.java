@@ -66,15 +66,8 @@ public class PCPAliasChangePacket implements IPCPpacket
     }
 
     @Override
-    public int size()
+    public byte[] header()
     {
-        return 5 + oldAlias.length() + newAlias.length();
-    }
-
-    @Override
-    public Collection<byte[]> toBytes()
-    {
-        Collection<byte[]> out = new ArrayList<>();
         byte[] buffer = new byte[this.size()];
         
         int i = 0;
@@ -94,9 +87,24 @@ public class PCPAliasChangePacket implements IPCPpacket
         for(byte b : newAlias.getBytes())
             buffer[i++] = b;
         //Delimitator
-        buffer[i++] = 0;   
+        buffer[i++] = 0;
         
-        out.add(buffer);
+        return buffer;
+    }
+
+    @Override
+    public int size()
+    {
+        return 5 + oldAlias.length() + newAlias.length();
+    }
+
+    @Override
+    public Collection<byte[]> toBytes()
+    {
+        Collection<byte[]> out = new ArrayList<>();
+        
+        //Add the header to the collection
+        out.add(this.header());
         
         return out;
     }

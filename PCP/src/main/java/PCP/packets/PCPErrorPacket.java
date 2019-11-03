@@ -42,6 +42,16 @@ public class PCPErrorPacket implements IPCPpacket
     }
 
     @Override
+    public byte[] header()
+    {
+        byte[] buffer = new byte[2];
+        buffer[0] = OpCode.Error.getByte();
+        buffer[1] = this.errorCode.getByte();
+        
+        return buffer;
+    }
+
+    @Override
     public int size()
     {
         return 2;
@@ -52,14 +62,10 @@ public class PCPErrorPacket implements IPCPpacket
     {
         Collection<byte[]> out = new ArrayList<>();
         
-        byte[] buffer = new byte[2];
-        buffer[0] = OpCode.Error.getByte();
-        buffer[1] = this.errorCode.getByte();
-        
-        out.add(buffer);
+        //Add the header to the collection
+        out.add(this.header());
         
         return out;
-        
     }
     
 }

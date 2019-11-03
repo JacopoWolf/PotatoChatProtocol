@@ -68,6 +68,26 @@ public class PCPDisconnectionPacket implements IPCPpacket
     {
         return OpCode.Disconnection;
     }
+    
+    @Override
+    public byte[] header()
+    {
+        byte[] buffer = new byte[this.size()];
+        
+        int i = 0;
+        
+        buffer[i++] = OpCode.Disconnection.getByte();
+        
+        if( byClient ) 
+        {
+            for(byte b : id) 
+                buffer[i++] = b;
+        }
+        else
+            buffer[i++] = (byte) this.reason;
+        
+        return buffer;
+    }
 
     @Override
     public int size() 
@@ -83,24 +103,10 @@ public class PCPDisconnectionPacket implements IPCPpacket
     {
         Collection<byte[]> out = new ArrayList<>();
        
-        byte[] buffer = new byte[this.size()];
-        
-        int i = 0;
-        
-        buffer[i++] = OpCode.Disconnection.getByte();
-        
-        if( byClient ) 
-        {
-            for(byte b : id) 
-                buffer[i++] = b;
-        }
-        else
-            buffer[i++] = (byte) this.reason;
-        
-        out.add(buffer);
+        //Add the header to the collection
+        out.add(this.header());
         
         return out;
     }
     
-     
 }

@@ -51,18 +51,10 @@ public class PCPRegHack implements IPCPpacket
     {
         return OpCode.RegAck;
     }
-    
+
     @Override
-    public int size() 
+    public byte[] header()
     {
-        return 4 + alias.length();
-    }
-    
-    @Override
-    public Collection<byte[]> toBytes() 
-    {
-        Collection<byte[]> out = new ArrayList<>();
-        
         byte[] buffer = new byte[this.size()];
         
         int i = 0;
@@ -78,7 +70,22 @@ public class PCPRegHack implements IPCPpacket
         //Delimitator
         buffer[i++] = 0;
         
-        out.add(buffer);
+        return buffer;
+    }
+    
+    @Override
+    public int size() 
+    {
+        return 4 + alias.length();
+    }
+    
+    @Override
+    public Collection<byte[]> toBytes() 
+    {
+        Collection<byte[]> out = new ArrayList<>();
+
+        //Add the header to the collection
+        out.add(this.header());
         
         return out;
     } 

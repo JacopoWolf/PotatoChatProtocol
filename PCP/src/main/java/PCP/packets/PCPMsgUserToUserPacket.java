@@ -59,6 +59,21 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
     }
 
     @Override
+    public byte[] header()
+    {
+        byte[] buffer = new byte[this.size()];
+        int i = 0;
+        //Opcode
+        buffer[i++] = OpCode.MsgUserToUser.getByte();
+
+        //SenderID
+        for(byte b : senderId)
+            buffer[i++] = b;
+
+        return buffer;
+    }
+
+    @Override
     public int size()
     {
         return 5 + destinationAlias.length() + message.length();
@@ -75,25 +90,21 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
         int NpacketsToSent = 
                 (
                     this.message.length() / 
-                    (IPCPpacket.MAX_PACKET_LENGHT - 5 - this.destinationAlias.length())
+                    (PCP.Min.MAX_PACKET_LENGHT - 5 - this.destinationAlias.length())
                 ) 
                 + 1 ;
         
-        int messageRelativeMaxLenght = IPCPpacket.MAX_PACKET_LENGHT - 5 - destinationAlias.length();
+        int messageRelativeMaxLenght = PCP.Min.MAX_PACKET_LENGHT - 5 - destinationAlias.length();
         
         
         int messagePointer = 0;
         for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
         {
         
-            byte[] buffer = new byte[this.size()];
-            int i = 0;
-            //Opcode
-            buffer[i++] = OpCode.MsgUserToUser.getByte();
+            byte[] buffer = this.header();
             
-            //SenderID
-            for(byte b : senderId)
-                buffer[i++] = b;
+            //Static index after the header
+            int i = 3;
 
             //destinationAlias
             for(byte b : destinationAlias.getBytes())

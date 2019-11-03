@@ -55,6 +55,21 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
     }
 
     @Override
+    public byte[] header()
+    {
+        byte[] buffer = new byte[this.size()];
+
+        int i = 0;
+        //Opcode
+        buffer[i++] = OpCode.MsgUserToGroup.getByte();
+        //SenderId
+        for(byte b : senderId)
+            buffer[i++] = b;
+    
+        return buffer;
+    }
+
+    @Override
     public int size()
     {
         return 4 + message.length();
@@ -70,24 +85,20 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
         int NpacketsToSent = 
                 (
                     this.message.length() / 
-                    (PCP.MAX_PACKET_LENGHT - 4)
+                    (PCP.Min.MAX_PACKET_LENGHT - 4)
                 ) 
                 + 1 ;
         
-        int messageRelativeMaxLenght = PCP.MAX_PACKET_LENGHT - 4;
+        int messageRelativeMaxLenght = PCP.Min.MAX_PACKET_LENGHT - 4;
         
         
         int messagePointer = 0;
         for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
         {
-            byte[] buffer = new byte[this.size()];
+            byte[] buffer = this.header();
 
-            int i = 0;
-            //Opcode
-            buffer[i++] = OpCode.MsgUserToGroup.getByte();
-            //SenderId
-            for(byte b : senderId)
-                buffer[i++] = b;
+            //Static index after the header
+            int i = 3;
 
             //Message
             for 
