@@ -11,7 +11,7 @@ import org.junit.*;
  *
  * @author gfurri20
  */
-public class PCPGroupUserList_TEST
+public class PCPGroupUserList_Test
 {
     @Test
     public void testToBytesSingle()

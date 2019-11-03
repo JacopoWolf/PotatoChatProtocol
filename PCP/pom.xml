@@ -3,15 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.itimarconivr.quintaei</groupId>
     <artifactId>PCP</artifactId>
+    <name>PCP</name>
     <version>Min.0</version>
     <packaging>jar</packaging>
+    
+    
     <properties>
         <netbeans.hint.licensePath>${project.basedir}/licenseheader.txt</netbeans.hint.licensePath>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    <name>PCP</name>
+    
     
     <!-- list of dependencies -->
     <dependencies>

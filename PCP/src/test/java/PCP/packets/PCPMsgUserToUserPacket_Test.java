@@ -1,32 +1,34 @@
 /*
  * this is a school project under "The Unlicence".
  */
-
 package PCP.packets;
 
-import java.util.*;
+import java.util.ArrayList;
 import org.junit.*;
 
 /**
  *
- * @author gfurri20
+ * @author JacopoWolf
  */
-public class PCPMsgUserToGroupPacket_TEST
+public class PCPMsgUserToUserPacket_Test
 {
     @Test
     public void testToBytesSingle()
     {
-        PCPMsgUserToGroupPacket packet = new PCPMsgUserToGroupPacket
-        (
-            new byte[] {0,0},
-            "test"
+        PCPMsgUserToUserPacket packet = new PCPMsgUserToUserPacket
+        (   
+            new byte[]{0,0},
+            "testme",
+            "this is simple text"
         );
         
         byte[] expectedResult = new byte[]
         { 
-            05, 
+            01, 
             0,0,
-            116, 101, 115, 116,
+            116,101,115,116,109,101,
+            0,
+            116,104,105,115,32,105,115,32,115,105,109,112,108,101,32,116,101,120,116,
             0
         };
         
@@ -36,5 +38,7 @@ public class PCPMsgUserToGroupPacket_TEST
             Assert.fail();
         
         Assert.assertArrayEquals( expectedResult, results.get(0) );
+        
     }
+    
 }
