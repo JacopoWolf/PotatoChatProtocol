@@ -14,8 +14,28 @@ import java.util.*;
  */
 public class PCPDisconnectionPacket implements IPCPpacket
 {
+    public enum Reason
+    {
+        none        (0),
+        timedOut    (1),
+        goneOffline (2);
+        
+        
+        
+        private byte code;
+        
+        private Reason( int code )
+        {
+            this.code = (byte)code;
+        }
+        public byte getByte()
+        {
+            return this.code;
+        }
+    }
+    
     private byte[] id;
-    private int reason;
+    private Reason reason;
     private boolean byClient; //It's true if the disconnection has been required by the client
 
     public PCPDisconnectionPacket( byte[] id ) 
@@ -24,7 +44,7 @@ public class PCPDisconnectionPacket implements IPCPpacket
         this.byClient = true;
     }
 
-    public PCPDisconnectionPacket( int reason ) 
+    public PCPDisconnectionPacket( Reason reason ) 
     {
         this.reason = reason;
         this.byClient = false;
@@ -42,12 +62,12 @@ public class PCPDisconnectionPacket implements IPCPpacket
         this.id = id;
     }
 
-    public int getReason() 
+    public Reason getReason() 
     {
         return reason;
     }
 
-    public void setReason( int reason ) 
+    public void setReason( Reason reason ) 
     {
         this.reason = reason;
     }
@@ -79,13 +99,11 @@ public class PCPDisconnectionPacket implements IPCPpacket
         
         buffer[i++] = OpCode.Disconnection.getByte();
         
-        if( byClient ) 
-        {
+        if( byClient )
             for(byte b : id) 
                 buffer[i++] = b;
-        }
         else
-            buffer[i++] = (byte) this.reason;
+            buffer[i++] = this.reason.getByte();
         
         return buffer;
     }
