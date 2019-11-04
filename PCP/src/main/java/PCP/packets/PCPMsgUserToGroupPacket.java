@@ -57,7 +57,7 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[this.size()];
+        byte[] buffer = new byte[3];
 
         int i = 0;
         //Opcode
@@ -94,12 +94,15 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
         
         int messagePointer = 0;
         for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
-        {
-            byte[] buffer = this.header();
-
-            //Static index after the header
-            int i = 3;
-
+        {                       
+            byte[] buffer = new byte[this.size()];
+            
+            int i = 0;
+            
+            //Adds the header
+            for( byte b : this.header() )
+                buffer[i++] = b;
+            
             //Message
             for 
             ( 
@@ -116,7 +119,6 @@ public class PCPMsgUserToGroupPacket implements IPCPpacket
             //Delimitator
             buffer[i++] = 0;
             
-
             out.add(buffer);
         }
         

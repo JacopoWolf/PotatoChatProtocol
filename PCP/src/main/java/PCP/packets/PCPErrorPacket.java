@@ -44,9 +44,8 @@ public class PCPErrorPacket implements IPCPpacket
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[2];
+        byte[] buffer = new byte[1];
         buffer[0] = OpCode.Error.getByte();
-        buffer[1] = this.errorCode.getByte();
         
         return buffer;
     }
@@ -61,9 +60,16 @@ public class PCPErrorPacket implements IPCPpacket
     public Collection<byte[]> toBytes()
     {
         Collection<byte[]> out = new ArrayList<>();
+        byte[] buffer = new byte[2];
         
-        //Add the header to the collection
-        out.add(this.header());
+        //Adds the header to the package
+        buffer[0] = this.header()[0];
+        
+        //Adds the payload (error code)
+        buffer[1] = this.errorCode.getByte();
+        
+        //Push the package into the collection
+        out.add(buffer);
         
         return out;
     }

@@ -68,7 +68,7 @@ public class PCPAliasChangePacket implements IPCPpacket
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[this.size()];
+        byte[] buffer = new byte[3];
         
         int i = 0;
         //Opcode
@@ -76,19 +76,7 @@ public class PCPAliasChangePacket implements IPCPpacket
         //Id
         for(byte b : id)
             buffer[i++] = b;
-        
-        //OldAlias
-        for(byte b : oldAlias.getBytes())
-            buffer[i++] = b;
-        //Delimitator
-        buffer[i++] = 0;
-
-        //NewAlias
-        for(byte b : newAlias.getBytes())
-            buffer[i++] = b;
-        //Delimitator
-        buffer[i++] = 0;
-        
+             
         return buffer;
     }
 
@@ -102,9 +90,30 @@ public class PCPAliasChangePacket implements IPCPpacket
     public Collection<byte[]> toBytes()
     {
         Collection<byte[]> out = new ArrayList<>();
+        byte[] buffer = new byte[this.size()];
         
-        //Add the header to the collection
-        out.add(this.header());
+        int i = 0;
+        
+        //Adds the header        
+        for( byte b : this.header() )
+            buffer[i++] = b;
+
+        //Adds the payload
+        
+        //OldAlias
+        for( byte b : oldAlias.getBytes() )
+            buffer[i++] = b;
+        //Delimitator
+        buffer[i++] = 0;
+
+        //NewAlias
+        for( byte b : newAlias.getBytes() )
+            buffer[i++] = b;
+        //Delimitator
+        buffer[i++] = 0;
+        
+        //Push the packege into Collection
+        out.add(buffer);
         
         return out;
     }

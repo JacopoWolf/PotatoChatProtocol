@@ -43,7 +43,7 @@ public class PCPGroupUserListRrqPacket implements IPCPpacket
     @Override
     public byte[] header()
     {
-                byte[] buffer = new byte[this.size()];
+        byte[] buffer = new byte[this.size()];
         
         int i = 0;
         //Opcode
@@ -66,7 +66,7 @@ public class PCPGroupUserListRrqPacket implements IPCPpacket
     {
         Collection<byte[]> out = new ArrayList<>();
 
-        //Add the header to the collection
+        //Adds the header to the package
         out.add(this.header());
         
         return out;

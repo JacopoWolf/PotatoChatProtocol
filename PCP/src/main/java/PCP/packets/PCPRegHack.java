@@ -55,21 +55,12 @@ public class PCPRegHack implements IPCPpacket
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[this.size()];
+        byte[] buffer = new byte[1];
         
         int i = 0;
-        
+        //Opcode
         buffer[i++] = OpCode.RegAck.getByte();
-       
-        for( byte b : assignedId ) 
-            buffer[i++] = b;
-        
-        for( byte b : alias.getBytes() )
-            buffer[i++] = b;
-        
-        //Delimitator
-        buffer[i++] = 0;
-        
+                
         return buffer;
     }
     
@@ -83,9 +74,27 @@ public class PCPRegHack implements IPCPpacket
     public Collection<byte[]> toBytes() 
     {
         Collection<byte[]> out = new ArrayList<>();
+        byte[] buffer = new byte[this.size()];
 
-        //Add the header to the collection
-        out.add(this.header());
+        int i = 0;
+        //Add the header to the package
+        buffer[i++] = this.header()[0];
+        
+        //Adds the payload to the package
+        
+        //Assigned id
+        for( byte b : assignedId ) 
+            buffer[i++] = b;
+        
+        //Alias chosen
+        for( byte b : alias.getBytes() )
+            buffer[i++] = b;
+        
+        //Delimitator
+        buffer[i++] = 0;
+        
+        //Push the package into the collection
+        out.add(buffer);
         
         return out;
     } 

@@ -56,26 +56,13 @@ public class PCPRegistrationPacket implements IPCPpacket
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[this.size()];
+        byte[] buffer = new byte[2];
         
-        //Pointer
         int i = 0;
         buffer[i++] = OpCode.Registration.getByte();
         //Version, for now 0
         buffer[i++] = 0;
-        
-        //Alias
-        for(byte b : alias.getBytes())
-            buffer[i++] = b;
-        //Delimitator
-        buffer[i++] = 0;
-        
-        //Topic
-        for(byte b : topic.getBytes())
-            buffer[i++] = b;
-        //Delimitator
-        buffer[i++] = 0;
-        
+                       
         return buffer;
     }
 
@@ -89,9 +76,29 @@ public class PCPRegistrationPacket implements IPCPpacket
     public Collection<byte[]> toBytes()
     {
         Collection<byte[]> out = new ArrayList<>();
+        byte[] buffer = new byte[this.size()];
         
-        //Add the header to the collection
-        out.add(this.header());
+        int i = 0;
+        //Add the header to the package
+        for( byte b : this.header() )
+            buffer[i++] = b;
+        
+        //Adds the payload to the package
+        
+        //Alias
+        for(byte b : alias.getBytes())
+            buffer[i++] = b;
+        //Delimitator
+        buffer[i++] = 0;
+        
+        //Topic
+        for(byte b : topic.getBytes())
+            buffer[i++] = b;
+        //Delimitator
+        buffer[i++] = 0;
+        
+        //Push the package into the collection
+        out.add(buffer);
         
         return out;
     }

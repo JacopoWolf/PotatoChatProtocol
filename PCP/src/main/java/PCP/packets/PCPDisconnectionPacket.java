@@ -10,6 +10,7 @@ import java.util.*;
 /**
  *
  * @author Alessio789
+ * @author gfurri20
  */
 public class PCPDisconnectionPacket implements IPCPpacket
 {
@@ -103,7 +104,7 @@ public class PCPDisconnectionPacket implements IPCPpacket
     {
         Collection<byte[]> out = new ArrayList<>();
        
-        //Add the header to the collection
+        //Adds the header to the collection
         out.add(this.header());
         
         return out;

@@ -101,11 +101,15 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
         for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
         {
         
-            byte[] buffer = this.header();
+            byte[] buffer = new byte[this.size()];
+                       
+            int i = 0;
+            //Adds the header
+            for( byte b : this.header() )
+                buffer[i++] = b;            
             
-            //Static index after the header
-            int i = 3;
-
+            //Adds the payload
+            
             //destinationAlias
             for(byte b : destinationAlias.getBytes())
                 buffer[i++] = b;
