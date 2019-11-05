@@ -6,7 +6,6 @@ package PCP.packets;
 
 import PCP.*;
 import java.nio.charset.*;
-import java.util.*;
 
 /**
  *
@@ -46,14 +45,19 @@ public class PCPMsgUserToUserPacket extends PCPMessage
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[this.size()];
+        byte[] buffer = new byte[4 + destinationAlias.length()];
         int i = 0;
-        //Opcode
+        // opcode
         buffer[i++] = OpCode.MsgUserToUser.getByte();
 
-        //SenderID
+        // senderID
         for(byte b : senderId)
             buffer[i++] = b;
+        
+        // destination alias
+        for (byte b : destinationAlias.getBytes(StandardCharsets.ISO_8859_1))
+            buffer[i++] = b;
+        buffer[i++] = 0;
 
         return buffer;
     }
@@ -62,69 +66,6 @@ public class PCPMsgUserToUserPacket extends PCPMessage
     public int size()
     {
         return 5 + destinationAlias.length() + getMessage().length();
-    }
-
-    @Override
-    public Collection<byte[]> toBytes()
-    {
-        Collection<byte[]> out = new ArrayList<>();
-        
-        
-        byte[] messageB = getMessage().getBytes( StandardCharsets.ISO_8859_1 );
-        
-        int NpacketsToSent = 
-                (
-                    this.getMessage().length() / 
-                    (PCP.Min.MAX_PACKET_LENGHT - 5 - this.destinationAlias.length())
-                ) 
-                + 1 ;
-        
-        int messageRelativeMaxLenght = PCP.Min.MAX_PACKET_LENGHT - 5 - destinationAlias.length();
-        
-        
-        int messagePointer = 0;
-        for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
-        {
-        
-            byte[] buffer = new byte[this.size()];
-                       
-            int i = 0;
-            //Adds the header
-            for( byte b : this.header() )
-                buffer[i++] = b;            
-            
-            //Adds the payload
-            
-            //destinationAlias
-            for(byte b : destinationAlias.getBytes())
-                buffer[i++] = b;
-            
-            //Delimitator
-            buffer[i++] = 0;
-
-            //Message
-            for 
-            ( 
-                int relPointer = 0; 
-                relPointer < messageRelativeMaxLenght 
-                    && 
-                messagePointer < messageB.length;
-                relPointer++, messagePointer++
-            )
-            {
-                buffer[i++] = messageB[ messagePointer ];
-            }
-            
-            //Delimitator
-            buffer[i++] = 0;
-            
-
-            out.add(buffer);
-        }
-        
-        
-        
-        return out;
     }
     
 }

@@ -5,8 +5,6 @@
 package PCP.packets;
 
 import PCP.*;
-import java.nio.charset.*;
-import java.util.*;
 
 /**
  *
@@ -54,8 +52,9 @@ public class PCPMsgUserToGroupPacket extends PCPMessage
         byte[] buffer = new byte[3];
 
         int i = 0;
-        //Opcode
-        buffer[i++] = OpCode.MsgUserToGroup.getByte();
+        // opcode
+        buffer[i++] = this.getOpCode().getByte();
+        
         //SenderId
         for(byte b : senderId)
             buffer[i++] = b;
@@ -68,57 +67,5 @@ public class PCPMsgUserToGroupPacket extends PCPMessage
     {
         return 4 + getMessage().length();
     }
-
-    @Override
-    public Collection<byte[]> toBytes()
-    {      
-        Collection<byte[]> out = new ArrayList<>();
-        
-        byte[] messageB = getMessage().getBytes( StandardCharsets.ISO_8859_1 );
-        
-        int NpacketsToSent = 
-                (
-                    this.getMessage().length() / 
-                    (PCP.Min.MAX_PACKET_LENGHT - 4)
-                ) 
-                + 1 ;
-        
-        int messageRelativeMaxLenght = PCP.Min.MAX_PACKET_LENGHT - 4;
-        
-        
-        int messagePointer = 0;
-        for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
-        {                       
-            byte[] buffer = new byte[this.size()];
-            
-            int i = 0;
-            
-            //Adds the header
-            for( byte b : this.header() )
-                buffer[i++] = b;
-            
-            //Message
-            for 
-            ( 
-                int relPointer = 0; 
-                relPointer < messageRelativeMaxLenght 
-                    && 
-                messagePointer < messageB.length;
-                relPointer++, messagePointer++
-            )
-            {
-                buffer[i++] = messageB[ messagePointer ];
-            }
-            
-            //Delimitator
-            buffer[i++] = 0;
-            
-            out.add(buffer);
-        }
-        
-        
-        
-        return out;
-    }        
                 
 }
