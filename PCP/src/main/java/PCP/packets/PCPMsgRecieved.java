@@ -1,102 +1,103 @@
 /*
  * this is a school project under "The Unlicence".
  */
-
 package PCP.packets;
 
 import PCP.*;
 import java.nio.charset.*;
 import java.util.*;
 
+
 /**
  *
  * @author Jacopo_Wolf
- * @author gfurri20
- * @author Alessio789
  */
-public class PCPMsgUserToGroupPacket extends PCPMessage
+public class PCPMsgRecieved extends PCPMessage
 {
-    private byte[] senderId;
-    
-    
+    private String sourceAlias;
 
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
     
-    public byte[] getSenderId()
+    //<editor-fold defaultstate="collapsed" desc="get set">
+    public String getSourceAlias()
     {
-        return senderId;
+        return sourceAlias;
     }
     
-    public void setSenderId( byte[] senderId ) 
+    public void setSourceAlias( String sourceAlias )
     {
-        this.senderId = senderId;
+        this.sourceAlias = sourceAlias;
     }
-
     //</editor-fold>
-    
-    
-    
+
+
     //<editor-fold defaultstate="collapsed" desc="constructors">
+        public PCPMsgRecieved( String sourceAlias, String message )
+        {
+            super(message);
+            this.sourceAlias = sourceAlias;
+        }
 
-    
-    public PCPMsgUserToGroupPacket( byte[] senderId, String message )
-    {
-        super(OpCode.MsgUserToGroup, message);
-        this.senderId = senderId;
-    }
+        public PCPMsgRecieved( String sourceAlias, OpCode code, String message )
+        {
+            super(code, message);
+            this.sourceAlias = sourceAlias;
+        }
 
     //</editor-fold>
+    
     
 
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[3];
-
+        byte[] header = new byte[ 2 + this.sourceAlias.length() ];
+        
         int i = 0;
-        //Opcode
-        buffer[i++] = OpCode.MsgUserToGroup.getByte();
-        //SenderId
-        for(byte b : senderId)
-            buffer[i++] = b;
-    
-        return buffer;
+        
+        header[i++] = this.getOpCode().getByte();
+        
+        for ( byte b : this.getMessage().getBytes(StandardCharsets.ISO_8859_1) )
+            header[i++] = b;
+        
+        header[i++] = 0;
+        
+        return header;
     }
 
     @Override
     public int size()
     {
-        return 4 + getMessage().length();
+        return 3 + this.sourceAlias.length() + this.getMessage().length();
     }
 
     @Override
     public Collection<byte[]> toBytes()
-    {      
+    {
         Collection<byte[]> out = new ArrayList<>();
         
+        byte[] header = this.header();
         byte[] messageB = getMessage().getBytes( StandardCharsets.ISO_8859_1 );
         
         int NpacketsToSent = 
                 (
                     this.getMessage().length() / 
-                    (PCP.Min.MAX_PACKET_LENGHT - 4)
+                    (PCP.Min.MAX_PACKET_LENGHT - 3 - this.sourceAlias.length())
                 ) 
                 + 1 ;
         
-        int messageRelativeMaxLenght = PCP.Min.MAX_PACKET_LENGHT - 4;
-        
+        int messageRelativeMaxLenght = PCP.Min.MAX_PACKET_LENGHT - 5 - sourceAlias.length();
         
         int messagePointer = 0;
         for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
-        {                       
+        {
+        
             byte[] buffer = new byte[this.size()];
-            
+                       
             int i = 0;
-            
-            //Adds the header
-            for( byte b : this.header() )
+            //header
+            for ( byte b : header )
                 buffer[i++] = b;
-            
+
             //Message
             for 
             ( 
@@ -113,12 +114,14 @@ public class PCPMsgUserToGroupPacket extends PCPMessage
             //Delimitator
             buffer[i++] = 0;
             
+
             out.add(buffer);
+            
+            
         }
         
-        
-        
         return out;
-    }        
-                
+        
+    }
+    
 }

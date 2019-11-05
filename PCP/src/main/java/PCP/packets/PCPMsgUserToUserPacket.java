@@ -3,8 +3,9 @@
  */
 
 package PCP.packets;
+
 import PCP.*;
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.*;
 import java.util.*;
 
 /**
@@ -13,11 +14,10 @@ import java.util.*;
  * @author Jacopo_Wolf
  * @author Alessio789
  */
-public class PCPMsgUserToUserPacket implements IPCPpacket
+public class PCPMsgUserToUserPacket extends PCPMessage
 {
     private byte[] senderId;
     private String destinationAlias;
-    private String message;
 
 
 //<editor-fold defaultstate="collapsed" desc="getter and setters">
@@ -32,31 +32,16 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
         this.destinationAlias = destinationAlias;
     }
     
-    public String getMessage()
-    {
-        return message;
-    }
-    
-    public void setMessage( String message )
-    {
-        this.message = message;
-    }
     
 //</editor-fold>
-    
-    
-    public PCPMsgUserToUserPacket( byte[] senderId, String dstAlias, String msg )
+
+    public PCPMsgUserToUserPacket( byte[] senderId, String destinationAlias, String message )
     {
+        super(OpCode.MsgUserToUser, message);
         this.senderId = senderId;
-        this.destinationAlias = dstAlias;
-        this.message = msg;
+        this.destinationAlias = destinationAlias;
     }
-        
-    @Override
-    public OpCode getOpCode()
-    {
-        return OpCode.MsgUserToUser;
-    }
+    
 
     @Override
     public byte[] header()
@@ -76,7 +61,7 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
     @Override
     public int size()
     {
-        return 5 + destinationAlias.length() + message.length();
+        return 5 + destinationAlias.length() + getMessage().length();
     }
 
     @Override
@@ -85,11 +70,11 @@ public class PCPMsgUserToUserPacket implements IPCPpacket
         Collection<byte[]> out = new ArrayList<>();
         
         
-        byte[] messageB = message.getBytes( StandardCharsets.ISO_8859_1 );
+        byte[] messageB = getMessage().getBytes( StandardCharsets.ISO_8859_1 );
         
         int NpacketsToSent = 
                 (
-                    this.message.length() / 
+                    this.getMessage().length() / 
                     (PCP.Min.MAX_PACKET_LENGHT - 5 - this.destinationAlias.length())
                 ) 
                 + 1 ;
