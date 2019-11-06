@@ -10,13 +10,13 @@ import java.util.*;
  *
  * @author Alessio789
  */
-public class PCPRegHack implements IPCPpacket
+public class PCPRegHackPacket implements IPCPpacket
 {
     
     private byte[] assignedId;
     private String alias;
 
-    public PCPRegHack( byte[] assignedId, String alias ) 
+    public PCPRegHackPacket( byte[] assignedId, String alias ) 
     {
         this.assignedId = assignedId;
         this.alias = alias;

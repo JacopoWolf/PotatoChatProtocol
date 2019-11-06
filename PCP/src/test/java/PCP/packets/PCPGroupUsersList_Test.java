@@ -4,9 +4,8 @@
 
 package PCP.packets;
 
-import java.util.ArrayList;
-import org.junit.Assert;
-import org.junit.Test;
+import java.util.*;
+import org.junit.*;
 
 /**
  *
@@ -22,9 +21,9 @@ public class PCPGroupUsersList_Test
         listUsers.add("user2");
         listUsers.add("user3");
         
-        PCPGroupUsersList packet = new PCPGroupUsersList
+        PCPGroupUsersListPacket packet = new PCPGroupUsersListPacket
         (
-            0,
+            PCPGroupUsersListPacket.UpdateType.complete,
             listUsers
         );
         

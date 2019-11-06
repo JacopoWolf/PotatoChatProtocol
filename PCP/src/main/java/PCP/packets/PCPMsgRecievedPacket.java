@@ -11,7 +11,7 @@ import java.nio.charset.*;
  *
  * @author Jacopo_Wolf
  */
-public class PCPMsgRecieved extends PCPMessage
+public class PCPMsgRecievedPacket extends PCPMessage
 {
     private String sourceAlias;
 
@@ -30,13 +30,13 @@ public class PCPMsgRecieved extends PCPMessage
 
 
     //<editor-fold defaultstate="collapsed" desc="constructors">
-        public PCPMsgRecieved( String sourceAlias, String message )
+        public PCPMsgRecievedPacket( String sourceAlias, String message )
         {
             super(message);
             this.sourceAlias = sourceAlias;
         }
 
-        public PCPMsgRecieved( String sourceAlias, OpCode code, String message )
+        public PCPMsgRecievedPacket( String sourceAlias, OpCode code, String message )
         {
             super(code, message);
             this.sourceAlias = sourceAlias;
