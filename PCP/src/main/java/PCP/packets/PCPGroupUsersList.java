@@ -50,7 +50,7 @@ public class PCPGroupUsersList implements IPCPpacket
 
     public void setListLenght( int listLenght ) 
     {
-        if( listOfUsers.size() > 255 )
+        if( listLenght > 255 )
             throw new IllegalArgumentException("Users list can't containt more than 256 users!");
         
         this.listLenght = listLenght;
