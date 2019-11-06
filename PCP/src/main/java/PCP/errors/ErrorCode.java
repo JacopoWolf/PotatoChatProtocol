@@ -20,7 +20,7 @@ public enum ErrorCode
     ChatDenied              (200),
     MaxClientsReached       (202),
     
-    ServerExploded          (250),
+    ServerExploded          (254),
     
     Unspecified             (255);
     

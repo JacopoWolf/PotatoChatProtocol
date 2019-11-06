@@ -8,15 +8,30 @@ import java.util.*;
 
 
 /**
- *
+ *  base interface for all packets
  * @author Jacopo_Wolf
  */
 public interface IPCPpacket
 {
+  
+    
     /**
      * @return the opcode of this packet
      */
     OpCode getOpCode();
+    
+    /**
+     * generates and returns the header of this particular packet. 
+     * header's lenght is never superior to PACKET_MAX_LENGHT
+     * @return the header of this packet
+     */
+    byte[] header();
+    
+    /**
+     * calculates the total size of the packet, headers and payload included.
+     * @return the total size of this packet.
+     */
+    int size();
     
     /**
      * Converts the packet to bytes to be sent.
@@ -24,10 +39,5 @@ public interface IPCPpacket
      * @return the collection of byte arrays payload to send.
      */
     Collection<byte[]> toBytes();
-    
-    /**
-     * @return total size of this packet
-     */
-    int size();
  
 }
