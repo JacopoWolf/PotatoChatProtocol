@@ -4,6 +4,7 @@
 package PCP.packets;
 
 import PCP.*;
+import com.google.gson.Gson;
 import java.nio.charset.*;
 import java.util.*;
 
@@ -17,13 +18,17 @@ public class PCPGroupUsersList implements IPCPpacket
 {
     private int type;
     private int listLenght;
+    private ArrayList<String> listOfUsers;
     private String jsonContent;
 
-    public PCPGroupUsersList( int type, int listLenght, String jsonContent ) 
+    public PCPGroupUsersList( int type , ArrayList<String> listOfUsers ) 
     {
         this.type = type;
-        this.listLenght = listLenght;
-        this.jsonContent = jsonContent;
+        this.listOfUsers = listOfUsers;
+        // len of json content is calculated
+        setListLenght(listOfUsers.size());
+        // convert arraylist in json format
+        this.jsonContent = new Gson().toJson(listOfUsers);
     }
 
      //<editor-fold defaultstate="collapsed" desc="getter and setters">
@@ -45,15 +50,28 @@ public class PCPGroupUsersList implements IPCPpacket
 
     public void setListLenght( int listLenght ) 
     {
-        this.listLenght = listLenght;
+        if( listOfUsers.size() > 256 )
+            throw new IllegalArgumentException("Users list can't containt more than 256 users!");
+        
+        this.listLenght = listOfUsers.size();
+    }
+    
+    public ArrayList<String> getListOfUsers()
+    {
+        return listOfUsers;
     }
 
-    public String getJsonContent() 
+    public void setListOfUsers( ArrayList<String> listOfUsers )
+    {
+        this.listOfUsers = listOfUsers;
+    }
+    
+        public String getJsonContent() 
     {
         return jsonContent;
     }
 
-    public void setJsonContent( String jsonContent ) 
+    public void setJsonContent( String jsonContent )
     {
         this.jsonContent = jsonContent;
     }
@@ -69,7 +87,7 @@ public class PCPGroupUsersList implements IPCPpacket
     @Override
     public byte[] header()
     {
-        byte[] buffer = new byte[this.size()];
+        byte[] buffer = new byte[3];
 
         int i = 0;
         //OpCode
@@ -91,46 +109,55 @@ public class PCPGroupUsersList implements IPCPpacket
     @Override
     public Collection<byte[]> toBytes() 
     {
+        // puts message here
         Collection<byte[]> out = new ArrayList<>();
         
-        byte[] jsonList = jsonContent.getBytes( StandardCharsets.ISO_8859_1 );
+        // allocates byte arrays
+        byte[] jsonList = this.jsonContent.getBytes( StandardCharsets.ISO_8859_1 );
+        byte[] header = this.header();
         
-        int NpacketsToSent = 
-                (
-                    this.jsonContent.length() /
-                    (PCP.Min.MAX_PACKET_LENGHT - 4)
-                ) 
-                + 1 ;
+        // necessary to calculation
+        int msgRelativeMaxLenght = 
+                // MAX - header - payloadDelimitator
+                PCP.Min.MAX_PACKET_LENGHT - header.length - 1;
+        int nPacketsToSent = 
+                // ( contentTOT / msgREL ) + 1
+                ( this.getJsonContent().length() / msgRelativeMaxLenght ) + 1 ;
         
-        int messageRelativeMaxLenght = PCP.Min.MAX_PACKET_LENGHT - 4;
-        
-        
-        int messagePointer = 0;
-        for ( int packetN = 0; packetN < NpacketsToSent; packetN++ )
+                
+        int absMsgPointer = 0;  // absolute message pointer
+        int packetN = 0;        // current packet number
+        for ( ; packetN < nPacketsToSent ; packetN++ )
         {
-            byte[] buffer = this.header();
+            int bufferLenght = 
+                    ( jsonList.length - absMsgPointer ) > msgRelativeMaxLenght ? 
+                        PCP.Min.MAX_PACKET_LENGHT : 
+                        (header.length + jsonList.length + 1);
             
-            //Static index after the header
-            int i = 3;
-            
-            //JSON content
+            byte[] buffer = new byte[ bufferLenght ];
+                       
+            int i = 0;
+            // appends header
+            for( byte b : this.header() )
+                buffer[i++] = b;            
+
+            // appends message payload
             for 
             ( 
-                int relPointer = 0; 
-                relPointer < messageRelativeMaxLenght 
-                    && 
-                messagePointer < jsonList.length;
-                relPointer++, messagePointer++
+                int relMsgPointer = 0; 
+                relMsgPointer < msgRelativeMaxLenght && absMsgPointer < jsonList.length;
+                relMsgPointer++, absMsgPointer++
             )
             {
-                buffer[i++] = jsonList[ messagePointer ];
+                buffer[i++] = jsonList[ absMsgPointer ];
             }
             
-            //Delimitator
+            // delimitator
             buffer[i++] = 0;
             
-
+            // add current packet to the list
             out.add(buffer);
+            
         }
         
         
