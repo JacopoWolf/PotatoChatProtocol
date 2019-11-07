@@ -12,7 +12,7 @@
 
 ![](https://img.shields.io/github/license/JacopoWolf/PotatoChatProtocol?style=for-the-badge)
 
-![](https://img.shields.io/jitpack/v/github/jacopowolf/potatochatprotocol?label=Jitpack%20latest%20release&style=for-the-badge)
+[![](https://img.shields.io/jitpack/v/github/jacopowolf/potatochatprotocol?label=Jitpack%20latest%20release&style=for-the-badge)](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
 
 ![](https://img.shields.io/github/commit-activity/m/JacopoWolf/PotatoChatProtocol?color=blueviolet&style=for-the-badge)
 
@@ -34,3 +34,31 @@ Read protocol's [general description](docs/PCP.md) and original idea or go see a
 * `docs-{M version}` are for writing **only** additional documentation.
   
 names like `USERNAME-master-feature1` are **NOT** accepted.
+
+## Download
+> visit [JitPack](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
+
+if you're using maven add this to your **pom.xml**
+
+```xml
+<repositories>
+
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+
+</repositories>
+
+
+<dependencies>
+
+	<dependency>
+		<groupId>com.github.JacopoWolf</groupId>
+		<artifactId>PotatoChatProtocol</artifactId>
+		<version>Tag</version>
+	</dependency>
+
+</dependencies>
+```
+
