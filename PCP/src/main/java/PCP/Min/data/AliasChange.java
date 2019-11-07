@@ -2,9 +2,9 @@
  * this is a school project under "The Unlicence".
  */
 
-package PCP.packets;
+package PCP.Min.data;
 
-import PCP.OpCode;
+import PCP.*;
 import java.util.*;
 
 /**
@@ -12,13 +12,13 @@ import java.util.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class PCPAliasChangePacket implements IPCPpacket
+public class AliasChange implements IPCPdata
 {
     private byte[] id;
     private String oldAlias;
     private String newAlias;
 
-    public PCPAliasChangePacket( byte[] id, String oldAlias, String newAlias )
+    public AliasChange( byte[] id, String oldAlias, String newAlias )
     {
         this.id = id;
         this.oldAlias = oldAlias;
@@ -63,6 +63,12 @@ public class PCPAliasChangePacket implements IPCPpacket
     public OpCode getOpCode()
     {
         return OpCode.AliasChanghe;
+    }
+
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
     }
 
     @Override

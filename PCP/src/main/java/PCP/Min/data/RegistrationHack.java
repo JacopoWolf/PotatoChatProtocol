@@ -1,7 +1,7 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
 import java.util.*;
@@ -10,13 +10,13 @@ import java.util.*;
  *
  * @author Alessio789
  */
-public class PCPRegHackPacket implements IPCPpacket
+public class RegistrationHack implements IPCPdata
 {
     
     private byte[] assignedId;
     private String alias;
 
-    public PCPRegHackPacket( byte[] assignedId, String alias ) 
+    public RegistrationHack( byte[] assignedId, String alias ) 
     {
         this.assignedId = assignedId;
         this.alias = alias;
@@ -45,6 +45,12 @@ public class PCPRegHackPacket implements IPCPpacket
     }
     
     //</editor-fold>
+    
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
+    }
     
     @Override
     public OpCode getOpCode() 

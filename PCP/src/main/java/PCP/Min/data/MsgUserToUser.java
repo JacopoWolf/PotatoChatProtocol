@@ -2,7 +2,7 @@
  * this is a school project under "The Unlicence".
  */
 
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
 import java.nio.charset.*;
@@ -13,7 +13,7 @@ import java.nio.charset.*;
  * @author Jacopo_Wolf
  * @author Alessio789
  */
-public class PCPMsgUserToUserPacket extends PCPMessage
+public class MsgUserToUser extends PCPMessage
 {
     private byte[] senderId;
     private String destinationAlias;
@@ -34,7 +34,7 @@ public class PCPMsgUserToUserPacket extends PCPMessage
     
 //</editor-fold>
 
-    public PCPMsgUserToUserPacket( byte[] senderId, String destinationAlias, String message )
+    public MsgUserToUser( byte[] senderId, String destinationAlias, String message )
     {
         super(OpCode.MsgUserToUser, message);
         this.senderId = senderId;
@@ -42,6 +42,12 @@ public class PCPMsgUserToUserPacket extends PCPMessage
     }
     
 
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
+    }
+    
     @Override
     public byte[] header()
     {

@@ -2,8 +2,8 @@
  * this is a school project under "The Unlicence".
  */
 
-package PCP.packets;
-import PCP.OpCode;
+package PCP.Min.data;
+import PCP.*;
 import java.util.*;
 
 /**
@@ -11,11 +11,11 @@ import java.util.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class PCPGroupUserListRrqPacket implements IPCPpacket
+public class GroupUserListRrq implements IPCPdata
 {
     private byte[] senderId;
 
-    public PCPGroupUserListRrqPacket( byte[] senderId )
+    public GroupUserListRrq( byte[] senderId )
     {
         this.senderId = senderId;
     }
@@ -40,6 +40,12 @@ public class PCPGroupUserListRrqPacket implements IPCPpacket
         return OpCode.GroupUsersListRrq;
     }
 
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
+    }
+    
     @Override
     public byte[] header()
     {

@@ -1,19 +1,20 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
-import PCP.errors.*;
+import PCP.PCPException.ErrorCode;
 import java.util.*;
 
-/**
+
+    /**
  *
  * @author Jacopo_Wolf
  * @author Alessio789
  */
-public class PCPErrorPacket implements IPCPpacket
-{
+public class ErrorMsg implements IPCPdata
+{     
     private ErrorCode errorCode;
     
     //<editor-fold defaultstate="collapsed" desc="getter and setters">
@@ -29,7 +30,13 @@ public class PCPErrorPacket implements IPCPpacket
     
     //</editor-fold>
 
-    public PCPErrorPacket( ErrorCode errorCode )
+    
+    public ErrorMsg ( PCPException exception )
+    {
+        this( exception.getErrorCode() );
+    }
+    
+    public ErrorMsg( ErrorCode errorCode )
     {
         this.errorCode = errorCode;
     }
@@ -39,6 +46,12 @@ public class PCPErrorPacket implements IPCPpacket
     public OpCode getOpCode()
     {
         return OpCode.Error;
+    }
+    
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
     }
 
     @Override
@@ -73,5 +86,4 @@ public class PCPErrorPacket implements IPCPpacket
         
         return out;
     }
-    
 }

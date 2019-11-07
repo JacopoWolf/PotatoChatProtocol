@@ -1,7 +1,7 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
 import java.util.*;
@@ -12,7 +12,7 @@ import java.util.*;
  * @author Alessio789
  * @author gfurri20
  */
-public class PCPDisconnectionPacket implements IPCPpacket
+public class Disconnection implements IPCPdata
 {
     public enum Reason
     {
@@ -38,13 +38,13 @@ public class PCPDisconnectionPacket implements IPCPpacket
     private Reason reason;
     private boolean byClient; //It's true if the disconnection has been required by the client
 
-    public PCPDisconnectionPacket( byte[] id ) 
+    public Disconnection( byte[] id ) 
     {
         this.id = id;
         this.byClient = true;
     }
 
-    public PCPDisconnectionPacket( Reason reason ) 
+    public Disconnection( Reason reason ) 
     {
         this.reason = reason;
         this.byClient = false;
@@ -88,6 +88,12 @@ public class PCPDisconnectionPacket implements IPCPpacket
     public OpCode getOpCode() 
     {
         return OpCode.Disconnection;
+    }
+    
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
     }
     
     @Override

@@ -1,9 +1,8 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
+package PCP;
 
-import PCP.*;
 import java.util.*;
 
 
@@ -11,9 +10,13 @@ import java.util.*;
  *  base interface for all packets
  * @author Jacopo_Wolf
  */
-public interface IPCPpacket
-{
-  
+public interface IPCPdata
+{ 
+    /**
+     * 
+     * @return the current version of this data
+     */
+    public PCP.Versions getVersion();
     
     /**
      * @return the opcode of this packet

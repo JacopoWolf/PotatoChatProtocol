@@ -1,7 +1,7 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
 import java.nio.charset.*;
@@ -11,7 +11,7 @@ import java.nio.charset.*;
  *
  * @author Jacopo_Wolf
  */
-public class PCPMsgRecievedPacket extends PCPMessage
+public class MsgRecieved extends PCPMessage
 {
     private String sourceAlias;
 
@@ -30,13 +30,13 @@ public class PCPMsgRecievedPacket extends PCPMessage
 
 
     //<editor-fold defaultstate="collapsed" desc="constructors">
-        public PCPMsgRecievedPacket( String sourceAlias, String message )
+        public MsgRecieved( String sourceAlias, String message )
         {
             super(message);
             this.sourceAlias = sourceAlias;
         }
 
-        public PCPMsgRecievedPacket( String sourceAlias, OpCode code, String message )
+        public MsgRecieved( String sourceAlias, OpCode code, String message )
         {
             super(code, message);
             this.sourceAlias = sourceAlias;
@@ -44,7 +44,12 @@ public class PCPMsgRecievedPacket extends PCPMessage
 
     //</editor-fold>
     
-    
+
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
+    }
 
     @Override
     public byte[] header()

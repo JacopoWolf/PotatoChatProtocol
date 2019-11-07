@@ -2,7 +2,7 @@
  * this is a school project under "The Unlicence".
  */
 
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
 import java.util.*;
@@ -12,12 +12,12 @@ import java.util.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class PCPRegistrationPacket implements IPCPpacket
+public class Registration implements IPCPdata
 {
     private String alias;
     private String topic;
     
-    public PCPRegistrationPacket( String alias , String topic )
+    public Registration( String alias , String topic )
     {
         this.alias = alias;
         this.topic = topic;
@@ -51,6 +51,12 @@ public class PCPRegistrationPacket implements IPCPpacket
     public OpCode getOpCode()
     {
         return OpCode.Registration;
+    }
+    
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
     }
 
     @Override

@@ -2,7 +2,7 @@
  * this is a school project under "The Unlicence".
  */
 
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
 
@@ -12,7 +12,7 @@ import PCP.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class PCPMsgUserToGroupPacket extends PCPMessage
+public class MsgUserToGroup extends PCPMessage
 {
     private byte[] senderId;
     
@@ -37,14 +37,19 @@ public class PCPMsgUserToGroupPacket extends PCPMessage
     //<editor-fold defaultstate="collapsed" desc="constructors">
 
     
-    public PCPMsgUserToGroupPacket( byte[] senderId, String message )
+    public MsgUserToGroup( byte[] senderId, String message )
     {
         super(OpCode.MsgUserToGroup, message);
         this.senderId = senderId;
     }
 
     //</editor-fold>
-    
+
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
+    }
 
     @Override
     public byte[] header()

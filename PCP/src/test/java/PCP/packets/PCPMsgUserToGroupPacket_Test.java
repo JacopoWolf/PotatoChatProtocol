@@ -4,6 +4,7 @@
 
 package PCP.packets;
 
+import PCP.Min.data.MsgUserToGroup;
 import java.util.*;
 import org.junit.*;
 
@@ -16,7 +17,7 @@ public class PCPMsgUserToGroupPacket_Test
     @Test
     public void testToBytesSingle()
     {
-        PCPMsgUserToGroupPacket packet = new PCPMsgUserToGroupPacket
+        MsgUserToGroup packet = new MsgUserToGroup
         (
             new byte[] {0,0},
             "test"

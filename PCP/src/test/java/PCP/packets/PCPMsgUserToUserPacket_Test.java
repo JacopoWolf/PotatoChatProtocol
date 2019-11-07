@@ -3,6 +3,7 @@
  */
 package PCP.packets;
 
+import PCP.Min.data.MsgUserToUser;
 import java.util.ArrayList;
 import org.junit.*;
 
@@ -15,7 +16,7 @@ public class PCPMsgUserToUserPacket_Test
     @Test
     public void testToBytesSingle()
     {
-        PCPMsgUserToUserPacket packet = new PCPMsgUserToUserPacket
+        MsgUserToUser packet = new MsgUserToUser
         (   
             new byte[]{0,0},
             "testme",

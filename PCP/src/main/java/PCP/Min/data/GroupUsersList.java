@@ -1,7 +1,7 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.*;
 import com.google.gson.*;
@@ -13,7 +13,7 @@ import java.util.*;
  * @author Alessio789
  * @author gfurri20
  */
-public class PCPGroupUsersListPacket extends PCPVariablePayload
+public class GroupUsersList extends PCPVariablePayload
 {
     public enum UpdateType
     {
@@ -65,23 +65,27 @@ public class PCPGroupUsersListPacket extends PCPVariablePayload
     //</editor-fold>
     
     
-    public PCPGroupUsersListPacket( UpdateType type , ArrayList<String> listOfUsers ) 
+    public GroupUsersList( UpdateType type , ArrayList<String> listOfUsers ) 
     {
         this.updateType = type;
         this.listOfUsers = listOfUsers;
     }
 
-    
+    @Override
+    public PCP.Versions getVersion()
+    {
+        return PCP.Versions.Min;
+    }
     
     @Override
-    String getMessage()
+    public String getMessage()
     {
-        return new Gson().toJson(listOfUsers);
+        return jsonContent();
     }
     
     public String jsonContent()
     {
-        return this.getMessage();
+        return new Gson().toJson(listOfUsers);
     }
     
     @Override

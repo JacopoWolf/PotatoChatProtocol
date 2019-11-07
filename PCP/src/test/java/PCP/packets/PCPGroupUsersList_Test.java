@@ -4,6 +4,7 @@
 
 package PCP.packets;
 
+import PCP.Min.data.GroupUsersList;
 import java.util.*;
 import org.junit.*;
 
@@ -21,9 +22,9 @@ public class PCPGroupUsersList_Test
         listUsers.add("user2");
         listUsers.add("user3");
         
-        PCPGroupUsersListPacket packet = new PCPGroupUsersListPacket
+        GroupUsersList packet = new GroupUsersList
         (
-            PCPGroupUsersListPacket.UpdateType.complete,
+            GroupUsersList.UpdateType.complete,
             listUsers
         );
         

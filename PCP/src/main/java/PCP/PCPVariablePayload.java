@@ -1,9 +1,8 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
+package PCP;
 
-import PCP.*;
 import java.nio.charset.*;
 import java.util.*;
 
@@ -12,13 +11,13 @@ import java.util.*;
  *
  * @author Jacopo_Wolf
  */
-public abstract class PCPVariablePayload implements IPCPpacket
+public abstract class PCPVariablePayload implements IPCPdata
 {
     /**
      * 
      * @return the variable lenght message to send
      */
-    abstract String getMessage();
+    abstract public String getMessage();
     
     @Override
     public final Collection<byte[]> toBytes()
@@ -33,7 +32,7 @@ public abstract class PCPVariablePayload implements IPCPpacket
         // necessary to calculation
         int msgRelativeMaxLenght = 
                 // MAX - header - payloadDelimitator
-                PCP.Min.MAX_PACKET_LENGHT - header.length - 1;
+                this.getVersion().MAX_PACKET_LENGHT() - header.length - 1;
         int nPacketsToSent = 
                 // ( msgTOT / msgREL ) + 1
                 ( this.getMessage().length() / msgRelativeMaxLenght ) + 1 ;
@@ -45,7 +44,7 @@ public abstract class PCPVariablePayload implements IPCPpacket
         {
             int bufferLenght = 
                     ( messageBytes.length - absMsgPointer ) > msgRelativeMaxLenght ? 
-                        PCP.Min.MAX_PACKET_LENGHT : 
+                        this.getVersion().MAX_PACKET_LENGHT() : 
                         (header.length + messageBytes.length + 1);
             byte[] buffer = new byte[ bufferLenght ];
                        

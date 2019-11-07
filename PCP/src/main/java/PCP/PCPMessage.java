@@ -1,9 +1,7 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP.packets;
-
-import PCP.*;
+package PCP;
 
 
 /**
@@ -16,6 +14,7 @@ public abstract class PCPMessage extends PCPVariablePayload
     private String message;
 
     //<editor-fold defaultstate="collapsed" desc="get set">
+    
     @Override
     public String getMessage()
     {

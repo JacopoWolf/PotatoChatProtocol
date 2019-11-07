@@ -15,18 +15,42 @@ public final class PCP
     * primary port to check for the server
     */
     public static final int PORT = 53101;
+
     
-    
-    /**
-     * PCP-Minimal
-     * @author Jacopo_Wolf
-     */
-    public static class Min
+    public enum Versions
     {
+        Min ( 2048, "Minimal" );
+        
         /**
-        * maximum lenght of a single package
-        */
-        public static final int MAX_PACKET_LENGHT = 2048;
+         * maximum lenght of a single package
+         */
+        private final int MAX_PACKET_LENGHT;
+        /**
+         * complete name of the version
+         */
+        private final String FULL_NAME;
+
+        
+        //<editor-fold defaultstate="collapsed" desc="assignment">
+        
+        public int MAX_PACKET_LENGHT()
+        {
+            return MAX_PACKET_LENGHT;
+        }
+        
+        public String FULL_NAME()
+        {
+            return FULL_NAME;
+        }
+
+        private Versions( int MAX_LENGHT, String NAME )
+        {
+            this.MAX_PACKET_LENGHT = MAX_LENGHT;
+            this.FULL_NAME = NAME;
+        }
+        //</editor-fold>
+        
+
     }
     
    
