@@ -3,7 +3,9 @@
  */
 package PCP.logic;
 
-import PCP.data.IPCPdata;
+import PCP.*;
+import PCP.data.*;
+import java.util.*;
 
 /**
  *
@@ -11,6 +13,23 @@ import PCP.data.IPCPdata;
  */
 public interface IPCPInterpreter
 {
-    IPCPdata interpret ( byte[] data );  
+    /**
+     * 
+     * @param data
+     * @return the parsed packet. Null if incomplete.
+     * @throws PCP.PCPException
+     */
+    IPCPdata interpret ( byte[] data ) throws PCPException;
+    
+    /**
+     * 
+     * @return incomplete/partial datas.
+     */
+    List<IPCPdata> getIncompleteDataList();
+    
+    /**
+     * called every minute to clean incomplete list data.
+     */
+    void cleanCache();
     
 }

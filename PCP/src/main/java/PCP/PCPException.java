@@ -20,8 +20,8 @@ public class PCPException extends Exception
         PackageMalformed    (0), 
         
         AliasInUse          (100), 
-        AliasUnvalid        (101), 
-        RoomNameUnvalid     (102), 
+        InvalidAlias        (101), 
+        InvalidRoomName     (102), 
         
         ChatDenied          (200),
         MaxClientsReached   (202),

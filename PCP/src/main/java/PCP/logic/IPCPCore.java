@@ -3,7 +3,7 @@
  */
 package PCP.logic;
 
-import PCP.data.IPCPdata;
+import PCP.data.*;
 
 
 /**

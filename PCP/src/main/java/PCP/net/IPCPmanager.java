@@ -3,8 +3,10 @@
  */
 package PCP.net;
 
-import PCP.logic.IPCPInterpreter;
-import java.util.List;
+import PCP.*;
+import PCP.data.*;
+import PCP.logic.*;
+import java.util.*;
 
 
 /**
@@ -14,6 +16,16 @@ import java.util.List;
 public interface IPCPmanager
 {
     
-    List<IPCPInterpreter> getCores();
+    List<IPCPCore> getCores();
+    
+    List<IPCPSocket> getSockets();
+    
+
+    void initLogicCore( PCP.Versions version );
+    
+    
+    void send( IPCPdata data, String destination );
+    void sendBroadcast( IPCPdata data, Collection<String> destinations );
+    
     
 }
