@@ -2,7 +2,7 @@
  * this is a school project under "The Unlicence".
  */
 
-package PCP.packets;
+package PCP.Min.data;
 
 import PCP.Min.data.GroupUsersList;
 import java.util.*;
