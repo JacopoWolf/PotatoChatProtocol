@@ -1,8 +1,9 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP;
+package PCP.data;
 
+import PCP.data.IPCPdata;
 import java.nio.charset.*;
 import java.util.*;
 

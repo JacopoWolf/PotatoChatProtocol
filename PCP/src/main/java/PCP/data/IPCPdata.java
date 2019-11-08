@@ -1,8 +1,10 @@
 /*
  * this is a school project under "The Unlicence".
  */
-package PCP;
+package PCP.data;
 
+import PCP.OpCode;
+import PCP.PCP;
 import java.util.*;
 
 

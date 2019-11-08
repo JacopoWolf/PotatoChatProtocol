@@ -3,6 +3,7 @@
  */
 package PCP.Min.data;
 
+import PCP.data.PCPVariablePayload;
 import PCP.*;
 import com.google.gson.*;
 import java.util.*;

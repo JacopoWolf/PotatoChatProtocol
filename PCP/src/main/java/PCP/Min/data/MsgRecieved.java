@@ -3,6 +3,7 @@
  */
 package PCP.Min.data;
 
+import PCP.data.PCPMessage;
 import PCP.*;
 import java.nio.charset.*;
 
