@@ -3,22 +3,21 @@
  */
 package PCP.net;
 
-import PCP.PCP;
-import java.net.Socket;
+import PCP.*;
+import java.net.*;
 
 /**
  *
  * @author Alessio789
  */
-public class PCPSocket implements IPCPSocket {
-    
+public class PCPSocket implements IPCPSocket 
+{
     private Socket socket;
     private String alias;
     private byte[] id;
     private PCP.Versions version;
 
-    public PCPSocket( Socket socket, String alias, byte[] id, 
-            PCP.Versions version ) 
+    public PCPSocket( Socket socket, String alias, byte[] id, PCP.Versions version ) 
     {
         this.socket = socket;
         this.alias = alias;
