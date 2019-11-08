@@ -87,8 +87,8 @@ Once connected to the server, the user will have to know the other user's name t
 
 It also sends it's unique id sent when initializing the connection.
 
-If message lenght is greater than [ 2044 - alias lenght ] it means the message has been splitted between multiple packages.
-Last package is notified with a message lenght lesser than 2044.
+If message lenght is greater than [ 2043 - alias lenght ] it means the message has been splitted between multiple packages.
+Last package is notified with a message lenght lesser than 2043 - alias lenght.
 If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
 
 
@@ -135,8 +135,8 @@ The destination client will then recieve a package with the destination alias ch
 ### 05 - user to chat
 The user sends this message to the chat room it's last connected to.
 
-If message lenght is greater than [ 2045 ] it means the message has been splitted between multiple packages.
-Last package is notified with a message lenght lesser than 2045.
+If message lenght is greater than [ 2044 ] it means the message has been splitted between multiple packages.
+Last package is notified with a message lenght lesser than 2044.
 If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
 
 
@@ -266,7 +266,7 @@ A user might want to change its alias. This package allows to do that.
 
 Those packages are sent by the server to acknowledge client actions.
 
-### 20 - registration hack
+### 20 - registration ack
 sent after a user has requested a connection.
 Assigns an id to the user and re-sends the alias to confirm it's correctness.
 
