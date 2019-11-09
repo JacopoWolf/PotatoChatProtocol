@@ -27,15 +27,18 @@ public class PCPSocket implements IPCPSocket
 
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
     
-    public void setSocket(Socket socket) {
+    public void setSocket( Socket socket ) 
+    {
         this.socket = socket;
     }
 
-    public void setAlias(String alias) {
+    public void setAlias( String alias ) 
+    {
         this.alias = alias;
     }
 
-    public void setId(byte[] id) {
+    public void setId( byte[] id ) 
+    {
         this.id = id;
     }
 
@@ -44,23 +47,27 @@ public class PCPSocket implements IPCPSocket
     }
     
     @Override
-    public Socket getSocket() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Socket getSocket() 
+    {
+        return this.socket;
     }
 
     @Override
-    public String getAlias() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String getAlias() 
+    {
+        return this.alias;
     }
 
     @Override
-    public byte[] getId() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public byte[] getId() 
+    {
+        return this.id;
     }
 
     @Override
-    public PCP.Versions getVersion() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public PCP.Versions getVersion() 
+    {
+        return this.version;
     }
     
     //</editor-fold>
