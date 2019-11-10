@@ -23,14 +23,14 @@ public final class PCP
     public enum Versions
     {
         // versions
-        Min ( 2048, "Minimal", new PCPMinLogicCore()  );
+        Min ( 2048, "Minimal", 0  );
         
         // variables
         private final int MAX_PACKET_LENGHT;
         
         private final String FULL_NAME;
         
-        private final IPCPLogicCore VERSION_CORE;
+        private final int VERSION_CODE;
         
         //<editor-fold defaultstate="collapsed" desc="assignment">
         
@@ -56,26 +56,37 @@ public final class PCP
          * 
          * @return the logic core of this specific version
          */
-        public IPCPLogicCore getVERSION_CORE()
+        public int getVERSION_CODE()
         {
-            return VERSION_CORE;
+            return VERSION_CODE;
         }
         
         
 
-        private Versions( int MAX_LENGHT, String NAME, IPCPLogicCore core )
+        private Versions( int MAX_LENGHT, String NAME, int code )
         {
             this.MAX_PACKET_LENGHT = MAX_LENGHT;
             this.FULL_NAME = NAME;
-            this.VERSION_CORE = core;
+            this.VERSION_CODE = code;
         }
         //</editor-fold>
         
-
     }
     
    
     // private constructor to avoid initialization
     private PCP(){}
+    
+    
+    public static IPCPLogicCore getLogicCore_ByVersion( Versions version )
+    {
+        switch ( version )
+        {
+            case Min:
+                return new PCPMinLogicCore();
+            default:
+                return null;
+        }
+    }
     
 }
