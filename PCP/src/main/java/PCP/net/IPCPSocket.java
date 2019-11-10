@@ -15,9 +15,18 @@ public interface IPCPSocket
     
     Socket getSocket();
     
+    
+    void setAlias(String alias);
+    
     String getAlias();
     
+    
+    void setId (byte[] id);
+    
     byte[] getId();
+    
+    
+    void setVersion( PCP.Versions version );
     
     PCP.Versions getVersion();
     

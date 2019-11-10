@@ -32,16 +32,19 @@ public class PCPSocket implements IPCPSocket
         this.socket = socket;
     }
 
+    @Override
     public void setAlias( String alias ) 
     {
         this.alias = alias;
     }
 
+    @Override
     public void setId( byte[] id ) 
     {
         this.id = id;
     }
 
+    @Override
     public void setVersion(PCP.Versions version) {
         this.version = version;
     }
