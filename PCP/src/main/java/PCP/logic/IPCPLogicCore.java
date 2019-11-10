@@ -31,6 +31,12 @@ public interface IPCPLogicCore extends Runnable
     IPCPmanager getManager();
     
     /**
+     * set the manager of this logicore
+     * @param manager 
+     */
+    void setManager( IPCPmanager manager );
+    
+    /**
      *
      * @return the core of this virtual instance
      */
@@ -59,6 +65,7 @@ public interface IPCPLogicCore extends Runnable
      * @return the maximum quque lenght
      */
     int getMaxQueueLenght();
+    
 //</editor-fold>
     
     /**

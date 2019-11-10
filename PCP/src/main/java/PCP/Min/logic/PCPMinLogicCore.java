@@ -38,6 +38,12 @@ public class PCPMinLogicCore implements IPCPLogicCore
     }
 
     @Override
+    public void setManager( IPCPmanager manager )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public int getMaxQueueLenght()
     {
         throw new UnsupportedOperationException();
