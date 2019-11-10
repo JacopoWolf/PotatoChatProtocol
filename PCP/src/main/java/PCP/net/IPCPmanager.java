@@ -16,7 +16,7 @@ import java.util.*;
 public interface IPCPmanager
 {
     
-    List<IPCPCore> getCores();
+    List<IPCPLogicCore> getCores();
     
     List<IPCPSocket> getSockets();
     
