@@ -3,8 +3,8 @@
  */
 package PCP.net;
 
-import PCP.Min.data.*;
 import PCP.*;
+import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -15,7 +15,7 @@ import java.util.*;
  *
  * @author Jacopo_Wolf
  */
-public class PCPManager implements IPCPmanager
+public class PCPManager implements IPCPManager
 {
 
     private LinkedList<IPCPLogicCore> cores = new LinkedList<>();
@@ -63,7 +63,7 @@ public class PCPManager implements IPCPmanager
      * @param version
      * @return the reference to the next core
      */
-    public IPCPLogicCore geCoreByVersion( PCP.Versions version )
+    public IPCPLogicCore getCoreByVersion( PCP.Versions version )
     {
         return cores
                 .stream()
@@ -126,7 +126,7 @@ public class PCPManager implements IPCPmanager
             }
             
         // todo: complete
-        geCoreByVersion(version).enqueue(data);
+        getCoreByVersion(version).enqueue(data);
         return;
         
     }

@@ -32,13 +32,13 @@ public class PCPMinLogicCore implements IPCPLogicCore
     }
 
     @Override
-    public IPCPmanager getManager()
+    public IPCPManager getManager()
     {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void setManager( IPCPmanager manager )
+    public void setManager( IPCPManager manager )
     {
         throw new UnsupportedOperationException();
     }
