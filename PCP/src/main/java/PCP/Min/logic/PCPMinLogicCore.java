@@ -14,7 +14,13 @@ public class PCPMinLogicCore implements IPCPLogicCore
 {
 
     @Override
-    public boolean enqueue( byte[] data )
+    public boolean canAccept()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void enqueue( byte[] data )
     {
         throw new UnsupportedOperationException();
     }
@@ -57,6 +63,18 @@ public class PCPMinLogicCore implements IPCPLogicCore
 
     @Override
     public Queue<byte[]> getQueue()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public int getThreshold()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setThreshold( int theshold )
     {
         throw new UnsupportedOperationException();
     }

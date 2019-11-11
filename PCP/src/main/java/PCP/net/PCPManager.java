@@ -24,11 +24,11 @@ public class PCPManager implements IPCPManager
     private HashMap<IPCPSocket,IPCPLogicCore> sockets = new HashMap<>();
     
     
-    int queueMaxLenghtDefault = 512;
+    int DefaultQueueMaxLenght = 512;
     
     // once a core's queue is full, this'll wait until the core's queue lenght is lower than this value
     // before enqueuing new data.
-    int coreThreshold = 214;
+    int defaultCoreThreshold = 214;
     
     // time in milliseconds to wait before killing an empty logicore.
     int killThresholdMilliseconds = 10000;
@@ -37,22 +37,22 @@ public class PCPManager implements IPCPManager
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
     public int getQueueMaxLenghtDefault()
     {
-        return queueMaxLenghtDefault;
+        return DefaultQueueMaxLenght;
     }
     
     public void setQueueMaxLenghtDefault( int queueMaxLenghtDefault )
     {
-        this.queueMaxLenghtDefault = queueMaxLenghtDefault;
+        this.DefaultQueueMaxLenght = queueMaxLenghtDefault;
     }
     
     public int getCoreThreshold()
     {
-        return coreThreshold;
+        return defaultCoreThreshold;
     }
     
     public void setCoreThreshold( int coreThreshold )
     {
-        this.coreThreshold = coreThreshold;
+        this.defaultCoreThreshold = coreThreshold;
     }
     
     public int getKillThresholdMilliseconds()
@@ -95,7 +95,7 @@ public class PCPManager implements IPCPManager
     {
         return cores
                 .stream()
-                .filter( core -> core.getVersion() == version && core.getQueue().size() < core.getMaxQueueLenght() )
+                .filter( core -> core.getVersion() == version && core.canAccept() )
                 .findFirst()
                 .orElse( initLogicCore(version) );
     }
@@ -105,20 +105,20 @@ public class PCPManager implements IPCPManager
     @Override
     public IPCPLogicCore initLogicCore( PCP.Versions version )
     {
+        // initializes the new core
         IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
             core.setManager(this);
-            core.setMaxQueueLenght(queueMaxLenghtDefault);
+            core.setMaxQueueLenght(DefaultQueueMaxLenght);
         
+        // rund the logicore on a new thread
         Thread thr = new Thread( core );
-        
         synchronized (cores)
-        {
-            this.cores.add( core );
-        }
-        
+            { this.cores.add( core ); }
         thr.start();
+        
         return core;
     }
+    
     
     @Override
     public void cleanCache()
@@ -132,8 +132,9 @@ public class PCPManager implements IPCPManager
     @Override
     public void recieve( byte[] data, IPCPSocket from )
     {
+        // checks if the recieved data comes from a new connection
         boolean isNew = !this.sockets.containsKey(from);
-        PCP.Versions version = PCP.Versions.Min;
+        PCP.Versions version = null;
         
             switch (data[1])
             {
@@ -144,6 +145,7 @@ public class PCPManager implements IPCPManager
                         {
                             throw new PCPException( ErrorCode.ServerExploded );
                             //TODO: run through a temporary interpreter in another socket
+                            //TODO: assign values to the new socket
 
                         }
                         catch ( PCPException e )
@@ -156,6 +158,7 @@ public class PCPManager implements IPCPManager
             
         // todo: complete
         getCoreByVersion(version).enqueue(data);
+            
         return;
         
     }
@@ -166,30 +169,32 @@ public class PCPManager implements IPCPManager
     @Override
     public void send( IPCPdata data, String destination )
     {
-        
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void send( IPCPdata data, IPCPSocket destination )
     {
-        
+        throw new UnsupportedOperationException();
     }
     
     @Override
     public void sendBroadcast( IPCPdata data, Collection<String> destinations )
     {
-        
+        throw new UnsupportedOperationException();
     }
     
     
     @Override
     public void close( String alias )
     {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void close( IPCPSocket socket )
     {
+        throw new UnsupportedOperationException();
     }
     
     

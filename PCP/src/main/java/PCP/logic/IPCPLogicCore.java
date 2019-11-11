@@ -66,6 +66,20 @@ public interface IPCPLogicCore extends Runnable
      */
     int getMaxQueueLenght();
     
+    
+    /**
+     * {@link IPCPLogicCore#getThreshold() }
+     * @param theshold new threshold value
+     */
+    void setThreshold( int theshold );
+    
+    /**
+     * once a core's queue is full, this'll wait until the core's queue lenght is lower than this value
+     * before enqueuing new data.
+     * @return 
+     */
+    int getThreshold();
+    
 //</editor-fold>
     
     /**
@@ -77,10 +91,14 @@ public interface IPCPLogicCore extends Runnable
     
     /**
      * enqueues a new packet to be elaborated.
-     * @param data new byte packet to add to the queue
-     * @return true if the queue is not over it's max lenght and the operation completed sucesfully
+     * @param data new byte packet to add to the queue 
      */
-    boolean enqueue( byte[] data );
+    void enqueue( byte[] data );
     
+    /**
+     * 
+     * @return if the queue will accept new data.
+     */
+    boolean canAccept();
     
 }
