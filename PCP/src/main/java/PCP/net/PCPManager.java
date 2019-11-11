@@ -3,8 +3,8 @@
  */
 package PCP.net;
 
-import PCP.*;
 import PCP.Min.data.*;
+import PCP.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -34,6 +34,40 @@ public class PCPManager implements IPCPManager
     int killThresholdMilliseconds = 10000;
 
     
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
+    public int getQueueMaxLenghtDefault()
+    {
+        return queueMaxLenghtDefault;
+    }
+    
+    public void setQueueMaxLenghtDefault( int queueMaxLenghtDefault )
+    {
+        this.queueMaxLenghtDefault = queueMaxLenghtDefault;
+    }
+    
+    public int getCoreThreshold()
+    {
+        return coreThreshold;
+    }
+    
+    public void setCoreThreshold( int coreThreshold )
+    {
+        this.coreThreshold = coreThreshold;
+    }
+    
+    public int getKillThresholdMilliseconds()
+    {
+        return killThresholdMilliseconds;
+    }
+    
+    public void setKillThresholdMilliseconds( int killThresholdMilliseconds )
+    {
+        this.killThresholdMilliseconds = killThresholdMilliseconds;
+    }
+    
+    
+    
+    
     @Override
     public List<IPCPLogicCore> getCores()
     {
@@ -45,31 +79,25 @@ public class PCPManager implements IPCPManager
     {
         return this.sockets.keySet();
     }
-
+//</editor-fold>
     
     
     
     public PCPManager() { }
     
-    public PCPManager( int coreThreshold )
-    {
-        this.coreThreshold = coreThreshold;
-    }    
-    
-    
     
     /**
      * optimized core getter.
      * @param version
-     * @return the reference to the next core
+     * @return the reference to the next core. If every core is saturated, instantiates a new one.
      */
     public IPCPLogicCore getCoreByVersion( PCP.Versions version )
     {
         return cores
                 .stream()
-                .filter( core -> core.getVersion() == version )
+                .filter( core -> core.getVersion() == version && core.getQueue().size() < core.getMaxQueueLenght() )
                 .findFirst()
-                .orElse(initLogicCore(version));
+                .orElse( initLogicCore(version) );
     }
     
     
@@ -79,15 +107,16 @@ public class PCPManager implements IPCPManager
     {
         IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
             core.setManager(this);
+            core.setMaxQueueLenght(queueMaxLenghtDefault);
         
-        Thread logcoreT = new Thread( core );
+        Thread thr = new Thread( core );
         
         synchronized (cores)
         {
             this.cores.add( core );
         }
         
-        logcoreT.start();
+        thr.start();
         return core;
     }
     
