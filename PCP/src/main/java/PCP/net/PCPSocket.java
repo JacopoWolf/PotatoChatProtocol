@@ -4,6 +4,7 @@
 package PCP.net;
 
 import PCP.*;
+import java.io.*;
 import java.net.*;
 
 /**
@@ -16,16 +17,37 @@ public class PCPSocket implements IPCPSocket
     private String alias;
     private byte[] id;
     private PCP.Versions version;
+    
+    private BufferedInputStream ins;
+    private BufferedOutputStream outs;
 
-    public PCPSocket( Socket socket, String alias, byte[] id, PCP.Versions version ) 
+    public PCPSocket( Socket socket, String alias, byte[] id, PCP.Versions version ) throws IOException
     {
         this.socket = socket;
         this.alias = alias;
         this.id = id;
         this.version = version;
+        
+        this.ins = new BufferedInputStream(socket.getInputStream());
+        this.outs = new BufferedOutputStream(socket.getOutputStream());
     }
 
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
+
+    @Override
+    public BufferedInputStream getBuffInStream()
+    {
+        return ins;
+    }
+
+    @Override
+    public BufferedOutputStream getBuffOutStream()
+    {
+        return outs;
+    }
+    
+    
+    
     
     public void setSocket( Socket socket ) 
     {
