@@ -8,6 +8,7 @@ import PCP.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
+import java.io.*;
 import java.util.*;
 
 
@@ -109,7 +110,8 @@ public class PCPManager implements IPCPManager
         IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
             core.setManager(this);
             core.setMaxQueueLenght(DefaultQueueMaxLenght);
-        
+            // TODO: set interpreter's common incomplete list
+            
         // rund the logicore on a new thread
         Thread thr = new Thread( core );
         synchronized (cores)
@@ -120,6 +122,7 @@ public class PCPManager implements IPCPManager
     }
     
     
+
     @Override
     public void cleanCache()
     {
@@ -130,7 +133,7 @@ public class PCPManager implements IPCPManager
     
     
     @Override
-    public void recieve( byte[] data, IPCPSocket from )
+    public void accept( byte[] data, IPCPSocket from )
     {
         // checks if the recieved data comes from a new connection
         boolean isNew = !this.sockets.containsKey(from);
@@ -150,13 +153,20 @@ public class PCPManager implements IPCPManager
                         }
                         catch ( PCPException e )
                         {
-                            send(new ErrorMsg(e), from );
+                            try
+                            {
+                                send(new ErrorMsg(e), from );
+                            }
+                            catch(Exception e1)
+                            {
+                                //TODO: log error
+                            }
+                            
                             close( from );
                             return;
                         }
             }
             
-        // todo: complete
         getCoreByVersion(version).enqueue(data);
             
         return;
@@ -167,34 +177,68 @@ public class PCPManager implements IPCPManager
     
 
     @Override
-    public void send( IPCPdata data, String destination )
+    public void send( IPCPdata data, String destination ) throws IOException
     {
-        throw new UnsupportedOperationException();
+        // finds the respectinve socket and then calls method below.
+        this.send
+        (
+            data,
+            this.getSockets()
+                    .stream()
+                    .filter( pcps -> pcps.getAlias().equals(destination) )
+                    .findFirst()
+                    .get()
+        );
     }
 
     @Override
-    public void send( IPCPdata data, IPCPSocket destination )
+    public void sendBroadcast( IPCPdata data, Collection<String> destinations ) throws IOException
     {
-        throw new UnsupportedOperationException();
+        for (String str : destinations)
+            send(data, str);
     }
     
     @Override
-    public void sendBroadcast( IPCPdata data, Collection<String> destinations )
+    public synchronized void send( IPCPdata data, IPCPSocket destination ) throws IOException
     {
-        throw new UnsupportedOperationException();
+        for ( byte[] bytes : data.toBytes() )
+        {
+            destination.getBuffOutStream().write(bytes);
+            destination.getBuffOutStream().flush();
+        }
     }
+    
+    
     
     
     @Override
     public void close( String alias )
     {
-        throw new UnsupportedOperationException();
+        close
+        ( 
+            this.getSockets()
+                .stream()
+                .filter( pcps -> pcps.getAlias().equals(alias) )
+                .findFirst()
+                .get()
+        );
     }
 
     @Override
-    public void close( IPCPSocket socket )
+    public synchronized void close( IPCPSocket socket )
     {
-        throw new UnsupportedOperationException();
+        this.sockets.remove(socket);
+        
+        try
+        {
+            socket.getBuffInStream().close();
+            socket.getBuffOutStream().close();
+        }
+        catch (IOException ioe)
+        {
+            //TODO: log
+        }
+        
     }
     
     

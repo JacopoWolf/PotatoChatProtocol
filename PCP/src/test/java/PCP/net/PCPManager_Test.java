@@ -4,6 +4,8 @@
 package PCP.net;
 
 import PCP.Min.data.*;
+import PCP.*;
+import java.io.*;
 import java.net.*;
 import org.junit.*;
 
@@ -14,25 +16,54 @@ import org.junit.*;
  */
 public class PCPManager_Test
 {   
+    // initializes Manager
+    PCPManager middlewere;
+    ServerSocket sskt;
     
-    @Test
-    public void Initialize()
+    @Before
+    public void setUp () throws IOException
     {
-        // initializes Manager
-        PCPManager middlewere = new PCPManager();
+        // init middlewere
+        middlewere = new PCPManager();
         
-        // creates a mock connection
-        Registration reg = new Registration("Pippo", "general");
-        Socket mockSocket = new Socket();
-        PCPSocket testSender = new PCPSocket(mockSocket, null, null, null);
-        
-        // done only once
-        for ( byte[] b : reg.toBytes() )
-            middlewere.recieve(b, null); // ! fails because send() is not implemented
-        
-        
+        // init mock server
+        sskt = new ServerSocket(PCP.PORT,0,InetAddress.getByName("localhost"));
         
     }
     
-    
+    @Test
+    public void Initialize() throws IOException
+    {
+        // test incoming connection
+        Socket testSender = new Socket(InetAddress.getByName("localhost"), PCP.PORT , true);
+            BufferedOutputStream bos = new BufferedOutputStream(testSender.getOutputStream());
+            BufferedInputStream bin = new BufferedInputStream(testSender.getInputStream());
+            for ( byte[] b : new Registration("Pippo", "general").toBytes() )
+                bos.write( b );
+            bos.flush();
+        
+        // accepts connection
+        Socket mockSocket = sskt.accept();
+        
+        // initialized new PCPSocket
+        PCPSocket recievedTest = new PCPSocket(mockSocket, null, null, null);
+        
+        byte[] b = new byte[recievedTest.getBuffInStream().available()];
+        if ( recievedTest.getBuffInStream().read(b) != 16 )
+            Assert.fail();
+        
+        
+        // MAIN TEST
+        middlewere.accept( b , recievedTest );
+ 
+        // ! at this point further logic is not implemented, but middlewere will return an error packet.
+        b = new byte[2];
+        bin.read(b);
+        Assert.assertArrayEquals
+        (
+            b, 
+            new byte[] { -1 , -2 }  // { 255, 254 }
+        ); // java bytes must go from +128 to -128 cuz they're signed. That's bullshit imo but ok
+        
+    }    
 }

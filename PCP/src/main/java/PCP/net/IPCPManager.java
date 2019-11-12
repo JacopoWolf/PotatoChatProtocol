@@ -6,6 +6,7 @@ package PCP.net;
 import PCP.*;
 import PCP.data.*;
 import PCP.logic.*;
+import java.io.*;
 import java.util.*;
 
 
@@ -41,11 +42,11 @@ public interface IPCPManager
     void cleanCache();
     
     /**
-     * recieve and sort the recieved data
+     * accept and sort the recieved data
      * @param data the recieved byte array
      * @param from the source socket
      */
-    void recieve( byte[] data, IPCPSocket from );
+    void accept( byte[] data, IPCPSocket from );
     
     
     
@@ -53,22 +54,25 @@ public interface IPCPManager
      * send the IPCPdata to the relative destinary
      * @param data the IPCPdata to send
      * @param destination the alias of the destination
+     * @throws java.io.IOException errors while sending data
      */
-    void send( IPCPdata data, String destination );
+    void send( IPCPdata data, String destination ) throws IOException;
     
     /**
      * send the IPCPdata to the relative destinary
      * @param data the IPCPdata to send
      * @param destination socket to send back data to
+     * @throws java.io.IOException
      */
-    void send( IPCPdata data, IPCPSocket destination );
+    void send( IPCPdata data, IPCPSocket destination ) throws IOException;
     
     /**
      * send the IPCPdata to multiple destinataries
      * @param data the data to send
      * @param destinations the collection of destinations aliases 
+     * @throws java.io.IOException 
      */
-    void sendBroadcast( IPCPdata data, Collection<String> destinations );
+    void sendBroadcast( IPCPdata data, Collection<String> destinations ) throws IOException;
     
     /**
      * closes the connection with the specified socekt
