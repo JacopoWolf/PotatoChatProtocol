@@ -26,7 +26,7 @@ public interface IPCPManager
      * 
      * @return list of all active sockets
      */
-    Set<IPCPSocket> getSockets();
+    Set<IPCPChannel> getChannels();
     
 
     /**
@@ -46,7 +46,7 @@ public interface IPCPManager
      * @param data the recieved byte array
      * @param from the source socket
      */
-    void accept( byte[] data, IPCPSocket from );
+    void accept( byte[] data, IPCPChannel from );
     
     
     
@@ -59,14 +59,6 @@ public interface IPCPManager
     void send( IPCPdata data, String destination ) throws IOException;
     
     /**
-     * send the IPCPdata to the relative destinary
-     * @param data the IPCPdata to send
-     * @param destination socket to send back data to
-     * @throws java.io.IOException
-     */
-    void send( IPCPdata data, IPCPSocket destination ) throws IOException;
-    
-    /**
      * send the IPCPdata to multiple destinataries
      * @param data the data to send
      * @param destinations the collection of destinations aliases 
@@ -75,14 +67,27 @@ public interface IPCPManager
     void sendBroadcast( IPCPdata data, Collection<String> destinations ) throws IOException;
     
     /**
-     * closes the connection with the specified socekt
-     * @param socket
+     * send the IPCPdata to the relative destinary
+     * @param data the IPCPdata to send
+     * @param destination socket to send back data to
+     * @throws java.io.IOException
      */
-    void close( IPCPSocket socket );
+    void send( IPCPdata data, IPCPChannel destination ) throws IOException;
+    
+    
+    
     /**
      * closes the connection with the specified alias
      * @param alias
      */
     void close( String alias );
+    
+    /**
+     * closes the connection with the specified socekt
+     * @param channel
+     */
+    void close( IPCPChannel channel );
+    
+    
     
 }

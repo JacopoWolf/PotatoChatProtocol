@@ -22,7 +22,9 @@ public class PCPManager implements IPCPManager
     private LinkedList<IPCPLogicCore> cores = new LinkedList<>();
     
     // sockets are mapped on the core they are being executed on.
-    private HashMap<IPCPSocket,IPCPLogicCore> sockets = new HashMap<>();
+    private HashMap<IPCPChannel,IPCPLogicCore> channelsExecutionMap = new HashMap<>();
+    
+    private HashMap<PCP.Versions,HashSet<IPCPdata>> incompleteSetsMap = new HashMap<>();
     
     
     int DefaultQueueMaxLenght = 512;
@@ -35,7 +37,7 @@ public class PCPManager implements IPCPManager
     int killThresholdMilliseconds = 10000;
 
     
-    //<editor-fold defaultstate="collapsed" desc="getters and setters">
+//<editor-fold defaultstate="collapsed" desc="getters and setters">
     public int getQueueMaxLenghtDefault()
     {
         return DefaultQueueMaxLenght;
@@ -76,9 +78,9 @@ public class PCPManager implements IPCPManager
     }
     
     @Override
-    public Set<IPCPSocket> getSockets()
+    public Set<IPCPChannel> getChannels()
     {
-        return this.sockets.keySet();
+        return this.channelsExecutionMap.keySet();
     }
 //</editor-fold>
     
@@ -110,9 +112,10 @@ public class PCPManager implements IPCPManager
         IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
             core.setManager(this);
             core.setMaxQueueLenght(DefaultQueueMaxLenght);
+            core.setThreshold(defaultCoreThreshold);
             // TODO: set interpreter's common incomplete list
             
-        // rund the logicore on a new thread
+        // run the logicore on a new thread
         Thread thr = new Thread( core );
         synchronized (cores)
             { this.cores.add( core ); }
@@ -121,6 +124,20 @@ public class PCPManager implements IPCPManager
         return core;
     }
     
+
+    /**
+     * safely kills a core 
+     * @param toKill 
+     */
+    void killCore ( IPCPLogicCore toKill )
+    {
+        throw new UnsupportedOperationException();
+    }
+    
+    void requeueAll( Collection<byte[]> bytes )
+    {
+        
+    }
     
 
     @Override
@@ -133,10 +150,12 @@ public class PCPManager implements IPCPManager
     
     
     @Override
-    public void accept( byte[] data, IPCPSocket from )
+    public void accept( byte[] data, IPCPChannel from )
     {
+        //TODO: implement mechanism to direct channel data to preferred logicore
+        
         // checks if the recieved data comes from a new connection
-        boolean isNew = !this.sockets.containsKey(from);
+        boolean isNew = !this.channelsExecutionMap.containsKey(from);
         PCP.Versions version = null;
         
             switch (data[1])
@@ -147,6 +166,7 @@ public class PCPManager implements IPCPManager
                         try
                         {
                             throw new PCPException( ErrorCode.ServerExploded );
+                            
                             //TODO: run through a temporary interpreter in another socket
                             //TODO: assign values to the new socket
 
@@ -167,7 +187,11 @@ public class PCPManager implements IPCPManager
                         }
             }
             
-        getCoreByVersion(version).enqueue(data);
+        IPCPLogicCore core = 
+            getCoreByVersion(version);
+            core.enqueue(data);
+        channelsExecutionMap.put(from, core);
+        
             
         return;
         
@@ -181,9 +205,8 @@ public class PCPManager implements IPCPManager
     {
         // finds the respectinve socket and then calls method below.
         this.send
-        (
-            data,
-            this.getSockets()
+        (data,
+            this.getChannels()
                     .stream()
                     .filter( pcps -> pcps.getUserInfo().getAlias().equals(destination) )
                     .findFirst()
@@ -199,13 +222,10 @@ public class PCPManager implements IPCPManager
     }
     
     @Override
-    public synchronized void send( IPCPdata data, IPCPSocket destination ) throws IOException
+    public synchronized void send( IPCPdata data, IPCPChannel destination ) throws IOException
     {
-        for ( byte[] bytes : data.toBytes() )
-        {
-            destination.getBuffOutStream().write(bytes);
-            destination.getBuffOutStream().flush();
-        }
+        //TODO: put this on an executorService
+        destination.send(data.toBytes());
     }
     
     
@@ -215,8 +235,8 @@ public class PCPManager implements IPCPManager
     public void close( String alias )
     {
         close
-        ( 
-            this.getSockets()
+        (
+            this.getChannels()
                 .stream()
                 .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
                 .findFirst()
@@ -225,14 +245,13 @@ public class PCPManager implements IPCPManager
     }
 
     @Override
-    public synchronized void close( IPCPSocket socket )
+    public synchronized void close( IPCPChannel pcpchannel )
     {
-        this.sockets.remove(socket);
+        this.channelsExecutionMap.remove(pcpchannel);
         
         try
         {
-            socket.getBuffInStream().close();
-            socket.getBuffOutStream().close();
+            pcpchannel.getChannel().close();
         }
         catch (IOException ioe)
         {

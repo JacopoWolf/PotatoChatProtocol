@@ -34,6 +34,8 @@ public class PCPManager_Test
     @Test
     public void Initialize() throws IOException
     {
+        // ! rewrite the whole test using channels
+        
         // test incoming connection
         Socket testSender = new Socket(InetAddress.getByName("localhost"), PCP.PORT , true);
             BufferedOutputStream bos = new BufferedOutputStream(testSender.getOutputStream());
@@ -45,8 +47,8 @@ public class PCPManager_Test
         // accepts connection
         Socket mockSocket = sskt.accept();
         
-        // initialized new PCPSocket
-        PCPSocket recievedTest = new PCPSocket(mockSocket,null);
+        // initialized new PCPChannel
+        PCPChannel recievedTest = new PCPChannel(mockSocket,null);
         
         byte[] b = new byte[recievedTest.getBuffInStream().available()];
         if ( recievedTest.getBuffInStream().read(b) != 16 )
