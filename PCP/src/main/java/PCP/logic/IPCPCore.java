@@ -13,6 +13,6 @@ import PCP.data.*;
 public interface IPCPCore
 {
     
-    void accept ( IPCPdata data );
+    void accept ( IPCPData data );
     
 }

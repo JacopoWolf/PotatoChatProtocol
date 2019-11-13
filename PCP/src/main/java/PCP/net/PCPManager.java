@@ -24,7 +24,7 @@ public class PCPManager implements IPCPManager
     // sockets are mapped on the core they are being executed on.
     private HashMap<IPCPChannel,IPCPLogicCore> channelsExecutionMap = new HashMap<>();
     
-    private HashMap<PCP.Versions,HashSet<IPCPdata>> incompleteSetsMap = new HashMap<>();
+    private HashMap<PCP.Versions,HashSet<IPCPData>> incompleteSetsMap = new HashMap<>();
     
     
     int DefaultQueueMaxLenght = 512;
@@ -201,7 +201,7 @@ public class PCPManager implements IPCPManager
     
 
     @Override
-    public void send( IPCPdata data, String destination ) throws IOException
+    public void send( IPCPData data, String destination ) throws IOException
     {
         // finds the respectinve socket and then calls method below.
         this.send
@@ -215,14 +215,14 @@ public class PCPManager implements IPCPManager
     }
 
     @Override
-    public void sendBroadcast( IPCPdata data, Collection<String> destinations ) throws IOException
+    public void sendBroadcast( IPCPData data, Collection<String> destinations ) throws IOException
     {
         for (String str : destinations)
             send(data, str);
     }
     
     @Override
-    public synchronized void send( IPCPdata data, IPCPChannel destination ) throws IOException
+    public synchronized void send( IPCPData data, IPCPChannel destination ) throws IOException
     {
         //TODO: put this on an executorService
         destination.send(data.toBytes());

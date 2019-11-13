@@ -3,7 +3,7 @@
  */
 package PCP.Min.data;
 
-import PCP.data.IPCPdata;
+import PCP.data.IPCPData;
 import PCP.*;
 import java.util.*;
 
@@ -13,7 +13,7 @@ import java.util.*;
  * @author Alessio789
  * @author gfurri20
  */
-public class Disconnection implements IPCPdata
+public class Disconnection implements IPCPData
 {
     public enum Reason
     {

@@ -3,7 +3,7 @@
  */
 package PCP.data;
 
-import PCP.data.IPCPdata;
+import PCP.data.IPCPData;
 import java.nio.charset.*;
 import java.util.*;
 
@@ -12,7 +12,7 @@ import java.util.*;
  *
  * @author Jacopo_Wolf
  */
-public abstract class PCPVariablePayload implements IPCPdata
+public abstract class PCPVariablePayload implements IPCPData
 {
     /**
      * 

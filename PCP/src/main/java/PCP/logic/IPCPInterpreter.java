@@ -19,13 +19,13 @@ public interface IPCPInterpreter
      * @return the parsed packet. Null if incomplete.
      * @throws PCP.PCPException
      */
-    IPCPdata interpret ( byte[] data ) throws PCPException;
+    IPCPData interpret ( byte[] data ) throws PCPException;
     
     /**
      * 
      * @return incomplete/partial datas.
      */
-    List<IPCPdata> getIncompleteDataList();
+    List<IPCPData> getIncompleteDataList();
     
     /**
      * called every minute to clean incomplete list data.

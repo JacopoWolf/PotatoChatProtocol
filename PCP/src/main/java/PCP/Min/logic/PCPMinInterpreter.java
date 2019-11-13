@@ -17,7 +17,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
 {
 
     @Override
-    public IPCPdata interpret( byte[] data ) throws PCPException
+    public IPCPData interpret( byte[] data ) throws PCPException
     {
         throw new UnsupportedOperationException();
     }
@@ -29,7 +29,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
     }
 
     @Override
-    public List<IPCPdata> getIncompleteDataList()
+    public List<IPCPData> getIncompleteDataList()
     {
         throw new UnsupportedOperationException();
     }
