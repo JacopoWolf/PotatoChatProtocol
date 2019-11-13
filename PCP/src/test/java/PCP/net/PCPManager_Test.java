@@ -46,7 +46,7 @@ public class PCPManager_Test
         Socket mockSocket = sskt.accept();
         
         // initialized new PCPSocket
-        PCPSocket recievedTest = new PCPSocket(mockSocket, null, null, null);
+        PCPSocket recievedTest = new PCPSocket(mockSocket,null);
         
         byte[] b = new byte[recievedTest.getBuffInStream().available()];
         if ( recievedTest.getBuffInStream().read(b) != 16 )

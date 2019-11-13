@@ -185,7 +185,7 @@ public class PCPManager implements IPCPManager
             data,
             this.getSockets()
                     .stream()
-                    .filter( pcps -> pcps.getAlias().equals(destination) )
+                    .filter( pcps -> pcps.getUserInfo().getAlias().equals(destination) )
                     .findFirst()
                     .get()
         );
@@ -218,7 +218,7 @@ public class PCPManager implements IPCPManager
         ( 
             this.getSockets()
                 .stream()
-                .filter( pcps -> pcps.getAlias().equals(alias) )
+                .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
                 .findFirst()
                 .get()
         );

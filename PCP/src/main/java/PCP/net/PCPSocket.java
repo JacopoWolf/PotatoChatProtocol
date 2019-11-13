@@ -3,7 +3,7 @@
  */
 package PCP.net;
 
-import PCP.*;
+import PCP.logic.*;
 import java.io.*;
 import java.net.*;
 
@@ -14,19 +14,15 @@ import java.net.*;
 public class PCPSocket implements IPCPSocket 
 {
     private Socket socket;
-    private String alias;
-    private byte[] id;
-    private PCP.Versions version;
+    private IPCPUserInfo userInfo;
     
     private BufferedInputStream ins;
     private BufferedOutputStream outs;
 
-    public PCPSocket( Socket socket, String alias, byte[] id, PCP.Versions version ) throws IOException
+    public PCPSocket( Socket socket, IPCPUserInfo info ) throws IOException
     {
         this.socket = socket;
-        this.alias = alias;
-        this.id = id;
-        this.version = version;
+        this.userInfo = info;
         
         this.ins = new BufferedInputStream(socket.getInputStream());
         this.outs = new BufferedOutputStream(socket.getOutputStream());
@@ -45,6 +41,12 @@ public class PCPSocket implements IPCPSocket
     {
         return outs;
     }
+
+    @Override
+    public Socket getSocket()
+    {
+        return this.socket;
+    }
     
     
     
@@ -55,45 +57,17 @@ public class PCPSocket implements IPCPSocket
     }
 
     @Override
-    public void setAlias( String alias ) 
+    public IPCPUserInfo getUserInfo()
     {
-        this.alias = alias;
+        return this.userInfo;
     }
 
     @Override
-    public void setId( byte[] id ) 
+    public void setUserInfo( IPCPUserInfo info )
     {
-        this.id = id;
+        this.userInfo = info;
     }
 
-    @Override
-    public void setVersion(PCP.Versions version) {
-        this.version = version;
-    }
-    
-    @Override
-    public Socket getSocket() 
-    {
-        return this.socket;
-    }
-
-    @Override
-    public String getAlias() 
-    {
-        return this.alias;
-    }
-
-    @Override
-    public byte[] getId() 
-    {
-        return this.id;
-    }
-
-    @Override
-    public PCP.Versions getVersion() 
-    {
-        return this.version;
-    }
     
     //</editor-fold>
     
