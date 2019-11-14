@@ -17,8 +17,9 @@ public class PCPChannel implements IPCPChannel
     final ExecutorService executorServiceRef;
     final AsynchronousSocketChannel channel;
     
+    
     private IPCPUserInfo userInfo;
-
+    int timeLeftAwake = 900000; // 15 minutes
     
     public PCPChannel( ExecutorService executorServiceRef, AsynchronousSocketChannel channel, IPCPUserInfo userInfo )
     {
@@ -40,6 +41,18 @@ public class PCPChannel implements IPCPChannel
     public ExecutorService getExecutorService()
     {
         return this.executorServiceRef;
+    }
+
+    @Override
+    public int getTimeLeftAwake()
+    {
+        return this.timeLeftAwake;
+    }
+    
+    @Override
+    public void setTimeLeftAwake(int timeleft)
+    {
+        this.timeLeftAwake = timeleft;
     }
     
 

@@ -34,6 +34,13 @@ public interface IPCPChannel
     IPCPUserInfo getUserInfo();
     
     /**
+     * 
+     * @return an integer in milliseconds rappresenting how much time this channel has to be kept alive.
+     */
+    int getTimeLeftAwake();
+    void setTimeLeftAwake(int timeleft);
+    
+    /**
      * {@link IPCPSocket#getUserInfo() }
      * @param info the new reference to userinfos
      */
