@@ -63,7 +63,7 @@ public class AliasChange implements IPCPData
     @Override
     public OpCode getOpCode()
     {
-        return OpCode.AliasChanghe;
+        return OpCode.AliasChange;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class AliasChange implements IPCPData
         
         int i = 0;
         //Opcode
-        buffer[i++] = OpCode.AliasChanghe.getByte();
+        buffer[i++] = OpCode.AliasChange.getByte();
         //Id
         for(byte b : id)
             buffer[i++] = b;
