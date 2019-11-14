@@ -11,6 +11,7 @@ import PCP.data.*;
 import PCP.logic.*;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.*;
 
 
 /**
@@ -34,6 +35,10 @@ public class PCPManager implements IPCPManager
      */
     private HashMap<PCP.Versions,HashSet<IPCPData>> incompleteSetsMap = new HashMap<>();
     
+    /**
+     * used to queue data sending operation
+     */
+    private ExecutorService sendingExecutor = Executors.newSingleThreadExecutor();
     
     
     //<editor-fold defaultstate="collapsed" desc="default values">
