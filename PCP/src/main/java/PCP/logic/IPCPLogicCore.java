@@ -90,6 +90,11 @@ public interface IPCPLogicCore extends Runnable
     public void run();
     
     /**
+     * stops {@link IPCPLogicCore#run()} from accepting new data and terminates the thread this object runs on.
+     */
+    public void stop();
+    
+    /**
      * enqueues a new packet to be elaborated.
      * @param data new byte packet to add to the queue 
      */
@@ -100,5 +105,11 @@ public interface IPCPLogicCore extends Runnable
      * @return if the queue will accept new data.
      */
     boolean canAccept();
+    
+    /**
+     * 
+     * @return if this LogicCore has been set to be keepen alive
+     */
+    boolean keepAlive();
     
 }
