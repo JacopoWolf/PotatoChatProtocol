@@ -75,14 +75,16 @@ public interface IPCPManager
     /**
      * closes the connection with the specified alias
      * @param alias
+     * @param with ad additional data to send. If null, nothing is sent
      */
-    void close( String alias );
+    void close( String alias, IPCPData with );
     
     /**
      * closes the connection with the specified socekt
      * @param channel
+     * @param with ad additional data to send. If null, nothing is sent
      */
-    void close( IPCPChannel channel );
+    void close( IPCPChannel channel, IPCPData with );
     
     
     

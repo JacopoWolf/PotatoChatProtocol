@@ -111,7 +111,8 @@ public class PCPManager implements IPCPManager
     public void setCacheCleaningTimerMillis( int cacheCleaningTimerMillis )
     {
         this.cacheCleaningTimerMillis = cacheCleaningTimerMillis;
-        this.cleanService.shutdownNow().clear();
+        if (this.cleanService != null)
+            this.cleanService.shutdownNow().clear();
         
         this.cleanService = Executors.newScheduledThreadPool(1);
             // schedules cache cleaner
@@ -285,7 +286,7 @@ public class PCPManager implements IPCPManager
     
     
     @Override
-    public void accept( byte[] data, IPCPChannel from )
+    public synchronized void accept( byte[] data, IPCPChannel from )
     {
 
         PCP.Versions version = null;
@@ -306,16 +307,15 @@ public class PCPManager implements IPCPManager
                 try
                 {
                     Logger.getGlobal().log
-                (
-                    Level.WARNING, 
-                        "Error while recieving a new connection from {0}, reason {1}", 
-                        new Object[]{from.getChannel().getRemoteAddress().toString(), e.getErrorCode().toString()}
-                );
-                    send(new ErrorMsg(e), from );
+                    (
+                        Level.WARNING, 
+                            "Error while recieving a new connection from {0}, reason {1}", 
+                            new Object[]{from.getChannel().getRemoteAddress().toString(), e.getErrorCode().toString()}
+                    );
+                    close( from, new ErrorMsg(e) );
                 }
                 catch(Exception exc) { Logger.getGlobal().log(Level.WARNING, exc.getMessage(), exc); }
-
-                close( from );
+                
                 return;
             }
             
@@ -377,7 +377,7 @@ public class PCPManager implements IPCPManager
     
     
     @Override
-    public void close( String alias )
+    public void close( String alias,  IPCPData with  )
     {
         close
         (
@@ -385,25 +385,36 @@ public class PCPManager implements IPCPManager
                 .stream()
                 .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
                 .findFirst()
-                .get()
+                .get(),
+            with
         );
     }
 
     @Override
-    public synchronized void close( IPCPChannel pcpchannel )
+    public synchronized void close( IPCPChannel pcpchannel, IPCPData with )
     {
         this.channelsExecutionMap.remove(pcpchannel);
         
         try
         {
+            sendingExecutor.submit( () -> pcpchannel.send(with.toBytes()) ).get();
             
-            pcpchannel.getChannel().close();
         }
-        catch (IOException ioe)
+        catch( InterruptedException | ExecutionException ex )
         {
-            System.err.println( "error while closing a connection:\n" + ioe.getMessage() );
+            Logger.getGlobal().log( Level.WARNING, "Error while closing a connection:\n", ex );
+        } 
+        finally
+        {
+            try
+            {
+                pcpchannel.getChannel().close();
+            }
+            catch ( IOException ioe )
+            {
+                Logger.getGlobal().log( Level.WARNING, "Impossible to close channel:\n", ioe );
+            }
         }
-        
     }
     
     
