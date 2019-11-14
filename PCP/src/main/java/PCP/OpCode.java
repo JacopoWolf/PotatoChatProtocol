@@ -1,12 +1,17 @@
+
 /*
  * this is a school project under "The Unlicence".
  */
 package PCP;
 
+import PCP.PCPException.ErrorCode;
+
 
 /**
  *
  * @author Jacopo_Wolf
+ * @author Alessio789
+ * @author gfurri20
  */
 public enum OpCode
 {
@@ -17,7 +22,7 @@ public enum OpCode
     // User status
     Registration            (10),
     Disconnection           (11),
-    AliasChanghe            (18),
+    AliasChange             (18),
     
     // control messages
     RegAck                  (20),
@@ -39,6 +44,49 @@ public enum OpCode
     public byte getByte()
     {
         return this.code;
+    }
+    
+    /**
+     * Return the opcode enum from byte
+     * 
+     * @param opcode in byte
+     * @return enum opcode for the associated byte
+     * @throws PCPException 
+     */
+    public static OpCode getOpCodeFromByte( byte opcode ) throws PCPException
+    {
+        switch( opcode )
+        {
+            case 01:
+                return MsgUserToUser;
+
+            case 05:
+                return MsgUserToGroup;
+                
+            case 10:
+                return Registration;
+                
+            case 11:
+                return Disconnection;
+                
+            case 18:
+                return AliasChange;
+                
+            case 20:
+                return RegAck;
+                
+            case 50:
+                return GroupUsersListRrq;
+                
+            case 51:
+                return GroupUsersList;
+                
+            case (byte) 255:
+                return Error;
+                
+            default:
+                throw new PCPException(ErrorCode.PackageMalformed);
+        }
     }
     
 }
