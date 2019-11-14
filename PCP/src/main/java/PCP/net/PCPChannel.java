@@ -22,7 +22,6 @@ public class PCPChannel implements IPCPChannel
     
     public PCPChannel( AsynchronousSocketChannel channel, IPCPUserInfo userInfo )
     {
-
         this.channel = channel;
         this.userInfo = userInfo;
     }
