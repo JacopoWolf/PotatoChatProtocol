@@ -5,6 +5,7 @@ package PCP.net;
 
 import PCP.Min.data.*;
 import PCP.*;
+import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -18,14 +19,24 @@ import java.util.*;
  */
 public class PCPManager implements IPCPManager
 {
-
+    /**
+     * list of all cores
+     */
     private LinkedList<IPCPLogicCore> cores = new LinkedList<>();
     
-    // sockets are mapped on the core they are being executed on.
+    /* 
+     * sockets are mapped on the core they are being executed on.
+     */
     private HashMap<IPCPChannel,IPCPLogicCore> channelsExecutionMap = new HashMap<>();
     
+    /**
+     * list of incomleted datas by protocol version
+     */
     private HashMap<PCP.Versions,HashSet<IPCPData>> incompleteSetsMap = new HashMap<>();
     
+    
+    
+    //<editor-fold defaultstate="collapsed" desc="default values">
     
     int DefaultQueueMaxLenght = 512;
     
@@ -35,9 +46,11 @@ public class PCPManager implements IPCPManager
     
     // time in milliseconds to wait before killing an empty logicore.
     int killThresholdMilliseconds = 10000;
-
     
-//<editor-fold defaultstate="collapsed" desc="getters and setters">
+//</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
+    
     public int getQueueMaxLenghtDefault()
     {
         return DefaultQueueMaxLenght;
@@ -82,10 +95,10 @@ public class PCPManager implements IPCPManager
     {
         return this.channelsExecutionMap.keySet();
     }
+    
 //</editor-fold>
     
-    
-    
+        
     public PCPManager() { }
     
     
@@ -132,11 +145,17 @@ public class PCPManager implements IPCPManager
     void killCore ( IPCPLogicCore toKill )
     {
         throw new UnsupportedOperationException();
+        //todo implement
     }
     
-    void requeueAll( Collection<byte[]> bytes )
+    /**
+     * requeues all byte[] throughout
+     * @param additional addional bytes to requeue
+     */
+    void requeueAll( Collection<byte[]> additional )
     {
-        
+        throw new UnsupportedOperationException();
+        // todo implement
     }
     
 
@@ -144,6 +163,7 @@ public class PCPManager implements IPCPManager
     public void cleanCache()
     {
         throw new UnsupportedOperationException();
+        // todo: implement
     }
     
     
@@ -152,23 +172,24 @@ public class PCPManager implements IPCPManager
     @Override
     public void accept( byte[] data, IPCPChannel from )
     {
-        //TODO: implement mechanism to direct channel data to preferred logicore
         
-        // checks if the recieved data comes from a new connection
-        boolean isNew = !this.channelsExecutionMap.containsKey(from);
+
         PCP.Versions version = null;
         
+        // checks if the recieved data comes from a new connection
+        if (!this.channelsExecutionMap.containsKey(from))
             switch (data[1])
             {
                 case 0:
-                    version = PCP.Versions.Min;
-                    if (isNew)
+                    
+                    
                         try
                         {
                             throw new PCPException( ErrorCode.ServerExploded );
                             
                             //TODO: run through a temporary interpreter in another socket
                             //TODO: assign values to the new socket
+                            // version = NewConnectionsInterpreter;
 
                         }
                         catch ( PCPException e )
@@ -179,20 +200,33 @@ public class PCPManager implements IPCPManager
                             }
                             catch(Exception e1)
                             {
-                                //TODO: log error
+                                //TODO: log
                             }
                             
                             close( from );
                             return;
                         }
             }
+        else
+            version = from.getUserInfo().getVersion();
+        
+        // queues data
+        
+        // checks for preferred logicCore
+        if ( channelsExecutionMap.containsKey(from) )
+        {
+            IPCPLogicCore core = channelsExecutionMap.get(from);
+            if ( core.canAccept() ) 
+            {
+                core.enqueue(data);
+                return;
+            }
+        }
             
-        IPCPLogicCore core = 
-            getCoreByVersion(version);
+        // if the preferred core is not available then map on a new one
+        IPCPLogicCore core = getCoreByVersion(version);
             core.enqueue(data);
         channelsExecutionMap.put(from, core);
-        
-            
         return;
         
     }
