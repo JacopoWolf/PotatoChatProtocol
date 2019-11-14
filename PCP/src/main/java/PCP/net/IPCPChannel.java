@@ -6,21 +6,13 @@ package PCP.net;
 import PCP.logic.*;
 import java.nio.channels.*;
 import java.util.*;
-import java.util.concurrent.*;
 
 /**
  * a PCP connection.
  * @author JacopoWolf
  */
 public interface IPCPChannel 
-{
-    
-    /**
-     * 
-     * @return the referenced executor sevice for this channel.
-     */
-    ExecutorService getExecutorService();
-    
+{  
     /**
      * 
      * @return the wrapped socket, rappresenting a PCP connection 

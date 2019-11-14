@@ -6,7 +6,6 @@ package PCP.net;
 import PCP.logic.*;
 import java.nio.channels.*;
 import java.util.*;
-import java.util.concurrent.*;
 
 /**
  * wraps a PCP connection
@@ -14,16 +13,16 @@ import java.util.concurrent.*;
  */
 public class PCPChannel implements IPCPChannel 
 {
-    final ExecutorService executorServiceRef;
+
     final AsynchronousSocketChannel channel;
     
     
     private IPCPUserInfo userInfo;
     int timeLeftAwake = 900000; // 15 minutes
     
-    public PCPChannel( ExecutorService executorServiceRef, AsynchronousSocketChannel channel, IPCPUserInfo userInfo )
+    public PCPChannel( AsynchronousSocketChannel channel, IPCPUserInfo userInfo )
     {
-        this.executorServiceRef = executorServiceRef;
+
         this.channel = channel;
         this.userInfo = userInfo;
     }
@@ -35,12 +34,6 @@ public class PCPChannel implements IPCPChannel
     public AsynchronousSocketChannel getChannel()
     {
         return this.channel;
-    }
-
-    @Override
-    public ExecutorService getExecutorService()
-    {
-        return this.executorServiceRef;
     }
 
     @Override
