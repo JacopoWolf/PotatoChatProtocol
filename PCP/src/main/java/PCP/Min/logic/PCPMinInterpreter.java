@@ -20,6 +20,8 @@ public class PCPMinInterpreter implements IPCPInterpreter
 {
     private Set<IPCPData> incompleteDataList;
     
+    public PCPMinInterpreter() {};
+    
     public PCPMinInterpreter( Set incompleteDataList )
     {
         this.incompleteDataList = incompleteDataList;
