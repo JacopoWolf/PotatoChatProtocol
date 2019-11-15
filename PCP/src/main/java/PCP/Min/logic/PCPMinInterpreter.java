@@ -98,11 +98,12 @@ public class PCPMinInterpreter implements IPCPInterpreter
         if ( list.get(0).length < 6 || list.get(0).length > 32 )
             throw new PCPException(ErrorCode.InvalidAlias);
         
-        if ( list.get(1)[0] != 0 && (list.get(1).length < 6 || list.get(1).length > 32))
+        if ( list.get(1).length != 0 && (list.get(1).length < 6 || list.get(1).length > 32))
             throw new PCPException(ErrorCode.InvalidRoomName);
         
         registration.setAlias(new String(list.get(0)));
-        registration.setTopic(new String(list.get(1)));
+        if ( list.get(1).length != 0 )
+            registration.setTopic(new String(list.get(1)));
        
         return registration;
     }
@@ -120,7 +121,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
         return disconnection;
     }
     
-    private AliasChange createAliasChangeFomBytes ( byte[] data) throws PCPException
+    private AliasChange createAliasChangeFomBytes ( byte[] data ) throws PCPException
     {
        AliasChange aliasChange = new AliasChange(null, null, null);
        ArrayList<byte[]> aliasList = new ArrayList<>();
