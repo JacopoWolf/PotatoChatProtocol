@@ -20,7 +20,6 @@ import java.util.logging.*;
  */
 public class PCPServer extends Thread implements IPCPServer
 {
-    private boolean keepRunning = true;
     final PCPManager middleware;
     final AsynchronousServerSocketChannel assc;
     
@@ -44,7 +43,7 @@ public class PCPServer extends Thread implements IPCPServer
 
     
     
-    public PCPServer() throws IOException
+    public PCPServer( InetAddress address ) throws IOException
     {
         this.middleware = new PCPManager();
         this.assc = AsynchronousServerSocketChannel.open
@@ -54,7 +53,7 @@ public class PCPServer extends Thread implements IPCPServer
                                 Executors.newFixedThreadPool( 6 )
                             ) 
                         );
-                assc.bind(new InetSocketAddress(InetAddress.getLocalHost(), PCP.PORT));
+                assc.bind(new InetSocketAddress(address, PCP.PORT));
     }
       
  
@@ -82,14 +81,14 @@ public class PCPServer extends Thread implements IPCPServer
         {
             this.assc.accept(null, newConnectionsHandler);
             
-            while ( keepRunning )
+            while ( true )
             {
-                this.wait(1000);
+                Thread.sleep(1000);
             }
         }
         catch( InterruptedException ex )
         {
-            Logger.getLogger(PCPServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PCPServer.class.getName()).log(Level.SEVERE, "server interrupted!", ex);
         }
     }
 
@@ -98,10 +97,10 @@ public class PCPServer extends Thread implements IPCPServer
     @Override
     public void shutDown()
     {
-        this.keepRunning = false;
         try
         {
             this.assc.close();
+            this.interrupt();
         }
         catch( IOException ex )
         {

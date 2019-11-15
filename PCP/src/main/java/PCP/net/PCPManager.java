@@ -46,6 +46,7 @@ public class PCPManager implements IPCPManager
      */
     private ScheduledExecutorService cleanService;
     
+    
     //<editor-fold defaultstate="collapsed" desc="default values">
     
     private int DefaultQueueMaxLenght = 512;
@@ -63,6 +64,7 @@ public class PCPManager implements IPCPManager
     private int DefaultkeepAlive = 90000;
     
     //</editor-fold>
+    
     
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
 
@@ -152,6 +154,7 @@ public class PCPManager implements IPCPManager
     
 //</editor-fold>
     
+    
     //<editor-fold defaultstate="collapsed" desc="constructors">
     
     /**
@@ -166,124 +169,6 @@ public class PCPManager implements IPCPManager
     
     //</editor-fold>
   
-    
-    /**
-     * optimized core getter.
-     * @param version
-     * @return the reference to the next core. If every core is saturated, instantiates a new one.
-     */
-    public IPCPLogicCore getCoreByVersion( PCP.Versions version )
-    {
-        return cores
-                .stream()
-                .filter( core -> core.getVersion() == version && core.canAccept() )
-                .findFirst()
-                .orElse( initLogicCore(version) );
-    }
-    
-    
-    
-    @Override
-    public IPCPLogicCore initLogicCore( PCP.Versions version )
-    {
-        // initializes the new core
-        IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
-            core.setManager(this);
-            core.setMaxQueueLenght(DefaultQueueMaxLenght);
-            core.setThreshold(defaultCoreThreshold);
-            //todo set interpreter's common incomplete list
-            
-        // run the logicore on a new thread
-        Thread thr = new Thread( core );
-        synchronized (cores)
-            { this.cores.add( core ); }
-        thr.start();
-        
-        
-        Logger.getGlobal().log(Level.INFO, "Initialized new logic core, version {0}", version.toString());
-        return core;
-    }
-    
-
-    /**
-     * kills a core. 
-     * WARNING: All data relative to the core and the queued data is ereased.
-     * @param toKill the logic core to kill
-     */
-    void killCore ( IPCPLogicCore toKill )
-    {
-        toKill.stop();
-        toKill.getQueue().clear();
-        
-        synchronized (this)
-        {
-            this.cores
-                    .remove(toKill);
-            this.channelsExecutionMap
-                    .values()
-                    .removeIf(core -> core.equals(toKill));
-        }
-    }
-    
-
-    @Override
-    public void clearCache()
-    {
-        synchronized ( incompleteSetsMap )
-        {
-            this.incompleteSetsMap.values()
-            .forEach
-            (( HashMap<IPCPData,Integer> u ) ->
-                    u.forEach
-                    ((IPCPData data, Integer i ) ->
-                        {
-                            if ( i < 0 )
-                                u.remove(data);
-                            else
-                                u.put(data, i-cacheCleaningTimerMillis);
-                        }
-                            
-                    )
-                
-            );
-        }
-        
-        synchronized (cores)
-        {
-            this.cores
-                .forEach
-                ( 
-                    core -> 
-                    {
-                        if (!core.keepAlive() && core.getQueue().size() == 0 )
-                            cores.remove(core);
-                    }   
-                );
-        }
-        
-        synchronized ( channelsExecutionMap )
-        {
-            this.getChannels()
-            .forEach
-            (
-                channel ->
-                {
-                    int time = channel.getTimeLeftAwake() - cacheCleaningTimerMillis;
-                    if ( time > 0 )
-                        channel.setTimeLeftAwake( time );
-                    else
-                    {
-                        send(new Disconnection(Disconnection.Reason.timedOut), channel );
-                        channelsExecutionMap.remove(channel);
-                    }
-                    
-                }
-            );
-        }
-    }
-    
-    
-    
     
     @Override
     public synchronized void accept( byte[] data, IPCPChannel from )
@@ -343,23 +228,144 @@ public class PCPManager implements IPCPManager
         
     }
 
- 
+    
+    
+    //<editor-fold defaultstate="collapsed" desc="LogicCores operations">
+    /**
+     * optimized core getter.
+     * @param version
+     * @return the reference to the next core. If every core is saturated, instantiates a new one.
+     */
+    public IPCPLogicCore getCoreByVersion( PCP.Versions version )
+    {
+        return cores
+                .stream()
+                .filter( core -> core.getVersion() == version && core.canAccept() )
+                .findFirst()
+                .orElse( initLogicCore(version) );
+    }
+    
+    
+    
+    @Override
+    public IPCPLogicCore initLogicCore( PCP.Versions version )
+    {
+        // initializes the new core
+        IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
+        core.setManager(this);
+        core.setMaxQueueLenght(DefaultQueueMaxLenght);
+        core.setThreshold(defaultCoreThreshold);
+        core.getInterpreter().setIncompleteDataList(this.incompleteSetsMap.get(version).keySet());
+        
+        // run the logicore on a new thread
+        Thread thr = new Thread( core );
+        synchronized (cores)
+        { this.cores.add( core ); }
+        thr.start();
+        
+        
+        Logger.getGlobal().log(Level.INFO, "Initialized new logic core, version {0}", version.toString());
+        return core;
+    }
+    
+    
+    /**
+     * kills a core.
+     * WARNING: All data relative to the core and the queued data is ereased.
+     * @param toKill the logic core to kill
+     */
+    void killCore ( IPCPLogicCore toKill )
+    {
+        toKill.stop();
+        toKill.getQueue().clear();
+        
+        synchronized (this)
+        {
+            this.cores
+                    .remove(toKill);
+            this.channelsExecutionMap
+                    .values()
+                    .removeIf(core -> core.equals(toKill));
+        }
+    }
+//</editor-fold>
     
 
+    @Override
+    public void clearCache()
+    {
+        synchronized ( incompleteSetsMap )
+        {
+            this.incompleteSetsMap.values()
+            .forEach
+            (
+                (HashMap<IPCPData,Integer> map) ->
+                    map.forEach
+                    (
+                        ( IPCPData data, Integer i ) ->
+                        {
+                            if ( i < 0 )
+                                map.remove(data);
+                            else
+                                map.put(data, i-cacheCleaningTimerMillis);
+                        }
+                    )
+                    
+            );
+        }
+        
+        synchronized (cores)
+        {
+            this.cores
+                .forEach
+                ( 
+                    core -> 
+                    {
+                        if (!core.keepAlive() && core.getQueue().size() == 0 )
+                            cores.remove(core);
+                    }   
+                );
+        }
+        
+        synchronized ( channelsExecutionMap )
+        {
+            this.getChannels()
+            .forEach
+            (
+                channel ->
+                {
+                    int time = channel.getTimeLeftAwake() - cacheCleaningTimerMillis;
+                    if ( time > 0 )
+                        channel.setTimeLeftAwake( time );
+                    else
+                    {
+                        send(new Disconnection(Disconnection.Reason.timedOut), channel );
+                        channelsExecutionMap.remove(channel);
+                    }
+                    
+                }
+            );
+        }
+    }
+    
+
+    
+    //<editor-fold defaultstate="collapsed" desc="I/O operations">
+    
     @Override
     public void send( IPCPData data, String destination )
     {
         // finds the respectinve socket and then calls method below.
         this.send
-        (data,
-            this.getChannels()
-                    .stream()
-                    .filter( pcps -> pcps.getUserInfo().getAlias().equals(destination) )
-                    .findFirst()
-                    .get()
-        );
+                (data,
+                        this.getChannels()
+                                .stream()
+                                .filter( pcps -> pcps.getUserInfo().getAlias().equals(destination) )
+                                .findFirst()
+                                .get()
+                );
     }
-
+    
     @Override
     public void sendBroadcast( IPCPData data, Collection<String> destinations )
     {
@@ -380,18 +386,18 @@ public class PCPManager implements IPCPManager
     public void close( String alias,  IPCPData with  )
     {
         close
-        (
-            this.getChannels()
-                .stream()
-                .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
-                .findFirst()
-                .get(),
-            with
-        );
+                (
+                        this.getChannels()
+                                .stream()
+                                .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
+                                .findFirst()
+                                .get(),
+                        with
+                );
     }
-
+    
     @Override
-    public synchronized void close( IPCPChannel pcpchannel, IPCPData with )
+    public void close( IPCPChannel pcpchannel, IPCPData with )
     {
         this.channelsExecutionMap.remove(pcpchannel);
         
@@ -403,7 +409,7 @@ public class PCPManager implements IPCPManager
         catch( InterruptedException | ExecutionException ex )
         {
             Logger.getGlobal().log( Level.WARNING, "Error while closing a connection:\n", ex );
-        } 
+        }
         finally
         {
             try
@@ -416,7 +422,7 @@ public class PCPManager implements IPCPManager
             }
         }
     }
+//</editor-fold>
     
-    
-    
+      
 }
