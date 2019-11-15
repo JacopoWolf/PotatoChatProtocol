@@ -44,6 +44,9 @@ public class PCPMinInterpreter implements IPCPInterpreter
             case Disconnection:
                 return createDisconnectionFromBytes(data);
                         
+            case AliasChange:
+                return createAliasChangeFomBytes(data);
+                
             default:
                 throw new PCPException(ErrorCode.PackageMalformed);
         }
@@ -81,7 +84,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
             if ( data[i] == 0 ) 
             {
                 list.add(Arrays.copyOfRange(data, start, i));
-                start = ++i;
+                start = i + 1;
             }
             if ( data[i] == 040 )
                 throw new PCPException(ErrorCode.InvalidAlias);
@@ -110,5 +113,38 @@ public class PCPMinInterpreter implements IPCPInterpreter
         Disconnection disconnection = new Disconnection(id);
         
         return disconnection;
+    }
+    
+    private AliasChange createAliasChangeFomBytes ( byte[] data) throws PCPException
+    {
+       AliasChange aliasChange = new AliasChange(null, null, null);
+       ArrayList<byte[]> aliasList = new ArrayList<>();
+       
+       byte[] id = new byte[2];
+       id[0] = data[1];
+       id[1] = data[2];
+       
+       aliasChange.setId(id);
+       
+       int start = 3;
+      
+       for ( int i = 3; i < data.length; i++ ) 
+       {
+           if ( data[i] == 0 ) 
+           {
+               aliasList.add(Arrays.copyOfRange(data, start, i));
+               start = i + 1;
+           }
+           if ( data[i] == 040 )
+                throw new PCPException(ErrorCode.InvalidAlias);
+       }
+       
+       for ( byte[] b : aliasList ) 
+       {
+           if (b.length < 6 || b.length > 32) 
+               throw new PCPException(ErrorCode.InvalidAlias);
+       }
+        
+       return aliasChange;
     }
 }
