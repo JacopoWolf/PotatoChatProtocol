@@ -4,11 +4,10 @@
 package PCP.Min.logic;
 
 import PCP.*;
-import PCP.Min.data.Registration;
+import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -40,7 +39,11 @@ public class PCPMinInterpreter implements IPCPInterpreter
         switch( OpCode.getOpCodeFromByte(receivedOpcode) )
         {
             case Registration:
-                return createRegistrationFromBytes(data);               
+                return createRegistrationFromBytes(data);
+                
+            case Disconnection:
+                return createDisconnectionFromBytes(data);
+                        
             default:
                 throw new PCPException(ErrorCode.PackageMalformed);
         }
@@ -70,22 +73,18 @@ public class PCPMinInterpreter implements IPCPInterpreter
     {
         
         Registration registration = new Registration(null, null);
-        
-        int i = 0;
         int start = 2;
         
         ArrayList<byte[]> list = new ArrayList<>();
-        
-        for ( byte b : data ) 
+        for ( int i = 2; i < data.length; i++) 
         {
-            if ( b == 0 ) 
+            if ( data[i] == 0 ) 
             {
                 list.add(Arrays.copyOfRange(data, start, i));
                 start = ++i;
             }
-            if ( b == 040 )
+            if ( data[i] == 040 )
                 throw new PCPException(ErrorCode.InvalidAlias);
-            i++;
         }
         
         if ( list.get(0).length < 6 || list.get(0).length > 32 )
@@ -98,5 +97,18 @@ public class PCPMinInterpreter implements IPCPInterpreter
         registration.setTopic(new String(list.get(1)));
        
         return registration;
+    }
+    
+    private Disconnection createDisconnectionFromBytes ( byte[] data ) throws PCPException
+    {
+
+        if ( data.length > 3 ) 
+            throw new PCPException(ErrorCode.PackageMalformed);
+        
+        byte[] id = Arrays.copyOfRange(data, 1, data.length);
+        
+        Disconnection disconnection = new Disconnection(id);
+        
+        return disconnection;
     }
 }
