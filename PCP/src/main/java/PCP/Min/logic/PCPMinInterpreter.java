@@ -47,6 +47,9 @@ public class PCPMinInterpreter implements IPCPInterpreter
             case AliasChange:
                 return createAliasChangeFomBytes(data);
                 
+            case GroupUsersListRrq:
+                return createGroupUserListRrqFromBytes(data);
+                
             default:
                 throw new PCPException(ErrorCode.PackageMalformed);
         }
@@ -144,7 +147,20 @@ public class PCPMinInterpreter implements IPCPInterpreter
            if (b.length < 6 || b.length > 32) 
                throw new PCPException(ErrorCode.InvalidAlias);
        }
-        
+       
        return aliasChange;
+    }
+    
+    private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) 
+    {
+        GroupUserListRrq groupUserListRrq = new GroupUserListRrq(null);
+        
+        byte[] id = new byte[2];
+        id[0] = data[1];
+        id[1] = data[2];
+        
+        groupUserListRrq.setSenderId(id);
+        
+        return groupUserListRrq;
     }
 }
