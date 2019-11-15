@@ -20,6 +20,10 @@ public class Server_Test
     @Test
     public void serverConnections () throws IOException, InterruptedException
     {
+        
+        Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
+        Logger.getGlobal().setLevel(Level.FINEST);
+        
         PCPServer server = new PCPServer(InetAddress.getLoopbackAddress());
         server.acceptAndServe();
         
@@ -35,7 +39,7 @@ public class Server_Test
                     bout.write(buffer);
                     bout.flush();
                 buffer = new byte[2];
-                    bin.read();
+                    bin.read(buffer);
                 Logger.getGlobal().log(Level.INFO, "recieved {0}", Arrays.toString(buffer));
                 
             Thread.sleep(500);

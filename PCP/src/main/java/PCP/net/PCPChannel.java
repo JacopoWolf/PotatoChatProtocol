@@ -7,6 +7,7 @@ import PCP.logic.*;
 import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
+import java.util.logging.*;
 
 /**
  * wraps a PCP connection
@@ -72,6 +73,9 @@ public class PCPChannel implements IPCPChannel
             try
             {
                 this.channel.write(bb);
+                
+                Logger.getGlobal().log(Level.INFO, "sucessfully sent data to: {0}", this.getChannel().getRemoteAddress().toString());
+                Logger.getGlobal().log(Level.FINEST, "data sent to{0}:\n{1}", new Object[]{this.getChannel().getRemoteAddress(), Arrays.toString(b)});
             }
             catch ( Exception e )
             {

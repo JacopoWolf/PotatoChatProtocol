@@ -36,15 +36,21 @@ public class PCPManager implements IPCPManager
      */
     private final HashMap<PCP.Versions,HashMap<IPCPData,Integer>> incompleteSetsMap = new HashMap<>();
     
+    
+    
     /**
      * used to queue data sending operation
      */
-    private final ExecutorService sendingExecutor = Executors.newSingleThreadExecutor();
+    private final ExecutorService 
+            sendingExecutor             = Executors.newSingleThreadExecutor(),
+            initialRegistrationHandler  = Executors.newSingleThreadExecutor();
     
     /**
      * calls clean every scheduled time
      */
     private ScheduledExecutorService cleanService;
+    
+    
     
     
     //<editor-fold defaultstate="collapsed" desc="default values">
@@ -182,8 +188,8 @@ public class PCPManager implements IPCPManager
             {
                 throw new PCPException( ErrorCode.ServerExploded );
 
-                //todo run through a temporary interpreter in another socket
                 //todo assign values to the new socket
+                // write a method queuing on initialRegistrationHandler
                 // version = NewConnectionsInterpreter;
 
             }
@@ -197,9 +203,10 @@ public class PCPManager implements IPCPManager
                             "Error while recieving a new connection from {0}, reason {1}", 
                             new Object[]{from.getChannel().getRemoteAddress().toString(), e.getErrorCode().toString()}
                     );
-                    close( from, new ErrorMsg(e) );
+                    // always close the connection at this point. An error in the initial registration packet is irreversable.
+                    close( from, new ErrorMsg(e) ); 
                 }
-                catch(Exception exc) { Logger.getGlobal().log(Level.WARNING, exc.getMessage(), exc); }
+                catch(Exception exc) { Logger.getGlobal().log(Level.SEVERE, exc.getMessage(), exc); }
                 
                 return;
             }
@@ -228,6 +235,9 @@ public class PCPManager implements IPCPManager
         
     }
 
+    
+    
+    
     
     
     //<editor-fold defaultstate="collapsed" desc="LogicCores operations">
@@ -386,14 +396,14 @@ public class PCPManager implements IPCPManager
     public void close( String alias,  IPCPData with  )
     {
         close
-                (
-                        this.getChannels()
-                                .stream()
-                                .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
-                                .findFirst()
-                                .get(),
-                        with
-                );
+            (
+                this.getChannels()
+                        .stream()
+                        .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
+                        .findFirst()
+                        .get(),
+                with
+            );
     }
     
     @Override
@@ -404,7 +414,6 @@ public class PCPManager implements IPCPManager
         try
         {
             sendingExecutor.submit( () -> pcpchannel.send(with.toBytes()) ).get();
-            
         }
         catch( InterruptedException | ExecutionException ex )
         {

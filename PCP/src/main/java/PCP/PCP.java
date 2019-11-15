@@ -23,7 +23,19 @@ public final class PCP
     public enum Versions
     {
         // versions
-        Min ( 2048, "Minimal", 0  );
+        
+        /**
+         * PCP-Minimal
+         */
+        Min ( 2048, "Minimal", 0  ),
+        
+        
+        /**
+         * suitable for every version
+         */
+        ALL ( 2048, "Generic", -1 );
+        
+        
         
         // variables
         private final int MAX_PACKET_LENGHT;

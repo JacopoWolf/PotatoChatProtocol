@@ -45,7 +45,12 @@ public class PCPServer extends Thread implements IPCPServer
     
     public PCPServer( InetAddress address ) throws IOException
     {
+        Logger.getGlobal().info("initializing server...");
         this.middleware = new PCPManager();
+        InetSocketAddress addr = new InetSocketAddress(address, PCP.PORT);
+        
+        try
+        {
         this.assc = AsynchronousServerSocketChannel.open
                         (
                             AsynchronousChannelGroup.withThreadPool
@@ -53,7 +58,15 @@ public class PCPServer extends Thread implements IPCPServer
                                 Executors.newFixedThreadPool( 6 )
                             ) 
                         );
-                assc.bind(new InetSocketAddress(address, PCP.PORT));
+                
+                assc.bind(addr);
+        Logger.getGlobal().log(Level.INFO, "server threadpool successfully initialized and binded on {0}", addr.toString());
+        }
+        catch ( IOException ioe )
+        {
+            Logger.getGlobal().log(Level.SEVERE, "failed to initialize the server on {0}", addr.toString());
+            throw ioe;
+        }
     }
       
  
@@ -62,6 +75,7 @@ public class PCPServer extends Thread implements IPCPServer
     public void acceptAndServe() throws IOException
     {
         this.start();
+        Logger.getGlobal().log(Level.INFO, "server listening...");
     }
     
     @Override
@@ -76,7 +90,6 @@ public class PCPServer extends Thread implements IPCPServer
     @Override
     public void run()
     {
-        Logger.getGlobal().log(Level.INFO, "Initialized new PCPServer");
         try
         {
             this.assc.accept(null, newConnectionsHandler);
@@ -88,7 +101,7 @@ public class PCPServer extends Thread implements IPCPServer
         }
         catch( InterruptedException ex )
         {
-            Logger.getLogger(PCPServer.class.getName()).log(Level.SEVERE, "server interrupted!", ex);
+            Logger.getLogger(PCPServer.class.getName()).log(Level.INFO, "server interrupted!", ex);
         }
     }
 

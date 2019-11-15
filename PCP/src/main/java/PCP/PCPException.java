@@ -42,6 +42,13 @@ public class PCPException extends Exception
         {
             return this.code;
         }
+        
+        public static boolean requiresConnectionClose( ErrorCode code )
+        {
+            return 
+                code.getByte() >= 200 || code.getByte() < 100;
+        }
+        
     }
     
     
