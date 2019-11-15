@@ -15,7 +15,7 @@ import org.junit.*;
  *
  * @author Jacopo_Wolf
  */
-public class ServerTest
+public class Server_Test
 {
     @Test
     public void serverConnections () throws IOException, InterruptedException

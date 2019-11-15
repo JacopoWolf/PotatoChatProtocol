@@ -13,7 +13,7 @@ import org.junit.*;
  *
  * @author Jacopo_Wolf
  */
-//@Ignore
+@Ignore
 public class ServerChannels_Test
 {
     @Test
