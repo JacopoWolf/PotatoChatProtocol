@@ -177,7 +177,7 @@ public class PCPManager implements IPCPManager
   
     
     @Override
-    public synchronized void accept( byte[] data, IPCPChannel from )
+    public void accept( byte[] data, IPCPChannel from )
     {
 
         PCP.Versions version = null;
@@ -206,7 +206,10 @@ public class PCPManager implements IPCPManager
                     // always close the connection at this point. An error in the initial registration packet is irreversable.
                     close( from, new ErrorMsg(e) ); 
                 }
-                catch(Exception exc) { Logger.getGlobal().log(Level.SEVERE, exc.getMessage(), exc); }
+                catch(Exception exc) 
+                { 
+                    // at this point we can ingnore whatever happens here.
+                }
                 
                 return;
             }

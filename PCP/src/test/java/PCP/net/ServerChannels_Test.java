@@ -13,7 +13,7 @@ import org.junit.*;
  *
  * @author Jacopo_Wolf
  */
-@Ignore(value = "this is just for initial testing purposes. It's still here because for reference reason")
+@Ignore(value = "this is just for initial testing purposes. It's still here for references reason")
 public class ServerChannels_Test
 {
     @Test

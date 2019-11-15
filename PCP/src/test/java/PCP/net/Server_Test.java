@@ -31,22 +31,37 @@ public class Server_Test
         
         for ( int i = 0; i < 5; i++ )
         {
-            Socket test  = new Socket( InetAddress.getLoopbackAddress() , PCP.PCP.PORT );
-            System.out.println("open client on: " + test.getLocalSocketAddress().toString());
-                BufferedOutputStream bout = new BufferedOutputStream( test.getOutputStream() );
-                BufferedInputStream bin = new BufferedInputStream( test.getInputStream() );
-                byte[] buffer = (""+i).getBytes();
-                    bout.write(buffer);
-                    bout.flush();
-                buffer = new byte[2];
-                    bin.read(buffer);
-                Logger.getGlobal().log(Level.INFO, "recieved {0}", Arrays.toString(buffer));
+            final int a = i;
+            Thread t = new Thread(() ->{
+            try
+            {
+                Socket test  = new Socket( InetAddress.getLoopbackAddress() , PCP.PCP.PORT );
+                System.out.println("open client on: " + test.getLocalSocketAddress().toString());
+                    BufferedOutputStream bout = new BufferedOutputStream( test.getOutputStream() );
+                    BufferedInputStream bin = new BufferedInputStream( test.getInputStream() );
+                    byte[] buffer = (""+a).getBytes();
+                        bout.write(buffer);
+                        bout.flush();
+                    buffer = new byte[2];
+                        bin.read(buffer);
+                    Logger.getGlobal().log(Level.INFO, "TESTSOCKET n." + a + " recieved {0}", Arrays.toString(buffer));
+
+                    if (! Arrays.equals(  buffer ,  new byte[] {-1,-2}) )
+                        Assert.fail();
                 
-            Thread.sleep(500);
-            test.close();
+                    Thread.sleep(500);
+                test.close();
+            }
+            catch (IOException | InterruptedException e)
+            {
+                Assert.fail();
+            }
+                
+            });
+            t.start();
         }
         
-        
+        Thread.sleep(2000);
         server.interrupt();
         
     }

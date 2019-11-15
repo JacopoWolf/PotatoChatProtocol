@@ -15,6 +15,8 @@ import java.util.logging.*;
 
 
 /**
+ *  a PCP server, serving on the port 53101.
+ *  uses {@link Logger#getGlobal()} to log data. 
  * 
  * @author Jacopo_Wolf
  */
@@ -22,6 +24,7 @@ public class PCPServer extends Thread implements IPCPServer
 {
     final PCPManager middleware;
     final AsynchronousServerSocketChannel assc;
+    final ExecutorService managerExecutor;
     
     @Override
     public IPCPManager getManager()
@@ -41,32 +44,52 @@ public class PCPServer extends Thread implements IPCPServer
         return this.assc;
     }
 
+    /**
+     * initialize a new PCP server with default values
+     * @param address the address to bind the server to
+     * @throws IOException 
+     */
+    public PCPServer ( InetAddress address ) throws IOException
+    {
+        this(address, 3, 2);
+    }
     
-    
-    public PCPServer( InetAddress address ) throws IOException
+    /**
+     * initialize a new PCP server
+     * @param address the address to bind the server to
+     * @param listeningPoolSize number of threads dedicated to listen for incoming data and connections
+     * @param middlewarePoolSize number of threads dedicated to execute the middleware
+     * @throws IOException 
+     */
+    public PCPServer( InetAddress address, int listeningPoolSize, int middlewarePoolSize ) throws IOException
     {
         Logger.getGlobal().info("initializing server...");
+        
+        // middleware initialization
+        this.managerExecutor = Executors.newFixedThreadPool( middlewarePoolSize );
         this.middleware = new PCPManager();
+        
+        // socket binding
         InetSocketAddress addr = new InetSocketAddress(address, PCP.PORT);
         
         try
         {
-        this.assc = AsynchronousServerSocketChannel.open
-                        (
-                            AsynchronousChannelGroup.withThreadPool
+            this.assc = AsynchronousServerSocketChannel.open
                             (
-                                Executors.newFixedThreadPool( 6 )
-                            ) 
-                        );
-                
-                assc.bind(addr);
-        Logger.getGlobal().log(Level.INFO, "server threadpool successfully initialized and binded on {0}", addr.toString());
+                                AsynchronousChannelGroup.withThreadPool
+                                (
+                                    Executors.newFixedThreadPool( listeningPoolSize )
+                                ) 
+                            );
+                    assc.bind(addr);
+            Logger.getGlobal().log(Level.INFO, "server threadpool successfully initialized and binded on {0}", addr.toString());
         }
         catch ( IOException ioe )
         {
             Logger.getGlobal().log(Level.SEVERE, "failed to initialize the server on {0}", addr.toString());
             throw ioe;
         }
+        
     }
       
  
@@ -84,15 +107,47 @@ public class PCPServer extends Thread implements IPCPServer
         throw new UnsupportedOperationException();
     }
     
-    /**
-     *  
-     */
+    
+    
     @Override
     public void run()
     {
         try
         {
-            this.assc.accept(null, newConnectionsHandler);
+            this.assc.accept
+            (
+                null, 
+                new CompletionHandler<AsynchronousSocketChannel, Void>()
+                {
+                    @Override
+                    public void completed( AsynchronousSocketChannel result, Void attachment )
+                    {
+                        // allow to answer new connection
+                        assc.accept(null, this);
+                        
+                        // first read
+                        managerExecutor.submit
+                        ( 
+                            () -> 
+                            {
+                                ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT());
+                                IPCPChannel ch = new PCPChannel(result, null);
+                                result.read(bb, ch, channelDataRecieved);
+                                
+                                middleware.accept(bb.array(), ch);
+                            }
+                        );
+                        
+                        Logger.getGlobal().log(Level.INFO, "successfully recieved new connection");
+                    }
+
+                    @Override
+                    public void failed( Throwable exc, Void attachment )
+                    {
+                        Logger.getGlobal().log(Level.WARNING,"rrror recieving new connection",exc);
+                    }
+                }
+            );
             
             while ( true )
             {
@@ -101,12 +156,10 @@ public class PCPServer extends Thread implements IPCPServer
         }
         catch( InterruptedException ex )
         {
-            Logger.getLogger(PCPServer.class.getName()).log(Level.INFO, "server interrupted!", ex);
+            Logger.getGlobal().log(Level.INFO, "server interrupted!", ex);
         }
     }
-
-
-
+    
     @Override
     public void shutDown()
     {
@@ -120,68 +173,35 @@ public class PCPServer extends Thread implements IPCPServer
             Logger.getGlobal().log(Level.SEVERE, null, ex);
         }
     }
-
     
-    CompletionHandler<AsynchronousSocketChannel, Void> newConnectionsHandler = 
-            new CompletionHandler<AsynchronousSocketChannel, Void>()
+    
+    
+
+    private CompletionHandler<Integer, IPCPChannel> channelDataRecieved = 
+        new CompletionHandler<Integer, IPCPChannel>()
+        {
+            @Override
+            public void completed( Integer read, IPCPChannel channel )
             {
-                public PCPChannel channel;
-                public ByteBuffer bb;
-                
-                @Override
-                public void completed( final AsynchronousSocketChannel result, Void attachment )
-                {
-                    // allow to answer new connection
-                    assc.accept(null, this);
-                    
-                    // init new PCPChannel
-                    channel = new PCPChannel(result, null);
-                    channel.setTimeLeftAwake( middleware.getDefaultkeepAlive() );
+                // first reading
+                managerExecutor.submit
+                ( 
+                    () -> 
+                    {
+                        ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT());
                         
-                    // init new buffer for recieving
-                    bb = ByteBuffer.allocate(PCP.Versions.Min.MAX_PACKET_LENGHT());
-                        
-                    result.read
-                    (
-                        bb, 
-                        null, 
-                        new CompletionHandler<Integer, Void>()
-                        {
-                            @Override
-                            public void completed( Integer result, Void attachment )
-                            {
-                                // allow for new data recieving
-                                channel.getChannel().read(bb, attachment, this);
-                                
-                                // read and accept 
-                                byte[] destination = new byte[result];
-                                bb.get(destination, 0, result);
-                                middleware.accept( destination , channel );
-                            }
+                        channel.getChannel().read(bb, channel, channelDataRecieved);
 
-                            @Override
-                            public void failed( Throwable exc, Void attachment )
-                            {
-                                if ( exc instanceof AsynchronousCloseException)
-                                    return;
-                                    
-                                Logger.getGlobal().log(Level.WARNING,"Error recieving packet",exc);
-                                bb = null;
-                                channel = null;
-                            }
-                        });
-                    return;
-                        
-                }
+                        middleware.accept(bb.array(), channel);
+                    }
+                );
+            }
 
-                @Override
-                public void failed( Throwable exc, Void attachment )
-                {
-                    Logger.getGlobal().log(Level.WARNING,"Error recieving new connection",exc);
-                    bb = null;
-                    channel = null;
-                }
-            };
-    
-    
+            @Override
+            public void failed( Throwable exc, IPCPChannel attachment )
+            {
+                Logger.getGlobal().log(Level.WARNING,"connection interrupted!");
+            }
+        };   
+ 
 }
