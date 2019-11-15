@@ -47,7 +47,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
                 return createDisconnectionFromBytes(data);
                         
             case AliasChange:
-                return createAliasChangeFomBytes(data);
+                return createAliasChangeFromBytes(data);
                 
             case GroupUsersListRrq:
                 return createGroupUserListRrqFromBytes(data);
