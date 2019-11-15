@@ -121,7 +121,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
         return disconnection;
     }
     
-    private AliasChange createAliasChangeFomBytes ( byte[] data ) throws PCPException
+    private AliasChange createAliasChangeFromBytes ( byte[] data ) throws PCPException
     {
        AliasChange aliasChange = new AliasChange(null, null, null);
        ArrayList<byte[]> aliasList = new ArrayList<>();
