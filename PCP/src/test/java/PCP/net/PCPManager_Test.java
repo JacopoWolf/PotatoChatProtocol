@@ -17,6 +17,7 @@ import org.junit.*;
  *
  * @author Jacopo_Wolf
  */
+@Ignore(value = "this test is obsolete")
 public class PCPManager_Test
 {   
     // initializes Manager
