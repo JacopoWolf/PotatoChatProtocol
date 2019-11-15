@@ -10,6 +10,8 @@ import PCP.data.*;
 import PCP.logic.*;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.logging.*;
 
 
 /**
@@ -18,52 +20,119 @@ import java.util.*;
  */
 public class PCPManager implements IPCPManager
 {
-
-    private LinkedList<IPCPLogicCore> cores = new LinkedList<>();
     
-    // sockets are mapped on the core they are being executed on.
-    private HashMap<IPCPSocket,IPCPLogicCore> sockets = new HashMap<>();
+    /**
+     * list of all cores
+     */
+    private final LinkedList<IPCPLogicCore> cores = new LinkedList<>();
     
+    /* 
+     * sockets are mapped on the core they are being executed on.
+     */
+    private final HashMap<IPCPChannel,IPCPLogicCore> channelsExecutionMap = new HashMap<>();
     
-    int DefaultQueueMaxLenght = 512;
+    /**
+     * list of incomleted datas by protocol version
+     */
+    private final HashMap<PCP.Versions,HashMap<IPCPData,Integer>> incompleteSetsMap = new HashMap<>();
+    
+    /**
+     * used to queue data sending operation
+     */
+    private final ExecutorService sendingExecutor = Executors.newSingleThreadExecutor();
+    
+    /**
+     * calls clean every scheduled time
+     */
+    private ScheduledExecutorService cleanService;
+    
+    //<editor-fold defaultstate="collapsed" desc="default values">
+    
+    private int DefaultQueueMaxLenght = 512;
     
     // once a core's queue is full, this'll wait until the core's queue lenght is lower than this value
     // before enqueuing new data.
-    int defaultCoreThreshold = 214;
+    private int defaultCoreThreshold = 214;
     
     // time in milliseconds to wait before killing an empty logicore.
-    int killThresholdMilliseconds = 10000;
-
+    private int killThresholdMillis = 10000;
+    
+    // time after wich the cache will be cleaned
+    private int cacheCleaningTimerMillis = 10000;
+    
+    private int DefaultkeepAlive = 90000;
+    
+    //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
-    public int getQueueMaxLenghtDefault()
+
+    
+    
+    
+    public int getDefaultQueueMaxLenght()
     {
         return DefaultQueueMaxLenght;
     }
-    
-    public void setQueueMaxLenghtDefault( int queueMaxLenghtDefault )
+
+    public void setDefaultQueueMaxLenght( int DefaultQueueMaxLenght )
     {
-        this.DefaultQueueMaxLenght = queueMaxLenghtDefault;
+        this.DefaultQueueMaxLenght = DefaultQueueMaxLenght;
     }
-    
-    public int getCoreThreshold()
+
+    public int getDefaultCoreThreshold()
     {
         return defaultCoreThreshold;
     }
-    
-    public void setCoreThreshold( int coreThreshold )
+
+    public void setDefaultCoreThreshold( int defaultCoreThreshold )
     {
-        this.defaultCoreThreshold = coreThreshold;
+        this.defaultCoreThreshold = defaultCoreThreshold;
     }
-    
-    public int getKillThresholdMilliseconds()
+
+    public int getKillThresholdMillis()
     {
-        return killThresholdMilliseconds;
+        return killThresholdMillis;
     }
-    
-    public void setKillThresholdMilliseconds( int killThresholdMilliseconds )
+
+    public void setKillThresholdMillis( int killThresholdMillis )
     {
-        this.killThresholdMilliseconds = killThresholdMilliseconds;
+        this.killThresholdMillis = killThresholdMillis;
+    }
+
+    public int getCacheCleaningTimerMillis()
+    {
+        return cacheCleaningTimerMillis;
+    }
+
+    /**
+     * sets the new cache cleaning time re-initializing the cleaner service. 
+     * @param cacheCleaningTimerMillis 
+     */
+    public void setCacheCleaningTimerMillis( int cacheCleaningTimerMillis )
+    {
+        this.cacheCleaningTimerMillis = cacheCleaningTimerMillis;
+        if (this.cleanService != null)
+            this.cleanService.shutdownNow().clear();
+        
+        this.cleanService = Executors.newScheduledThreadPool(1);
+            // schedules cache cleaner
+            cleanService.scheduleWithFixedDelay
+            ( 
+                () -> this.clearCache() , 
+                cacheCleaningTimerMillis, // initial time wait
+                cacheCleaningTimerMillis, // delay
+                TimeUnit.MILLISECONDS
+            );
+    }
+
+    public int getDefaultkeepAlive()
+    {
+        return DefaultkeepAlive;
+    }
+
+    public void setDefaultkeepAlive( int DefaultkeepAlive )
+    {
+        this.DefaultkeepAlive = DefaultkeepAlive;
     }
     
     
@@ -76,16 +145,27 @@ public class PCPManager implements IPCPManager
     }
     
     @Override
-    public Set<IPCPSocket> getSockets()
+    public Set<IPCPChannel> getChannels()
     {
-        return this.sockets.keySet();
+        return this.channelsExecutionMap.keySet();
     }
+    
 //</editor-fold>
     
+    //<editor-fold defaultstate="collapsed" desc="constructors">
     
+    /**
+     * default constructor
+     */
+    public PCPManager()
+    {
+        // initialized cleaning daemon service
+        this.setCacheCleaningTimerMillis(cacheCleaningTimerMillis);
+
+    }
     
-    public PCPManager() { }
-    
+    //</editor-fold>
+  
     
     /**
      * optimized core getter.
@@ -110,65 +190,155 @@ public class PCPManager implements IPCPManager
         IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
             core.setManager(this);
             core.setMaxQueueLenght(DefaultQueueMaxLenght);
-            // TODO: set interpreter's common incomplete list
+            core.setThreshold(defaultCoreThreshold);
+            //todo set interpreter's common incomplete list
             
-        // rund the logicore on a new thread
+        // run the logicore on a new thread
         Thread thr = new Thread( core );
         synchronized (cores)
             { this.cores.add( core ); }
         thr.start();
         
+        
+        Logger.getGlobal().log(Level.INFO, "Initialized new logic core, version {0}", version.toString());
         return core;
     }
     
+
+    /**
+     * kills a core. 
+     * WARNING: All data relative to the core and the queued data is ereased.
+     * @param toKill the logic core to kill
+     */
+    void killCore ( IPCPLogicCore toKill )
+    {
+        toKill.stop();
+        toKill.getQueue().clear();
+        
+        synchronized (this)
+        {
+            this.cores
+                    .remove(toKill);
+            this.channelsExecutionMap
+                    .values()
+                    .removeIf(core -> core.equals(toKill));
+        }
+    }
     
 
     @Override
-    public void cleanCache()
+    public void clearCache()
     {
-        throw new UnsupportedOperationException();
+        synchronized ( incompleteSetsMap )
+        {
+            this.incompleteSetsMap.values()
+            .forEach
+            (( HashMap<IPCPData,Integer> u ) ->
+                    u.forEach
+                    ((IPCPData data, Integer i ) ->
+                        {
+                            if ( i < 0 )
+                                u.remove(data);
+                            else
+                                u.put(data, i-cacheCleaningTimerMillis);
+                        }
+                            
+                    )
+                
+            );
+        }
+        
+        synchronized (cores)
+        {
+            this.cores
+                .forEach
+                ( 
+                    core -> 
+                    {
+                        if (!core.keepAlive() && core.getQueue().size() == 0 )
+                            cores.remove(core);
+                    }   
+                );
+        }
+        
+        synchronized ( channelsExecutionMap )
+        {
+            this.getChannels()
+            .forEach
+            (
+                channel ->
+                {
+                    int time = channel.getTimeLeftAwake() - cacheCleaningTimerMillis;
+                    if ( time > 0 )
+                        channel.setTimeLeftAwake( time );
+                    else
+                    {
+                        send(new Disconnection(Disconnection.Reason.timedOut), channel );
+                        channelsExecutionMap.remove(channel);
+                    }
+                    
+                }
+            );
+        }
     }
     
     
     
     
     @Override
-    public void accept( byte[] data, IPCPSocket from )
+    public synchronized void accept( byte[] data, IPCPChannel from )
     {
-        // checks if the recieved data comes from a new connection
-        boolean isNew = !this.sockets.containsKey(from);
+
         PCP.Versions version = null;
         
-            switch (data[1])
+        // checks if the recieved data comes from a new connection
+        if (!this.channelsExecutionMap.containsKey(from))
+            try
             {
-                case 0:
-                    version = PCP.Versions.Min;
-                    if (isNew)
-                        try
-                        {
-                            throw new PCPException( ErrorCode.ServerExploded );
-                            //TODO: run through a temporary interpreter in another socket
-                            //TODO: assign values to the new socket
+                throw new PCPException( ErrorCode.ServerExploded );
 
-                        }
-                        catch ( PCPException e )
-                        {
-                            try
-                            {
-                                send(new ErrorMsg(e), from );
-                            }
-                            catch(Exception e1)
-                            {
-                                //TODO: log error
-                            }
-                            
-                            close( from );
-                            return;
-                        }
+                //todo run through a temporary interpreter in another socket
+                //todo assign values to the new socket
+                // version = NewConnectionsInterpreter;
+
+            }
+            catch ( PCPException e )
+            {
+                try
+                {
+                    Logger.getGlobal().log
+                    (
+                        Level.WARNING, 
+                            "Error while recieving a new connection from {0}, reason {1}", 
+                            new Object[]{from.getChannel().getRemoteAddress().toString(), e.getErrorCode().toString()}
+                    );
+                    close( from, new ErrorMsg(e) );
+                }
+                catch(Exception exc) { Logger.getGlobal().log(Level.WARNING, exc.getMessage(), exc); }
+                
+                return;
             }
             
-        getCoreByVersion(version).enqueue(data);
+        else
+            version = from.getUserInfo().getVersion();
+        
+        // queues data
+        
+        // checks for preferred logicCore
+        if ( channelsExecutionMap.containsKey(from) )
+        {
+            IPCPLogicCore core = channelsExecutionMap.get(from);
+            if ( core.canAccept() ) 
+            {
+                core.enqueue(data);
+                return;
+            }
+        }
             
+        // if the preferred core is not available then map on a new one
+        IPCPLogicCore core = getCoreByVersion(version);
+            core.enqueue(data);
+        channelsExecutionMap.put(from, core);
         return;
         
     }
@@ -177,68 +347,74 @@ public class PCPManager implements IPCPManager
     
 
     @Override
-    public void send( IPCPdata data, String destination ) throws IOException
+    public void send( IPCPData data, String destination )
     {
         // finds the respectinve socket and then calls method below.
         this.send
-        (
-            data,
-            this.getSockets()
+        (data,
+            this.getChannels()
                     .stream()
-                    .filter( pcps -> pcps.getAlias().equals(destination) )
+                    .filter( pcps -> pcps.getUserInfo().getAlias().equals(destination) )
                     .findFirst()
                     .get()
         );
     }
 
     @Override
-    public void sendBroadcast( IPCPdata data, Collection<String> destinations ) throws IOException
+    public void sendBroadcast( IPCPData data, Collection<String> destinations )
     {
         for (String str : destinations)
             send(data, str);
     }
     
     @Override
-    public synchronized void send( IPCPdata data, IPCPSocket destination ) throws IOException
+    public void send( final IPCPData data, final IPCPChannel destination )
     {
-        for ( byte[] bytes : data.toBytes() )
-        {
-            destination.getBuffOutStream().write(bytes);
-            destination.getBuffOutStream().flush();
-        }
+        sendingExecutor.submit( () -> destination.send(data.toBytes()) );
     }
     
     
     
     
     @Override
-    public void close( String alias )
+    public void close( String alias,  IPCPData with  )
     {
         close
-        ( 
-            this.getSockets()
+        (
+            this.getChannels()
                 .stream()
-                .filter( pcps -> pcps.getAlias().equals(alias) )
+                .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
                 .findFirst()
-                .get()
+                .get(),
+            with
         );
     }
 
     @Override
-    public synchronized void close( IPCPSocket socket )
+    public synchronized void close( IPCPChannel pcpchannel, IPCPData with )
     {
-        this.sockets.remove(socket);
+        this.channelsExecutionMap.remove(pcpchannel);
         
         try
         {
-            socket.getBuffInStream().close();
-            socket.getBuffOutStream().close();
+            sendingExecutor.submit( () -> pcpchannel.send(with.toBytes()) ).get();
+            
         }
-        catch (IOException ioe)
+        catch( InterruptedException | ExecutionException ex )
         {
-            //TODO: log
+            Logger.getGlobal().log( Level.WARNING, "Error while closing a connection:\n", ex );
+        } 
+        finally
+        {
+            try
+            {
+                pcpchannel.getChannel().close();
+            }
+            catch ( IOException ioe )
+            {
+                Logger.getGlobal().log( Level.WARNING, "Impossible to close channel:\n", ioe );
+            }
         }
-        
     }
     
     

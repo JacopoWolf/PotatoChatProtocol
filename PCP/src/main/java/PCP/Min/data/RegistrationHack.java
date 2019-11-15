@@ -3,7 +3,7 @@
  */
 package PCP.Min.data;
 
-import PCP.data.IPCPdata;
+import PCP.data.IPCPData;
 import PCP.*;
 import java.util.*;
 
@@ -11,7 +11,7 @@ import java.util.*;
  *
  * @author Alessio789
  */
-public class RegistrationHack implements IPCPdata
+public class RegistrationHack implements IPCPData
 {
     
     private byte[] assignedId;

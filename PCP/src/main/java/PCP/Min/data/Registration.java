@@ -4,7 +4,7 @@
 
 package PCP.Min.data;
 
-import PCP.data.IPCPdata;
+import PCP.data.IPCPData;
 import PCP.*;
 import java.util.*;
 
@@ -13,7 +13,7 @@ import java.util.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class Registration implements IPCPdata
+public class Registration implements IPCPData
 {
     private String alias;
     private String topic;

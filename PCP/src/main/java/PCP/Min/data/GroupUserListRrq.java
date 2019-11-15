@@ -3,7 +3,7 @@
  */
 
 package PCP.Min.data;
-import PCP.data.IPCPdata;
+import PCP.data.IPCPData;
 import PCP.*;
 import java.util.*;
 
@@ -12,7 +12,7 @@ import java.util.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class GroupUserListRrq implements IPCPdata
+public class GroupUserListRrq implements IPCPData
 {
     private byte[] senderId;
 

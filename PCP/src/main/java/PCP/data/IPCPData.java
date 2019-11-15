@@ -12,7 +12,7 @@ import java.util.*;
  *  base interface for all packets
  * @author Jacopo_Wolf
  */
-public interface IPCPdata
+public interface IPCPData
 { 
     /**
      * 

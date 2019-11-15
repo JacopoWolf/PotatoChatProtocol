@@ -56,7 +56,7 @@ public final class PCP
          * 
          * @return the logic core of this specific version
          */
-        public int getVERSION_CODE()
+        public int VERSION_CODE()
         {
             return VERSION_CODE;
         }

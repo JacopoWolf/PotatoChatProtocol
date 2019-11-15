@@ -6,7 +6,6 @@ package PCP.net;
 import PCP.*;
 import PCP.data.*;
 import PCP.logic.*;
-import java.io.*;
 import java.util.*;
 
 
@@ -26,7 +25,7 @@ public interface IPCPManager
      * 
      * @return list of all active sockets
      */
-    Set<IPCPSocket> getSockets();
+    Set<IPCPChannel> getChannels();
     
 
     /**
@@ -39,50 +38,54 @@ public interface IPCPManager
     /**
      * call for a cache cleaning of this layer, optimizing logic cores usage and socekt assignment.
      */
-    void cleanCache();
+    void clearCache();
     
     /**
      * accept and sort the recieved data
      * @param data the recieved byte array
      * @param from the source socket
      */
-    void accept( byte[] data, IPCPSocket from );
+    void accept( byte[] data, IPCPChannel from );
     
     
     
     /**
-     * send the IPCPdata to the relative destinary
-     * @param data the IPCPdata to send
+     * send the IPCPData to the relative destinary
+     * @param data the IPCPData to send
      * @param destination the alias of the destination
-     * @throws java.io.IOException errors while sending data
      */
-    void send( IPCPdata data, String destination ) throws IOException;
+    void send( IPCPData data, String destination );
     
     /**
-     * send the IPCPdata to the relative destinary
-     * @param data the IPCPdata to send
-     * @param destination socket to send back data to
-     * @throws java.io.IOException
-     */
-    void send( IPCPdata data, IPCPSocket destination ) throws IOException;
-    
-    /**
-     * send the IPCPdata to multiple destinataries
+     * send the IPCPData to multiple destinataries
      * @param data the data to send
      * @param destinations the collection of destinations aliases 
-     * @throws java.io.IOException 
      */
-    void sendBroadcast( IPCPdata data, Collection<String> destinations ) throws IOException;
+    void sendBroadcast( IPCPData data, Collection<String> destinations );
     
     /**
-     * closes the connection with the specified socekt
-     * @param socket
+     * send the IPCPData to the relative destinary
+     * @param data the IPCPData to send
+     * @param destination socket to send back data to
      */
-    void close( IPCPSocket socket );
+    void send( IPCPData data, IPCPChannel destination );
+    
+    
+    
     /**
      * closes the connection with the specified alias
      * @param alias
+     * @param with ad additional data to send. If null, nothing is sent
      */
-    void close( String alias );
+    void close( String alias, IPCPData with );
+    
+    /**
+     * closes the connection with the specified socekt
+     * @param channel
+     * @param with ad additional data to send. If null, nothing is sent
+     */
+    void close( IPCPChannel channel, IPCPData with );
+    
+    
     
 }
