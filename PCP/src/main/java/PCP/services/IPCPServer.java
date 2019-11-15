@@ -35,17 +35,17 @@ public interface IPCPServer
     AsynchronousServerSocketChannel getAsyncServerSktChnl();
     
     /**
-     * initialize all of the useful components and start listening
+     * initialize all of the useful components and acceptAndServe listening
      * @throws IOException usually thrown when the port is already occupied
      */
-    public void start() throws IOException;
+    public void acceptAndServe() throws IOException;
     /**
-     * {@link IPCPServer#start() } but initialized and keeps alive at least a thread to manage 
+     * {@link IPCPServer#acceptAndServe() } but initialized and keeps alive at least a thread to manage 
      * connections incoming from the specified version of the protocol
      * @param startWith
      * @throws IOException 
      */
-    public void start( PCP.Versions startWith ) throws IOException;
+    public void acceptAndServe( PCP.Versions startWith ) throws IOException;
     
     /**
      * safely shut down the server, closing all connections and saving all necessary data.

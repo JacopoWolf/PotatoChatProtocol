@@ -34,7 +34,6 @@ public class PCPManager_Test
     @Test
     public void Initialize() throws IOException, InterruptedException
     {
-        
         // start the server
         ServerTest stest = new ServerChannels_Test().new ServerTest();
             stest.handler = new CompletionHandler<AsynchronousSocketChannel, Void>()

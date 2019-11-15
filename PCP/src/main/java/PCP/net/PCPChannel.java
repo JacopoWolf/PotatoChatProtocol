@@ -4,6 +4,7 @@
 package PCP.net;
 
 import PCP.logic.*;
+import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
 
@@ -65,7 +66,18 @@ public class PCPChannel implements IPCPChannel
     @Override
     public void send( Collection<byte[]> data )
     {
-        throw new UnsupportedOperationException();
+        for ( byte[] b : data )
+        {
+            ByteBuffer bb = ByteBuffer.wrap(b);
+            try
+            {
+                this.channel.write(bb);
+            }
+            catch ( Exception e )
+            {
+                return;
+            }
+        }
     }
     
 }
