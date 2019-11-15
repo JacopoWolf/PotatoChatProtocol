@@ -111,7 +111,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
     private Disconnection createDisconnectionFromBytes ( byte[] data ) throws PCPException
     {
 
-        if ( data.length > 3 ) 
+        if ( data.length != 3 ) 
             throw new PCPException(ErrorCode.PackageMalformed);
         
         byte[] id = Arrays.copyOfRange(data, 1, data.length);
@@ -154,8 +154,11 @@ public class PCPMinInterpreter implements IPCPInterpreter
        return aliasChange;
     }
     
-    private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) 
+    private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) throws PCPException 
     {
+        if ( data.length != 3)
+            throw new PCPException(ErrorCode.PackageMalformed);
+        
         GroupUserListRrq groupUserListRrq = new GroupUserListRrq(null);
         
         byte[] id = new byte[2];
