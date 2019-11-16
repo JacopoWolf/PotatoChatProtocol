@@ -47,7 +47,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
                 return createDisconnectionFromBytes(data);
                         
             case AliasChange:
-                return createAliasChangeFomBytes(data);
+                return createAliasChangeFromBytes(data);
                 
             case GroupUsersListRrq:
                 return createGroupUserListRrqFromBytes(data);
@@ -98,11 +98,12 @@ public class PCPMinInterpreter implements IPCPInterpreter
         if ( list.get(0).length < 6 || list.get(0).length > 32 )
             throw new PCPException(ErrorCode.InvalidAlias);
         
-        if ( list.get(1)[0] != 0 && (list.get(1).length < 6 || list.get(1).length > 32))
+        if ( list.get(1).length != 0 && (list.get(1).length < 6 || list.get(1).length > 32))
             throw new PCPException(ErrorCode.InvalidRoomName);
         
         registration.setAlias(new String(list.get(0)));
-        registration.setTopic(new String(list.get(1)));
+        if ( list.get(1).length != 0 )
+            registration.setTopic(new String(list.get(1)));
        
         return registration;
     }
@@ -110,7 +111,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
     private Disconnection createDisconnectionFromBytes ( byte[] data ) throws PCPException
     {
 
-        if ( data.length > 3 ) 
+        if ( data.length != 3 ) 
             throw new PCPException(ErrorCode.PackageMalformed);
         
         byte[] id = Arrays.copyOfRange(data, 1, data.length);
@@ -120,7 +121,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
         return disconnection;
     }
     
-    private AliasChange createAliasChangeFomBytes ( byte[] data) throws PCPException
+    private AliasChange createAliasChangeFromBytes ( byte[] data ) throws PCPException
     {
        AliasChange aliasChange = new AliasChange(null, null, null);
        ArrayList<byte[]> aliasList = new ArrayList<>();
@@ -153,8 +154,11 @@ public class PCPMinInterpreter implements IPCPInterpreter
        return aliasChange;
     }
     
-    private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) 
+    private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) throws PCPException 
     {
+        if ( data.length != 3)
+            throw new PCPException(ErrorCode.PackageMalformed);
+        
         GroupUserListRrq groupUserListRrq = new GroupUserListRrq(null);
         
         byte[] id = new byte[2];
