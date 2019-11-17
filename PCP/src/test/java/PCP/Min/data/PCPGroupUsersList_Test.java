@@ -4,7 +4,6 @@
 
 package PCP.Min.data;
 
-import PCP.Min.data.GroupUsersList;
 import java.util.*;
 import org.junit.*;
 
