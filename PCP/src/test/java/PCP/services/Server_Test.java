@@ -60,7 +60,7 @@ public class Server_Test
             t.start();
         }
         
-        Thread.sleep(2000);
+        Thread.sleep(200);
         server.interrupt();
         
     }
@@ -79,7 +79,7 @@ public class Server_Test
                         Logger.getGlobal().log(Level.INFO, "TESTSOCKET n." + val + " sent {0}", Arrays.toString(buffer));
                     }
                     
-                    Thread.sleep(999999999);
+                    Thread.sleep(200);
                     
                     byte[] buffer = new byte[18];
                         bin.read(buffer);
