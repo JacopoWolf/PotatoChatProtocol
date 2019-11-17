@@ -42,7 +42,7 @@ public final class PCP
         
         private final String FULL_NAME;
         
-        private final int VERSION_CODE;
+        private final byte VERSION_CODE;
         
         //<editor-fold defaultstate="collapsed" desc="assignment">
         
@@ -79,7 +79,7 @@ public final class PCP
         {
             this.MAX_PACKET_LENGHT = MAX_LENGHT;
             this.FULL_NAME = NAME;
-            this.VERSION_CODE = code;
+            this.VERSION_CODE = (byte)code;
         }
         //</editor-fold>
         

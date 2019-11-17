@@ -4,6 +4,7 @@
 package PCP.net;
 
 import PCP.Min.data.*;
+import PCP.Min.logic.*;
 import PCP.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
@@ -177,23 +178,98 @@ public class PCPManager implements IPCPManager
   
     
     @Override
-    public void accept( byte[] data, IPCPChannel from )
-    {
-
-        PCP.Versions version = null;
-        
+    public void accept( final byte[] data, final IPCPChannel from )
+    {   
         // checks if the recieved data comes from a new connection
-        if (!this.channelsExecutionMap.containsKey(from))
+        if ( channelsExecutionMap.containsKey(from) )
+        {
+            // NOT a new connection 
+            //checks for preferred logicCore
+            IPCPLogicCore core = channelsExecutionMap.get(from);
+            if ( core.canAccept() ) 
+            {
+                core.enqueue(data);
+            }
+            else
+            {
+                // if the preferred core is not available then map on a new one
+                core = getCoreByVersion( from.getUserInfo().getVersion() );
+                    core.enqueue(data);
+                channelsExecutionMap.put(from, core);
+            }
+        }
+        else
+        {
+            // new connection, handle it in another method
+            this.initialRegistrationHandler.submit( new IncomingConnectionsHandler(data, from) );
+            
+            return;
+        }
+
+    }
+
+    
+    private class IncomingConnectionsHandler implements Runnable
+    {
+        private final byte[] data;
+        private final IPCPChannel from;
+
+        public IncomingConnectionsHandler( byte[] data, IPCPChannel from )
+        {
+            this.data = data;
+            this.from = from;
+        }
+
+        private boolean isAllZeros(byte[] b) 
+    {
+        for ( byte _b : b )
+            if ( _b != 0 )
+                return false;
+        return true;
+    }
+        
+        @Override
+        public void run()
+        {
+            if ( isAllZeros(data) )
+                return;
+            
+            
             try
             {
-                throw new PCPException( ErrorCode.ServerExploded );
+                switch ( data[1] )
+                {
+                    case 0: // PCP-Minimal
+                        
+                        // !    this is a known error. 
+                        //      size of data sent with initial connections cannot be determinated because of shit Java APIs.
+                        
+                        // manually find the end of the packet ( 0 delimiter ) and submits it
+                        byte[] dataCopy = null; boolean firstZeroFound = false;
+                        for ( int i = 2; i < data.length; i++)
+                            if (data[i] == 0)
+                                if ( firstZeroFound )
+                                {
+                                    dataCopy = Arrays.copyOfRange(data, 0, i + 1);
+                                    break;
+                                }
+                                else
+                                    firstZeroFound = true;
+                        
+                        Logger.getGlobal().log(Level.FINEST, "Server recieved {0}", Arrays.toString(dataCopy));
+                        Registration reg = (Registration)(new PCPMinInterpreter().interpret(dataCopy));
+                        PCPMinUserInfo usrInf = new PCPMinUserInfo();
+                            usrInf.setAlias(reg.getAlias());
+                            usrInf.setId(new byte[]{0,0}); //todo implement id generation
+                        from.setUserInfo(usrInf);
+                        send( new RegistrationHack(usrInf.getId(), usrInf.getAlias()) , from);
+                        return;
 
-                //todo assign values to the new socket
-                // write a method queuing on initialRegistrationHandler
-                // version = NewConnectionsInterpreter;
-
+                    default:
+                        throw new PCPException(ErrorCode.PackageMalformed);
+                }
             }
-            catch ( PCPException e )
+            catch ( PCPException pcpe )
             {
                 try
                 {
@@ -201,46 +277,21 @@ public class PCPManager implements IPCPManager
                     (
                         Level.WARNING, 
                             "Error while recieving a new connection from {0}, reason {1}", 
-                            new Object[]{from.getChannel().getRemoteAddress().toString(), e.getErrorCode().toString()}
+                            new Object[]{from.getChannel().getRemoteAddress().toString(),pcpe.getErrorCode().toString()}
                     );
+                    
                     // always close the connection at this point. An error in the initial registration packet is irreversable.
-                    close( from, new ErrorMsg(e) ); 
+                    close( from, new ErrorMsg(pcpe) ); 
                 }
                 catch(Exception exc) 
                 { 
                     // at this point we can ingnore whatever happens here.
                 }
-                
-                return;
             }
-            
-        else
-            version = from.getUserInfo().getVersion();
-        
-        // queues data
-        
-        // checks for preferred logicCore
-        if ( channelsExecutionMap.containsKey(from) )
-        {
-            IPCPLogicCore core = channelsExecutionMap.get(from);
-            if ( core.canAccept() ) 
-            {
-                core.enqueue(data);
-                return;
-            }
-        }
-            
-        // if the preferred core is not available then map on a new one
-        IPCPLogicCore core = getCoreByVersion(version);
-            core.enqueue(data);
-        channelsExecutionMap.put(from, core);
-        return;
-        
-    }
 
-    
-    
-    
+
+        }
+    }
     
     
     //<editor-fold defaultstate="collapsed" desc="LogicCores operations">
@@ -416,7 +467,8 @@ public class PCPManager implements IPCPManager
         
         try
         {
-            sendingExecutor.submit( () -> pcpchannel.send(with.toBytes()) ).get();
+            if ( with != null )
+                sendingExecutor.submit( () -> pcpchannel.send(with.toBytes()) ).get();
         }
         catch( InterruptedException | ExecutionException ex )
         {

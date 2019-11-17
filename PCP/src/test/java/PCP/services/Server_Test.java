@@ -3,6 +3,7 @@
  */
 package PCP.services;
 
+import PCP.Min.data.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -17,6 +18,22 @@ import org.junit.*;
 public class Server_Test
 {
     @Test
+    public void serverSingleRequest() throws IOException, InterruptedException
+    {
+        Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
+        Logger.getGlobal().setLevel(Level.FINEST);
+        
+        PCPServer server = new PCPServer(InetAddress.getLoopbackAddress());
+        server.acceptAndServe();
+        
+        Thread.sleep(1000);
+        exec(0);
+        
+        server.shutDown();
+        
+    }
+    
+    @Test @Ignore
     public void serverConnections () throws IOException, InterruptedException
     {
         
@@ -24,9 +41,7 @@ public class Server_Test
         Logger.getGlobal().setLevel(Level.FINEST);
         
         PCPServer server = new PCPServer(InetAddress.getLoopbackAddress());
-        server.acceptAndServe();
-        
-        
+        server.acceptAndServe();    
         
         for ( int i = 0; i < 5; i++ )
         {
@@ -34,22 +49,7 @@ public class Server_Test
             Thread t = new Thread(() ->{
             try
             {
-                Socket test  = new Socket( InetAddress.getLoopbackAddress() , PCP.PCP.PORT );
-                System.out.println("open client on: " + test.getLocalSocketAddress().toString());
-                    BufferedOutputStream bout = new BufferedOutputStream( test.getOutputStream() );
-                    BufferedInputStream bin = new BufferedInputStream( test.getInputStream() );
-                    byte[] buffer = (""+a).getBytes();
-                        bout.write(buffer);
-                        bout.flush();
-                    buffer = new byte[2];
-                        bin.read(buffer);
-                    Logger.getGlobal().log(Level.INFO, "TESTSOCKET n." + a + " recieved {0}", Arrays.toString(buffer));
-
-                    if (! Arrays.equals(  buffer ,  new byte[] {-1,-2}) )
-                        Assert.fail();
-                
-                    Thread.sleep(500);
-                test.close();
+                exec(a);  
             }
             catch (IOException | InterruptedException e)
             {
@@ -63,6 +63,33 @@ public class Server_Test
         Thread.sleep(2000);
         server.interrupt();
         
+    }
+ 
+    
+    public void exec( int val ) throws IOException, InterruptedException
+    {
+         Socket test  = new Socket( InetAddress.getLoopbackAddress() , PCP.PCP.PORT );
+                System.out.println("open client on: " + test.getLocalSocketAddress().toString());
+                    BufferedOutputStream bout = new BufferedOutputStream( test.getOutputStream() );
+                    BufferedInputStream bin = new BufferedInputStream( test.getInputStream() );
+                    for ( byte[] buffer : new Registration("testAlias", "").toBytes() )
+                    {
+                        bout.write(buffer);
+                        bout.flush();
+                        Logger.getGlobal().log(Level.INFO, "TESTSOCKET n." + val + " sent {0}", Arrays.toString(buffer));
+                    }
+                    
+                    Thread.sleep(999999999);
+                    
+                    byte[] buffer = new byte[18];
+                        bin.read(buffer);
+                        
+                    Logger.getGlobal().log(Level.INFO, "TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
+                    
+                    /*if (! Arrays.equals(  buffer ,  new byte[] {-1,-2}) )
+                        Assert.fail();*/
+                    
+                test.close();
     }
     
 }

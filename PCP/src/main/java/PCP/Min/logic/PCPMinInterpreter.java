@@ -3,8 +3,8 @@
  */
 package PCP.Min.logic;
 
-import PCP.*;
 import PCP.Min.data.*;
+import PCP.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;

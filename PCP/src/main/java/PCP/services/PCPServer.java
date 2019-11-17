@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.*;
 import java.nio.channels.*;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.*;
 
@@ -130,12 +131,14 @@ public class PCPServer extends Thread implements IPCPServer
                         ( 
                             () -> 
                             {
-                                ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT());
+                                final byte[] b = new byte[PCP.Versions.ALL.MAX_PACKET_LENGHT()];
+                                ByteBuffer bb = ByteBuffer.wrap(b);
                                 IPCPChannel ch = new PCPChannel(result, null);
                                 result.read(bb, ch, channelDataRecieved);
                                 
-                                middleware.accept(bb.array(), ch);
+                                middleware.accept(b, ch);
                             }
+                                
                         );
                         
                         Logger.getGlobal().log(Level.INFO, "successfully recieved new connection");
@@ -160,6 +163,7 @@ public class PCPServer extends Thread implements IPCPServer
         }
     }
     
+    
     @Override
     public void shutDown()
     {
@@ -181,7 +185,7 @@ public class PCPServer extends Thread implements IPCPServer
         new CompletionHandler<Integer, IPCPChannel>()
         {
             @Override
-            public void completed( Integer read, IPCPChannel channel )
+            public void completed( Integer bytesRead, IPCPChannel channel )
             {
                 // first reading
                 managerExecutor.submit
@@ -192,7 +196,7 @@ public class PCPServer extends Thread implements IPCPServer
                         
                         channel.getChannel().read(bb, channel, channelDataRecieved);
 
-                        middleware.accept(bb.array(), channel);
+                        middleware.accept( Arrays.copyOfRange(bb.array(), 0, bytesRead), channel);
                     }
                 );
             }
