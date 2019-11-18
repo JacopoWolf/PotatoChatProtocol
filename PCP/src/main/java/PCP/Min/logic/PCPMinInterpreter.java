@@ -153,6 +153,9 @@ public class PCPMinInterpreter implements IPCPInterpreter
                throw new PCPException( ErrorCode.InvalidAlias );
        }
        
+       aliasChange.setOldAlias( new String (aliasList.get(0)));
+       aliasChange.setNewAlias( new String (aliasList.get(1)));
+       
        return aliasChange;
     }
     
