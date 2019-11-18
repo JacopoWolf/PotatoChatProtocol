@@ -54,6 +54,13 @@ public class PCPMinInterpreter implements IPCPInterpreter
                 
             case MsgUserToGroup:
                 return createMsgUserToGroupFromBytes( data );
+                
+            case MsgUserToUser:
+                return createMsgUserToUserFromBytes( data );
+                
+            case Error:
+                return createErrorMsgFromBytes( data );
+                
             default:
                 throw new PCPException( ErrorCode.PackageMalformed );
         }
@@ -85,27 +92,27 @@ public class PCPMinInterpreter implements IPCPInterpreter
         Registration registration = new Registration( null, null );
         int start = 2;
         
-        ArrayList<byte[]> list = new ArrayList<>();
+        ArrayList<byte[]> variableElements = new ArrayList<>();
         for ( int i = 2; i < data.length; i++ ) 
         {
             if ( data[i] == 0 ) 
             {
-                list.add( Arrays.copyOfRange( data, start, i ) );
+                variableElements.add( Arrays.copyOfRange( data, start, i ) );
                 start = i + 1;
             }
             if ( data[i] == 040 )
                 throw new PCPException( ErrorCode.InvalidAlias );
         }
         
-        if ( list.get(0).length < 6 || list.get(0).length > 32 )
+        if ( variableElements.get(0).length < 6 || variableElements.get(0).length > 32 )
             throw new PCPException( ErrorCode.InvalidAlias );
         
-        if ( list.get(1).length != 0 && ( list.get(1).length < 6 || list.get(1).length > 32 ) )
+        if ( variableElements.get(1).length != 0 && ( variableElements.get(1).length < 6 || variableElements.get(1).length > 32 ) )
             throw new PCPException( ErrorCode.InvalidRoomName );
         
-        registration.setAlias( new String( list.get( 0 ) ) );
-        if ( list.get(1).length != 0 )
-            registration.setTopic( new String( list.get( 1 ) ) );
+        registration.setAlias( new String( variableElements.get( 0 ) ) );
+        if ( variableElements.get(1).length != 0 )
+            registration.setTopic( new String( variableElements.get( 1 ) ) );
        
         return registration;
     }
@@ -177,7 +184,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
     
     private MsgUserToGroup createMsgUserToGroupFromBytes ( byte[] data ) throws PCPException
     {
-        if ( data.length > 2048 )
+        if ( data.length > this.getVersion().MAX_PACKET_LENGHT() )
             throw new PCPException( ErrorCode.PackageMalformed );
         
         MsgUserToGroup msgUserToGroup = new MsgUserToGroup( null, null ); 
@@ -206,10 +213,10 @@ public class PCPMinInterpreter implements IPCPInterpreter
             MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompletePackets.get();
             String completeMessage = incompleteMsgUserToGroup.getMessage() + msgUserToGroup.getMessage();
             incompleteMsgUserToGroup.setMessage( completeMessage );
-            if ( data.length < 2048 )
+            if ( data.length < this.getVersion().MAX_PACKET_LENGHT() )
                 return incompleteMsgUserToGroup;
         } 
-        else if ( data.length == 2048 ) 
+        else if ( data.length == this.getVersion().MAX_PACKET_LENGHT() )
         {
             this.addIncompleteData( msgUserToGroup );
         }
@@ -219,5 +226,83 @@ public class PCPMinInterpreter implements IPCPInterpreter
         }
         
         return null;
+    }
+    
+    private MsgUserToUser createMsgUserToUserFromBytes ( byte[] data ) throws PCPException
+    {
+        if ( data.length > this.getVersion().MAX_PACKET_LENGHT() )
+            throw new PCPException( ErrorCode.PackageMalformed );
+        
+        MsgUserToUser msgUserToUser = new MsgUserToUser( null, null, null ); // src id , dst alias , message
+        
+        byte[] id = Arrays.copyOfRange(data, 0, 3);
+        
+        ArrayList<byte[]> variableElements = new ArrayList<>();
+        
+        int start = 3;
+        for ( int i = 3; i < data.length; i++ )
+        {
+            if ( data[i] == 0 )
+            {
+                variableElements.add(Arrays.copyOfRange(data, start, i));
+                start = i + 1;
+            }            
+        }
+        
+        // check if destination alias is valid
+        for ( byte b : variableElements.get(0) )
+        {
+            if ( b == 040 )
+                throw new PCPException( ErrorCode.InvalidAlias );
+        }
+        if ( variableElements.get(0).length < 6 || variableElements.get(0).length > 32 )
+            throw new PCPException( ErrorCode.InvalidAlias );
+        
+        msgUserToUser.setSenderId( id );
+        msgUserToUser.setDestinationAlias( new String( variableElements.get(0) ) );
+        msgUserToUser.setMessage( new String( variableElements.get(1) ) );
+        
+        Optional<IPCPData> incompletePackets = this.getIncompleteDataList().stream()
+            .filter( incompleteData -> 
+            {
+                if ( incompleteData.getClass().isInstance( msgUserToUser ) ) 
+                {
+                    MsgUserToGroup incompleteMsgUserToUser= ( MsgUserToGroup ) incompleteData;
+                    if ( msgUserToUser.getSenderId() == incompleteMsgUserToUser.getSenderId() )
+                        return true;
+                }
+                return false;
+            } ).findFirst();
+        
+        if ( incompletePackets.isPresent() )  
+        { 
+            MsgUserToUser incompleteMsgUserToUser = ( MsgUserToUser ) incompletePackets.get();
+            String completeMessage = incompleteMsgUserToUser.getMessage() + msgUserToUser.getMessage();
+            incompleteMsgUserToUser.setMessage( completeMessage );
+            if ( data.length < this.getVersion().MAX_PACKET_LENGHT() )
+                return incompleteMsgUserToUser;
+        } 
+        else if ( data.length == this.getVersion().MAX_PACKET_LENGHT() )
+        {
+            this.addIncompleteData( msgUserToUser );
+        }
+        else
+        {
+            return msgUserToUser;
+        }
+        
+        return null;
+    }
+    
+    private ErrorMsg createErrorMsgFromBytes( byte[] data ) throws PCPException
+    {
+        if ( data.length > 2 )
+            throw new PCPException( ErrorCode.PackageMalformed );
+        
+        byte errorCode = data[1];
+             
+        ErrorMsg errorMsg = new ErrorMsg( ErrorCode.getErrorCodeFromByte(errorCode) );
+        
+        return errorMsg;
     }
 }

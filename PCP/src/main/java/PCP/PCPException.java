@@ -42,6 +42,38 @@ public class PCPException extends Exception
         {
             return this.code;
         }
+        
+        /**
+         * return the associated ErrorCode to the byte
+         * 
+         * @param error in byte
+         * @return associated ErrorCode enums to the byte
+         * @throws PCPException 
+         */
+        public static ErrorCode getErrorCodeFromByte( byte error ) throws PCPException
+        {
+            switch( error )
+            {
+                case 0:
+                    return PackageMalformed;
+                case 100:
+                    return AliasInUse;
+                case 101:
+                    return InvalidAlias;
+                case 102:
+                    return InvalidRoomName;
+                case (byte) 200:
+                    return ChatDenied;
+                case (byte) 202:
+                    return MaxClientsReached;
+                case (byte) 254:
+                    return ServerExploded;
+                case (byte) 255:
+                    return Unspecified;
+                default:
+                    throw new PCPException( PackageMalformed );
+            }
+        }
     }
     
     
@@ -89,7 +121,7 @@ public class PCPException extends Exception
         this.errorCode = errorCode;
         this.version = version;
     }
-
+    
     
     
     
