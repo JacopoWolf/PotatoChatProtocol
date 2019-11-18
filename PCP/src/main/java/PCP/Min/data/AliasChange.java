@@ -4,12 +4,14 @@
 
 package PCP.Min.data;
 
-import PCP.data.IPCPData;
 import PCP.*;
+import PCP.data.*;
 import java.util.*;
 
 /**
  *
+ * rapresents an alias change
+ * 
  * @author gfurri20
  * @author Alessio789
  */
@@ -19,6 +21,12 @@ public class AliasChange implements IPCPData
     private String oldAlias;
     private String newAlias;
 
+    /**
+     *
+     * @param id
+     * @param oldAlias
+     * @param newAlias
+     */
     public AliasChange( byte[] id, String oldAlias, String newAlias )
     {
         this.id = id;
@@ -28,31 +36,56 @@ public class AliasChange implements IPCPData
     
     //<editor-fold defaultstate="collapsed" desc="getter and setters">
 
+    /**
+     *
+     * @return
+     */
+    
     public byte[] getId() 
     {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId( byte[] id ) 
     {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getOldAlias() 
     {
         return oldAlias;
     }
 
+    /**
+     *
+     * @param oldAlias
+     */
     public void setOldAlias( String oldAlias ) 
     {
         this.oldAlias = oldAlias;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNewAlias() 
     {
         return newAlias;
     }
 
+    /**
+     *
+     * @param newAlias
+     */
     public void setNewAlias( String newAlias ) 
     {
         this.newAlias = newAlias;

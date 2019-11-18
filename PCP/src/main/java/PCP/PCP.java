@@ -19,7 +19,9 @@ public final class PCP
     */
     public static final int PORT = 53101;
 
-    
+    /**
+     * utilities for the major PCP versions.
+     */
     public enum Versions
     {
         // versions
@@ -31,9 +33,9 @@ public final class PCP
         
         
         /**
-         * suitable for every version
+         * general data for every version.
          */
-        ALL ( 2048, "Generic", -1 );
+        ALL ( 2048, null, Integer.MAX_VALUE );
         
         
         
@@ -66,9 +68,9 @@ public final class PCP
 
         /**
          * 
-         * @return the logic core of this specific version
+         * @return code of this specific version
          */
-        public int VERSION_CODE()
+        public byte VERSION_CODE()
         {
             return VERSION_CODE;
         }
@@ -90,6 +92,11 @@ public final class PCP
     private PCP(){}
     
     
+    /**
+     * given the specific version, returs an {@link PCP.logic.IPCPLogicCore} for the specific version
+     * @param version
+     * @return 
+     */
     public static IPCPLogicCore getLogicCore_ByVersion( Versions version )
     {
         switch ( version )

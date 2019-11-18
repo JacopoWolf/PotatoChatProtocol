@@ -18,6 +18,7 @@ import java.util.logging.*;
 /**
  *  a PCP server, serving on the port 53101.
  *  uses {@link Logger#getGlobal()} to log data. 
+ *  to start the server, simply initalize it and the call {@link PCPServer#acceptAndServe()}
  * 
  * @author Jacopo_Wolf
  */
