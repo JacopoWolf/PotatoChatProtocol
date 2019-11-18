@@ -185,31 +185,33 @@ public class PCPMinInterpreter implements IPCPInterpreter
         
         msgUserToGroup.setSenderId(id);
         msgUserToGroup.setMessage( new String( message ) );
+       
+        Optional<IPCPData> incompletePackets = this.getIncompleteDataList().stream()
+            .filter( incompleteData -> 
+            {
+                if ( incompleteData.getClass().isInstance( msgUserToGroup ) ) 
+                {
+                    MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompleteData;
+                    if ( msgUserToGroup.getSenderId() == incompleteMsgUserToGroup.getSenderId() )
+                        return true;
+                }
+                return false;
+            } ).findFirst(); 
         
-        if ( data.length < 2048 ) 
-        {
-            Optional<IPCPData> incompletePackets = this.getIncompleteDataList().stream()
-                    .filter( incompleteData -> 
-                    {
-                        if ( incompleteData.getClass().isInstance( msgUserToGroup ) ) 
-                        {
-                            MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompleteData;
-                            if ( msgUserToGroup.getSenderId() == incompleteMsgUserToGroup.getSenderId() )
-                                return true;
-                        }
-                        return false;
-                            } ).findFirst(); 
             if ( incompletePackets.isPresent() )  
             { 
-                MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompletePackets.get();
-                String completeMessage = incompleteMsgUserToGroup.getMessage() + msgUserToGroup.getMessage();
-                incompleteMsgUserToGroup.setMessage( completeMessage );
+                if ( data.length < 2048 ) 
+                {
+                    MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompletePackets.get();
+                    String completeMessage = incompleteMsgUserToGroup.getMessage() + msgUserToGroup.getMessage();
+                    incompleteMsgUserToGroup.setMessage( completeMessage );
+                    return incompleteMsgUserToGroup;
+                }
             } 
             else 
                 return msgUserToGroup;     
-        }
-        
-        else if ( data.length == 2048 ) 
+
+        if ( data.length == 2048 ) 
             this.addIncompleteData(msgUserToGroup);
         
         return null;
