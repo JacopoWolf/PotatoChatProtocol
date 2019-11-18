@@ -23,11 +23,13 @@
 
 ---
 
-Read protocol's [general description](docs/PCP.md) and original idea or go see all the [versions](docs/README.md) and their implementations.
+## Documentation
+
+### [Javadoc](https://javadoc.jitpack.io/com/github/jacopowolf/potatochatprotocol/latest/javadoc/index.html)
+
+### [GitHub pages](docs/README.md)
 
 ---
-
-## Style rules
 
 ### Branch naming
 * `master` is for documentation only. Protected.
@@ -38,10 +40,12 @@ Read protocol's [general description](docs/PCP.md) and original idea or go see a
   
 names like `USERNAME-master-feature1` are **NOT** accepted.
 
-## Download
-> visit [JitPack](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
 
-if you're using maven add this to your **pom.xml**
+
+## Download
+- visit [JitPack](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
+
+- if you're using maven simply copy this to your **pom.xml**, substitute _TAG_ with the version you need.
 
 ```xml
 <repositories>
@@ -59,7 +63,7 @@ if you're using maven add this to your **pom.xml**
 	<dependency>
 		<groupId>com.github.JacopoWolf</groupId>
 		<artifactId>PotatoChatProtocol</artifactId>
-		<version>Tag</version>
+		<version>TAG</version>
 	</dependency>
 
 </dependencies>
