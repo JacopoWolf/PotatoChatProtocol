@@ -200,19 +200,17 @@ public class PCPMinInterpreter implements IPCPInterpreter
         
             if ( incompletePackets.isPresent() )  
             { 
-                if ( data.length < 2048 ) 
-                {
-                    MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompletePackets.get();
-                    String completeMessage = incompleteMsgUserToGroup.getMessage() + msgUserToGroup.getMessage();
-                    incompleteMsgUserToGroup.setMessage( completeMessage );
+                
+                MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompletePackets.get();
+                String completeMessage = incompleteMsgUserToGroup.getMessage() + msgUserToGroup.getMessage();
+                incompleteMsgUserToGroup.setMessage( completeMessage );
+                if ( data.length < 2048 )
                     return incompleteMsgUserToGroup;
-                }
             } 
-            else 
-                return msgUserToGroup;     
-
-        if ( data.length == 2048 ) 
-            this.addIncompleteData(msgUserToGroup);
+            else if ( data.length == 2048 )
+                this.addIncompleteData(msgUserToGroup);
+        else
+            return msgUserToGroup;
         
         return null;
     }
