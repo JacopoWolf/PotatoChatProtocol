@@ -3,17 +3,16 @@
  */
 package PCP.logic;
 
-import PCP.data.IPCPdata;
+import PCP.data.*;
 
 
 /**
  *
  * @author JacopoWolf
- * @param <T>
  */
-public interface IPCPCore<T extends IPCPdata>
+public interface IPCPCore
 {
     
-    void accept ( T data );
+    void accept ( IPCPData data );
     
 }

@@ -18,3 +18,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/PCP/nbproject/

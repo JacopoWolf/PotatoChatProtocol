@@ -4,8 +4,8 @@
 
 package PCP.Min.data;
 
-import PCP.data.IPCPdata;
 import PCP.*;
+import PCP.data.IPCPData;
 import java.util.*;
 
 /**
@@ -13,7 +13,7 @@ import java.util.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class Registration implements IPCPdata
+public class Registration implements IPCPData
 {
     private String alias;
     private String topic;
@@ -76,7 +76,10 @@ public class Registration implements IPCPdata
     @Override
     public int size()
     {
-        return 4 + alias.length() + topic.length();
+        if ( this.topic == null )
+            return 4 + alias.length();
+        else
+            return 4 + alias.length() + topic.length();
     }
 
     @Override
@@ -99,8 +102,11 @@ public class Registration implements IPCPdata
         buffer[i++] = 0;
         
         //Topic
-        for(byte b : topic.getBytes())
-            buffer[i++] = b;
+        if ( this.topic != null )
+        {
+            for(byte b : topic.getBytes())
+                buffer[i++] = b;
+        }   
         //Delimitator
         buffer[i++] = 0;
         

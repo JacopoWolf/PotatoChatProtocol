@@ -4,21 +4,29 @@
 
 package PCP.Min.data;
 
-import PCP.data.IPCPdata;
 import PCP.*;
+import PCP.data.*;
 import java.util.*;
 
 /**
  *
+ * rapresents an alias change
+ * 
  * @author gfurri20
  * @author Alessio789
  */
-public class AliasChange implements IPCPdata
+public class AliasChange implements IPCPData
 {
     private byte[] id;
     private String oldAlias;
     private String newAlias;
 
+    /**
+     *
+     * @param id
+     * @param oldAlias
+     * @param newAlias
+     */
     public AliasChange( byte[] id, String oldAlias, String newAlias )
     {
         this.id = id;
@@ -28,31 +36,56 @@ public class AliasChange implements IPCPdata
     
     //<editor-fold defaultstate="collapsed" desc="getter and setters">
 
+    /**
+     *
+     * @return
+     */
+    
     public byte[] getId() 
     {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId( byte[] id ) 
     {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getOldAlias() 
     {
         return oldAlias;
     }
 
+    /**
+     *
+     * @param oldAlias
+     */
     public void setOldAlias( String oldAlias ) 
     {
         this.oldAlias = oldAlias;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getNewAlias() 
     {
         return newAlias;
     }
 
+    /**
+     *
+     * @param newAlias
+     */
     public void setNewAlias( String newAlias ) 
     {
         this.newAlias = newAlias;
@@ -63,7 +96,7 @@ public class AliasChange implements IPCPdata
     @Override
     public OpCode getOpCode()
     {
-        return OpCode.AliasChanghe;
+        return OpCode.AliasChange;
     }
 
     @Override
@@ -79,7 +112,7 @@ public class AliasChange implements IPCPdata
         
         int i = 0;
         //Opcode
-        buffer[i++] = OpCode.AliasChanghe.getByte();
+        buffer[i++] = OpCode.AliasChange.getByte();
         //Id
         for(byte b : id)
             buffer[i++] = b;

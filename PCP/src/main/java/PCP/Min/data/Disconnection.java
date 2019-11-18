@@ -3,22 +3,38 @@
  */
 package PCP.Min.data;
 
-import PCP.data.IPCPdata;
 import PCP.*;
+import PCP.data.*;
 import java.util.*;
 
 
 /**
- *
+ * rappresents a disconnection action
  * @author Alessio789
  * @author gfurri20
  */
-public class Disconnection implements IPCPdata
+public class Disconnection implements IPCPData
 {
+
+    /**
+     * reasons for the disconnection
+     */
     public enum Reason
     {
+
+        /**
+         * no reason
+         */
         none        (0),
+
+        /**
+         * you jave timed out, meaning no activity for the default time
+         */
         timedOut    (1),
+
+        /**
+         * the server has been shut down. Before that it will tell you.
+         */
         goneOffline (2);
         
         
@@ -29,6 +45,11 @@ public class Disconnection implements IPCPdata
         {
             this.code = (byte)code;
         }
+
+        /**
+         *
+         * @return
+         */
         public byte getByte()
         {
             return this.code;
@@ -39,12 +60,20 @@ public class Disconnection implements IPCPdata
     private Reason reason;
     private boolean byClient; //It's true if the disconnection has been required by the client
 
+    /**
+     *
+     * @param id
+     */
     public Disconnection( byte[] id ) 
     {
         this.id = id;
         this.byClient = true;
     }
 
+    /**
+     *
+     * @param reason
+     */
     public Disconnection( Reason reason ) 
     {
         this.reason = reason;
@@ -53,31 +82,56 @@ public class Disconnection implements IPCPdata
     
     //<editor-fold defaultstate="collapsed" desc="getter and setters">
 
+    /**
+     *
+     * @return
+     */
+    
     public byte[] getId() 
     {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId( byte[] id ) 
     {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public Reason getReason() 
     {
         return reason;
     }
 
+    /**
+     *
+     * @param reason
+     */
     public void setReason( Reason reason ) 
     {
         this.reason = reason;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean isByClient() 
     {
         return byClient;
     }
 
+    /**
+     *
+     * @param byClient
+     */
     public void setByClient( boolean byClient ) 
     {
         this.byClient = byClient;

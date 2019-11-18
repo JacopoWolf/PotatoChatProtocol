@@ -3,7 +3,7 @@
  */
 package PCP.Min.data;
 
-import PCP.data.IPCPdata;
+import PCP.data.IPCPData;
 import PCP.*;
 import PCP.PCPException.ErrorCode;
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.*;
  * @author Jacopo_Wolf
  * @author Alessio789
  */
-public class ErrorMsg implements IPCPdata
+public class ErrorMsg implements IPCPData
 {     
     private ErrorCode errorCode;
     
