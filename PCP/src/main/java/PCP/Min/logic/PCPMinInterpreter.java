@@ -38,22 +38,24 @@ public class PCPMinInterpreter implements IPCPInterpreter
     {
         byte receivedOpcode = data[0];
         
-        switch( OpCode.getOpCodeFromByte(receivedOpcode) )
+        switch( OpCode.getOpCodeFromByte( receivedOpcode ) )
         {
             case Registration:
-                return createRegistrationFromBytes(data);
+                return createRegistrationFromBytes( data );
                 
             case Disconnection:
-                return createDisconnectionFromBytes(data);
+                return createDisconnectionFromBytes( data );
                         
             case AliasChange:
-                return createAliasChangeFromBytes(data);
+                return createAliasChangeFromBytes( data );
                 
             case GroupUsersListRrq:
-                return createGroupUserListRrqFromBytes(data);
+                return createGroupUserListRrqFromBytes( data );
                 
+            case MsgUserToGroup:
+                return createMsgUserToGroupFromBytes( data );
             default:
-                throw new PCPException(ErrorCode.PackageMalformed);
+                throw new PCPException( ErrorCode.PackageMalformed );
         }
     }
 
@@ -80,30 +82,30 @@ public class PCPMinInterpreter implements IPCPInterpreter
     private Registration createRegistrationFromBytes( byte[] data ) throws PCPException 
     {
         
-        Registration registration = new Registration(null, null);
+        Registration registration = new Registration( null, null );
         int start = 2;
         
         ArrayList<byte[]> list = new ArrayList<>();
-        for ( int i = 2; i < data.length; i++) 
+        for ( int i = 2; i < data.length; i++ ) 
         {
             if ( data[i] == 0 ) 
             {
-                list.add(Arrays.copyOfRange(data, start, i));
+                list.add( Arrays.copyOfRange( data, start, i ) );
                 start = i + 1;
             }
             if ( data[i] == 040 )
-                throw new PCPException(ErrorCode.InvalidAlias);
+                throw new PCPException( ErrorCode.InvalidAlias );
         }
         
         if ( list.get(0).length < 6 || list.get(0).length > 32 )
-            throw new PCPException(ErrorCode.InvalidAlias);
+            throw new PCPException( ErrorCode.InvalidAlias );
         
-        if ( list.get(1).length != 0 && (list.get(1).length < 6 || list.get(1).length > 32))
-            throw new PCPException(ErrorCode.InvalidRoomName);
+        if ( list.get(1).length != 0 && ( list.get(1).length < 6 || list.get(1).length > 32 ) )
+            throw new PCPException( ErrorCode.InvalidRoomName );
         
-        registration.setAlias(new String(list.get(0)));
+        registration.setAlias( new String( list.get( 0 ) ) );
         if ( list.get(1).length != 0 )
-            registration.setTopic(new String(list.get(1)));
+            registration.setTopic( new String( list.get( 1 ) ) );
        
         return registration;
     }
@@ -112,18 +114,18 @@ public class PCPMinInterpreter implements IPCPInterpreter
     {
 
         if ( data.length != 3 ) 
-            throw new PCPException(ErrorCode.PackageMalformed);
+            throw new PCPException( ErrorCode.PackageMalformed );
         
-        byte[] id = Arrays.copyOfRange(data, 1, data.length);
+        byte[] id = Arrays.copyOfRange( data, 1, data.length );
         
-        Disconnection disconnection = new Disconnection(id);
+        Disconnection disconnection = new Disconnection( id );
         
         return disconnection;
     }
     
     private AliasChange createAliasChangeFromBytes ( byte[] data ) throws PCPException
     {
-       AliasChange aliasChange = new AliasChange(null, null, null);
+       AliasChange aliasChange = new AliasChange( null, null, null );
        ArrayList<byte[]> aliasList = new ArrayList<>();
        
        byte[] id = new byte[2];
@@ -138,17 +140,17 @@ public class PCPMinInterpreter implements IPCPInterpreter
        {
            if ( data[i] == 0 ) 
            {
-               aliasList.add(Arrays.copyOfRange(data, start, i));
+               aliasList.add( Arrays.copyOfRange( data, start, i ) );
                start = i + 1;
            }
            if ( data[i] == 040 )
-                throw new PCPException(ErrorCode.InvalidAlias);
+                throw new PCPException( ErrorCode.InvalidAlias );
        }
        
        for ( byte[] b : aliasList ) 
        {
-           if (b.length < 6 || b.length > 32) 
-               throw new PCPException(ErrorCode.InvalidAlias);
+           if ( b.length < 6 || b.length > 32 ) 
+               throw new PCPException( ErrorCode.InvalidAlias );
        }
        
        return aliasChange;
@@ -156,10 +158,10 @@ public class PCPMinInterpreter implements IPCPInterpreter
     
     private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) throws PCPException 
     {
-        if ( data.length != 3)
-            throw new PCPException(ErrorCode.PackageMalformed);
+        if ( data.length != 3 )
+            throw new PCPException( ErrorCode.PackageMalformed );
         
-        GroupUserListRrq groupUserListRrq = new GroupUserListRrq(null);
+        GroupUserListRrq groupUserListRrq = new GroupUserListRrq( null );
         
         byte[] id = new byte[2];
         id[0] = data[1];
@@ -168,5 +170,48 @@ public class PCPMinInterpreter implements IPCPInterpreter
         groupUserListRrq.setSenderId(id);
         
         return groupUserListRrq;
+    }
+    
+    private MsgUserToGroup createMsgUserToGroupFromBytes ( byte[] data ) throws PCPException
+    {
+        if ( data.length > 2048 )
+            throw new PCPException( ErrorCode.PackageMalformed );
+        
+        MsgUserToGroup msgUserToGroup = new MsgUserToGroup( null, null ); 
+        
+        byte[] id = Arrays.copyOfRange( data, 0, 3 );
+            
+        byte[] message = Arrays.copyOfRange( data, 3, data.length );
+        
+        msgUserToGroup.setSenderId(id);
+        msgUserToGroup.setMessage( new String( message ) );
+        
+        if ( data.length < 2048 ) 
+        {
+            Optional<IPCPData> incompletePackets = this.getIncompleteDataList().stream()
+                    .filter( incompleteData -> 
+                    {
+                        if ( incompleteData.getClass().isInstance( msgUserToGroup ) ) 
+                        {
+                            MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompleteData;
+                            if ( msgUserToGroup.getSenderId() == incompleteMsgUserToGroup.getSenderId() )
+                                return true;
+                        }
+                        return false;
+                            } ).findFirst(); 
+            if ( incompletePackets.isPresent() )  
+            { 
+                MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompletePackets.get();
+                String completeMessage = incompleteMsgUserToGroup.getMessage() + msgUserToGroup.getMessage();
+                incompleteMsgUserToGroup.setMessage( completeMessage );
+            } 
+            else 
+                return msgUserToGroup;     
+        }
+        
+        else if ( data.length == 2048 ) 
+            this.addIncompleteData(msgUserToGroup);
+        
+        return null;
     }
 }
