@@ -1,18 +1,12 @@
-<center>
-
 ![](https://img.shields.io/badge/warning-School%20Project-important?style=for-the-badge)
-
 ![](https://img.shields.io/github/license/JacopoWolf/PotatoChatProtocol?style=for-the-badge)
 
 ![](https://img.shields.io/maintenance/yes/2020?style=for-the-badge)
-
 ![](https://img.shields.io/github/commit-activity/m/JacopoWolf/PotatoChatProtocol?color=blueviolet&style=for-the-badge)
 
 [![](https://img.shields.io/jitpack/v/github/jacopowolf/potatochatprotocol?label=Jitpack%20latest%20release&style=for-the-badge)](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
-
 ![](https://img.shields.io/jitpack/dm/github/jacopowolf/potatochatprotocol?color=darkblue&style=for-the-badge)
 
-</center>
 
 ---
 
