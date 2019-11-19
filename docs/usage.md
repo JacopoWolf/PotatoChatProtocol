@@ -57,7 +57,7 @@ If you have performance problems, it might be your system is not good at managin
 In the below example, a PCPServer is started on the loopback interface:
 
 ```java
-InetAddress address = InetAddress.getByName("127.0.0.1")
+InetAddress address = InetAddress.getByName("127.0.0.1");
 PCPServer server = new PCPServer( address );
 server.acceptAndServe();
 ```
