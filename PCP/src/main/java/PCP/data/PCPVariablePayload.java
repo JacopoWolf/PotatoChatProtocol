@@ -3,7 +3,7 @@
  */
 package PCP.data;
 
-import PCP.data.IPCPData;
+
 import java.nio.charset.*;
 import java.util.*;
 
@@ -46,7 +46,7 @@ public abstract class PCPVariablePayload implements IPCPData
             int bufferLenght = 
                     ( messageBytes.length - absMsgPointer ) > msgRelativeMaxLenght ? 
                         this.getVersion().MAX_PACKET_LENGHT() : 
-                        (header.length + messageBytes.length + 1);
+                        (header.length + (messageBytes.length - absMsgPointer) + 1);
             byte[] buffer = new byte[ bufferLenght ];
                        
             int i = 0;

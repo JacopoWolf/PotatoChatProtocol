@@ -4,8 +4,8 @@
 
 package PCP.Min.data;
 
-import PCP.data.PCPMessage;
 import PCP.*;
+import PCP.data.PCPMessage;
 import java.nio.charset.*;
 
 /**
@@ -21,6 +21,16 @@ public class MsgUserToUser extends PCPMessage
 
 
 //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    
+    public byte[] getSenderId()
+    {
+        return senderId;
+    }
+    
+    public void setSenderId( byte[] senderId )
+    {
+        this.senderId = senderId;
+    }
     
     public String getDestinationAlias()
     {
