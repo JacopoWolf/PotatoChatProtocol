@@ -86,7 +86,19 @@ public class PCPMinLogicCore implements IPCPLogicCore
     }
 
     @Override
+    public boolean keepAlive()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void run()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void stop()
     {
         throw new UnsupportedOperationException();
     }

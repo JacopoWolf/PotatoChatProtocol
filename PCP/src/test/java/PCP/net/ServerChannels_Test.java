@@ -13,7 +13,7 @@ import org.junit.*;
  *
  * @author Jacopo_Wolf
  */
-@Ignore
+@Ignore(value = "this is just for initial testing purposes. It's still here for references reason")
 public class ServerChannels_Test
 {
     @Test
@@ -26,7 +26,7 @@ public class ServerChannels_Test
         Thread.sleep(2000);
         for ( int i = 0; i < 10; i++ )
         {
-            Socket test  = new Socket("localhost", 50000);
+            Socket test  = new Socket("localhost", PCP.PCP.PORT );
             System.out.println("open client on: " + test.getLocalSocketAddress().toString());
                 BufferedOutputStream bout = new BufferedOutputStream(test.getOutputStream());
                 byte[] buffer = (""+i).getBytes();
@@ -44,30 +44,9 @@ public class ServerChannels_Test
     
     class ServerTest extends Thread
     {
-        
-        @Override
-        public void run()
-        {
-            try
-            {
-                System.out.println("hello from thread " + currentThread().toString());
-                 
-                final AsynchronousServerSocketChannel SERVER = 
-                        AsynchronousServerSocketChannel.open
-                        (
-                            AsynchronousChannelGroup.withThreadPool
-                            (
-                                Executors.newFixedThreadPool(3)
-                            )
-                        );
-                    SERVER.bind( new InetSocketAddress("localhost", 50000) );
-                    System.out.println("open server on: " + SERVER.getLocalAddress().toString());
-               
-                
-                SERVER.accept
-                (
-                    null, 
-                    new CompletionHandler<AsynchronousSocketChannel, Void>()
+        AsynchronousServerSocketChannel SERVER;
+        public CompletionHandler<AsynchronousSocketChannel, Void> handler =
+                new CompletionHandler<AsynchronousSocketChannel, Void>()
                     {
 
                         @Override
@@ -103,7 +82,31 @@ public class ServerChannels_Test
                         {
                             System.out.println( exc.getMessage() );
                         }
-                    }
+                    } ;
+        
+        @Override
+        public void run()
+        {
+            try
+            {
+                System.out.println("hello from thread " + currentThread().toString());
+                 
+                SERVER = 
+                        AsynchronousServerSocketChannel.open
+                        (
+                            AsynchronousChannelGroup.withThreadPool
+                            (
+                                Executors.newFixedThreadPool(3)
+                            )
+                        );
+                    SERVER.bind( new InetSocketAddress("localhost", PCP.PCP.PORT) );
+                    System.out.println("open server on: " + SERVER.getLocalAddress().toString());
+               
+                
+                SERVER.accept
+                (
+                    null, 
+                    handler
                 );
 
                 

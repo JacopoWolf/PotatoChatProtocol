@@ -4,9 +4,10 @@
 package PCP.net;
 
 import PCP.logic.*;
+import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.logging.*;
 
 /**
  * wraps a PCP connection
@@ -14,15 +15,15 @@ import java.util.concurrent.*;
  */
 public class PCPChannel implements IPCPChannel 
 {
-    final ExecutorService executorServiceRef;
+
     final AsynchronousSocketChannel channel;
     
-    private IPCPUserInfo userInfo;
-
     
-    public PCPChannel( ExecutorService executorServiceRef, AsynchronousSocketChannel channel, IPCPUserInfo userInfo )
+    private IPCPUserInfo userInfo;
+    int timeLeftAwake = 900000; // 15 minutes
+    
+    public PCPChannel( AsynchronousSocketChannel channel, IPCPUserInfo userInfo )
     {
-        this.executorServiceRef = executorServiceRef;
         this.channel = channel;
         this.userInfo = userInfo;
     }
@@ -37,9 +38,15 @@ public class PCPChannel implements IPCPChannel
     }
 
     @Override
-    public ExecutorService getExecutorService()
+    public int getTimeLeftAwake()
     {
-        return this.executorServiceRef;
+        return this.timeLeftAwake;
+    }
+    
+    @Override
+    public void setTimeLeftAwake(int timeleft)
+    {
+        this.timeLeftAwake = timeleft;
     }
     
 
@@ -60,7 +67,21 @@ public class PCPChannel implements IPCPChannel
     @Override
     public void send( Collection<byte[]> data )
     {
-        throw new UnsupportedOperationException();
+        for ( byte[] b : data )
+        {
+            ByteBuffer bb = ByteBuffer.wrap(b);
+            try
+            {
+                this.channel.write(bb);
+                
+                Logger.getGlobal().log(Level.INFO, "sucessfully sent data to: {0}", this.getChannel().getRemoteAddress().toString());
+                Logger.getGlobal().log(Level.FINEST, "data sent to{0}:\n{1}", new Object[]{this.getChannel().getRemoteAddress(), Arrays.toString(b)});
+            }
+            catch ( Exception e )
+            {
+                return;
+            }
+        }
     }
     
 }
