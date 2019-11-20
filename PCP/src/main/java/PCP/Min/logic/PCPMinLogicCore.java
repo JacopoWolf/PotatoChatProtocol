@@ -20,6 +20,12 @@ public class PCPMinLogicCore implements IPCPLogicCore
     }
 
     @Override
+    public void dispose()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void enqueue( byte[] data )
     {
         throw new UnsupportedOperationException();
@@ -93,12 +99,6 @@ public class PCPMinLogicCore implements IPCPLogicCore
 
     @Override
     public void run()
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void stop()
     {
         throw new UnsupportedOperationException();
     }

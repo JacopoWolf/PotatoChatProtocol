@@ -106,10 +106,10 @@ public class PCPException extends Exception
             }
         }
 
-         *
-         * @param code
-         * @return
-         */
+        /*
+        * @param code
+        * @return
+        */
         public static boolean requiresConnectionClose( ErrorCode code )
         {
             return 

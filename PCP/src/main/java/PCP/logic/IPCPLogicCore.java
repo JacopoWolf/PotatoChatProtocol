@@ -12,7 +12,7 @@ import java.util.*;
  *  the logic core of a server. Runs on a single thread and it's managed by the IPCPmanager middlewere.
  * @author JacopoWolf
  */
-public interface IPCPLogicCore extends Runnable
+public interface IPCPLogicCore extends Runnable, IDisposable
 {
     
     //<editor-fold desc="getters and setters">
@@ -92,7 +92,8 @@ public interface IPCPLogicCore extends Runnable
     /**
      * stops {@link IPCPLogicCore#run()} from accepting new data and terminates the thread this object runs on.
      */
-    public void stop();
+    @Override
+    public void dispose();
     
     /**
      * enqueues a new packet to be elaborated.
