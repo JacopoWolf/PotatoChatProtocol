@@ -22,7 +22,7 @@ import java.util.logging.*;
  * 
  * @author Jacopo_Wolf
  */
-public class PCPServer extends Thread implements IPCPServer
+public final class PCPServer extends Thread implements IPCPServer
 {
     final PCPManager middleware;
     final AsynchronousServerSocketChannel assc;
@@ -155,7 +155,7 @@ public class PCPServer extends Thread implements IPCPServer
             
             while ( true )
             {
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             }
         }
         catch( InterruptedException ex )
@@ -165,12 +165,18 @@ public class PCPServer extends Thread implements IPCPServer
     }
     
     
+    
+    
     @Override
     public void shutDown()
     {
         try
         {
+            // disposes of in-use resources
+            this.middleware.dispose();
+            // closes socket
             this.assc.close();
+            // interrupts working loop.
             this.interrupt();
         }
         catch( IOException ex )

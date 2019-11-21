@@ -13,7 +13,7 @@ import java.util.*;
  * the middlewere level managing and sorting incoming 
  * @author JacopoWolf
  */
-public interface IPCPManager
+public interface IPCPManager extends IDisposable
 {
     /**
      * 

@@ -3,6 +3,7 @@
  */
 package PCP.net;
 
+import PCP.Min.data.Disconnection.Reason;
 import PCP.Min.data.*;
 import PCP.Min.logic.*;
 import PCP.*;
@@ -74,7 +75,6 @@ public class PCPManager implements IPCPManager
     
     
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
-
     
     
     
@@ -162,7 +162,7 @@ public class PCPManager implements IPCPManager
 //</editor-fold>
     
     
-    //<editor-fold defaultstate="collapsed" desc="constructors">
+    //<editor-fold defaultstate="collapsed" desc="constructor and disposer">
     
     /**
      * default constructor
@@ -173,6 +173,60 @@ public class PCPManager implements IPCPManager
         this.setCacheCleaningTimerMillis(cacheCleaningTimerMillis);
 
     }
+    
+    private boolean isDisposed = false;
+    @Override
+    public void dispose()
+    {   
+        if ( !isDisposed )
+        {
+            // terminates all connections
+            for ( IPCPChannel channel : this.getChannels() )
+                this.close(channel, new Disconnection(Reason.goneOffline));
+            this.sendingExecutor.shutdown(); // tells the executor to execute all pending tasks
+
+            // closes cache cleaning daemon
+            this.cleanService.shutdownNow();
+            
+            // clears big-data lists
+            incompleteSetsMap.clear();
+            channelsExecutionMap.clear();
+
+            // closes all logicores
+            this.initialRegistrationHandler.shutdownNow();
+            for ( IPCPLogicCore lcore : this.getCores() )
+                killCore(lcore);
+
+
+            // awaits 1 minute for every disconnection data to be sent
+            try
+            {
+                this.sendingExecutor.awaitTermination(60, TimeUnit.SECONDS);
+                Logger.getGlobal().log(Level.INFO, "middleware resources disposing completed succesfully!");
+            }
+            catch( InterruptedException ex )
+            {
+                Logger.getGlobal().log(Level.SEVERE, "middleware failed to notify shutdown to clients", ex);
+            }
+            isDisposed = true;
+            
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        try
+        {
+            this.dispose();
+        }
+        finally
+        {
+            super.finalize();
+        }
+    }
+    
+    
     
     //</editor-fold>
   
@@ -340,7 +394,7 @@ public class PCPManager implements IPCPManager
      */
     void killCore ( IPCPLogicCore toKill )
     {
-        toKill.stop();
+        toKill.dispose();
         toKill.getQueue().clear();
         
         synchronized (this)

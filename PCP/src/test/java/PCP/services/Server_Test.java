@@ -17,32 +17,30 @@ import org.junit.*;
  */
 public class Server_Test
 {
+    static PCPServer server;
+    
+    @Before
+    public void startServer() throws IOException, InterruptedException
+    {
+        Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
+        Logger.getGlobal().setLevel(Level.FINEST);
+        
+        server = new PCPServer(InetAddress.getLoopbackAddress());
+        server.start();   
+        Thread.sleep(200);
+    }
+    
     @Test
     public void serverSingleRequest() throws IOException, InterruptedException
     {
-        Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
-        Logger.getGlobal().setLevel(Level.FINEST);
         
-        PCPServer server = new PCPServer(InetAddress.getLoopbackAddress());
-        server.acceptAndServe();
-        
-        Thread.sleep(1000);
-        exec(0);
-        
-        server.shutDown();
-        
+        exec(-1);
+       
     }
     
-    @Test @Ignore
+    @Test
     public void serverConnections () throws IOException, InterruptedException
-    {
-        
-        Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
-        Logger.getGlobal().setLevel(Level.FINEST);
-        
-        PCPServer server = new PCPServer(InetAddress.getLoopbackAddress());
-        server.acceptAndServe();    
-        
+    {    
         for ( int i = 0; i < 5; i++ )
         {
             final int a = i;
@@ -61,7 +59,6 @@ public class Server_Test
         }
         
         Thread.sleep(200);
-        server.interrupt();
         
     }
  
@@ -82,7 +79,8 @@ public class Server_Test
                     Thread.sleep(200);
                     
                     byte[] buffer = new byte[18];
-                        bin.read(buffer);
+                    int read = bin.read(buffer);
+                    buffer = Arrays.copyOfRange(buffer, 0, read);
                         
                     Logger.getGlobal().log(Level.INFO, "TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
                     
@@ -90,6 +88,12 @@ public class Server_Test
                         Assert.fail();*/
                     
                 test.close();
+    }
+    
+    @After
+    public void stopServer()
+    {
+        server.shutDown();
     }
     
 }
