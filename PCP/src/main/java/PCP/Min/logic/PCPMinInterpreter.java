@@ -3,8 +3,8 @@
  */
 package PCP.Min.logic;
 
-import PCP.Min.data.*;
 import PCP.*;
+import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -189,9 +189,9 @@ public class PCPMinInterpreter implements IPCPInterpreter
         
         MsgUserToGroup msgUserToGroup = new MsgUserToGroup( null, null ); 
         
-        byte[] id = Arrays.copyOfRange( data, 0, 3 );
+        byte[] id = Arrays.copyOfRange( data, 1, 3 );
             
-        byte[] message = Arrays.copyOfRange( data, 3, data.length );
+        byte[] message = Arrays.copyOfRange( data, 3, data.length - 1 );
         
         msgUserToGroup.setSenderId(id);
         msgUserToGroup.setMessage( new String( message ) );
@@ -235,7 +235,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
         
         MsgUserToUser msgUserToUser = new MsgUserToUser( null, null, null ); // src id , dst alias , message
         
-        byte[] id = Arrays.copyOfRange(data, 0, 3);
+        byte[] id = Arrays.copyOfRange(data, 1, 3);
         
         ArrayList<byte[]> variableElements = new ArrayList<>();
         
