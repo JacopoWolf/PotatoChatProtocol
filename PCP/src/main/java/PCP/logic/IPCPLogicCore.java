@@ -111,6 +111,12 @@ public interface IPCPLogicCore extends Runnable, IDisposable
      * 
      * @return if this LogicCore has been set to be keepen alive
      */
-    boolean keepAlive();
+    boolean isKeepAlive();
+    
+    /**
+     * @see IPCPLogicCore#isKeepAlive() 
+     * @param keepAlive 
+     */
+    void setKeepAlive( boolean keepAlive );
     
 }

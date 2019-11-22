@@ -439,7 +439,7 @@ public class PCPManager implements IPCPManager
                 ( 
                     core -> 
                     {
-                        if (!core.keepAlive() && core.getQueue().size() == 0 )
+                        if (!core.isKeepAlive() && core.getQueue().size() == 0 )
                             cores.remove(core);
                     }   
                 );
