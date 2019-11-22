@@ -7,7 +7,8 @@ import PCP.*;
 
 
 /**
- *
+ * information regarding an user.
+ * Version specfic.
  * @author Jacopo_Wolf
  */
 public interface IPCPUserInfo

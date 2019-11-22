@@ -7,7 +7,7 @@ import java.util.*;
 
 
 /**
- * interface to allow memory access
+ * base interface for memory access managmenet
  * @author Jacopo_Wolf
  */
 public interface IMemoryAccess

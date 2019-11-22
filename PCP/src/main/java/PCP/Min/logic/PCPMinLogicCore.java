@@ -9,7 +9,10 @@ import PCP.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-
+/**
+ * 
+ * @author Jacopo_Wolf
+ */
 public class PCPMinLogicCore implements IPCPLogicCore
 {
     private boolean keepAliveFlag = false;

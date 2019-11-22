@@ -9,7 +9,8 @@ import java.util.*;
 
 
 /**
- *  the logic core of a server. Runs on a single thread and it's managed by the IPCPmanager middlewere.
+ * the logic core of a server. 
+ * Runs on a single thread and it's managed by an {@link IPCPManager}.
  * @author JacopoWolf
  */
 public interface IPCPLogicCore extends Runnable, IDisposable
