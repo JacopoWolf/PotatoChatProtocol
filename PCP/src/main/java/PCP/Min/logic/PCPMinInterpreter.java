@@ -166,12 +166,12 @@ public class PCPMinInterpreter implements IPCPInterpreter
        return aliasChange;
     }
     
-    private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) throws PCPException 
+    private GroupUsersListRrq createGroupUserListRrqFromBytes( byte[] data ) throws PCPException 
     {
         if ( data.length != 3 )
             throw new PCPException( ErrorCode.PackageMalformed );
         
-        GroupUserListRrq groupUserListRrq = new GroupUserListRrq( null );
+        GroupUsersListRrq groupUserListRrq = new GroupUsersListRrq( null );
         
         byte[] id = new byte[2];
         id[0] = data[1];
@@ -202,7 +202,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
                 if ( incompleteData.getClass().isInstance( msgUserToGroup ) ) 
                 {
                     MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompleteData;
-                    if ( msgUserToGroup.getSenderId() == incompleteMsgUserToGroup.getSenderId() )
+                    if ( Arrays.equals( msgUserToGroup.getSenderId() , incompleteMsgUserToGroup.getSenderId() ) )
                         return true;
                 }
                 return false;
@@ -267,8 +267,8 @@ public class PCPMinInterpreter implements IPCPInterpreter
             {
                 if ( incompleteData.getClass().isInstance( msgUserToUser ) ) 
                 {
-                    MsgUserToGroup incompleteMsgUserToUser= ( MsgUserToGroup ) incompleteData;
-                    if ( msgUserToUser.getSenderId() == incompleteMsgUserToUser.getSenderId() )
+                    MsgUserToUser incompleteMsgUserToUser= ( MsgUserToUser ) incompleteData;
+                    if ( Arrays.equals(msgUserToUser.getSenderId(), incompleteMsgUserToUser.getSenderId() ) )
                         return true;
                 }
                 return false;

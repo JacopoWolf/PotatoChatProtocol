@@ -12,11 +12,11 @@ import java.util.*;
  * @author gfurri20
  * @author Alessio789
  */
-public class GroupUserListRrq implements IPCPData
+public class GroupUsersListRrq implements IPCPData
 {
     private byte[] senderId;
 
-    public GroupUserListRrq( byte[] senderId )
+    public GroupUsersListRrq( byte[] senderId )
     {
         this.senderId = senderId;
     }
