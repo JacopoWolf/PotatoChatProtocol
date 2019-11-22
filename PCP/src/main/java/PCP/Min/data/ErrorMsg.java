@@ -18,7 +18,7 @@ public class ErrorMsg implements IPCPData
 {     
     private ErrorCode errorCode;
     
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
     public void setErrorCode( ErrorCode errorCode ) 
     {
         this.errorCode = errorCode;

@@ -316,7 +316,7 @@ public class PCPManager implements IPCPManager
                             usrInf.setAlias(reg.getAlias());
                             usrInf.setId(new byte[]{0,0}); //todo implement id generation
                         from.setUserInfo(usrInf);
-                        send( new RegistrationHack(usrInf.getId(), usrInf.getAlias()) , from);
+                        send( new RegistrationAck(usrInf.getId(), usrInf.getAlias()) , from);
                         return;
 
                     default:

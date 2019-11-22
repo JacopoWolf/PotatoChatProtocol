@@ -17,7 +17,7 @@ public class MsgRecieved extends PCPMessage
     private String sourceAlias;
 
     
-    //<editor-fold defaultstate="collapsed" desc="get set">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
     public String getSourceAlias()
     {
         return sourceAlias;

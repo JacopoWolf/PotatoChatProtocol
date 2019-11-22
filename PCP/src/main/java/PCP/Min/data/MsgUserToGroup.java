@@ -19,7 +19,7 @@ public class MsgUserToGroup extends PCPMessage
     
     
 
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
     
     public byte[] getSenderId()
     {

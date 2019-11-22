@@ -11,19 +11,19 @@ import java.util.*;
  *
  * @author Alessio789
  */
-public class RegistrationHack implements IPCPData
+public class RegistrationAck implements IPCPData
 {
     
     private byte[] assignedId;
     private String alias;
 
-    public RegistrationHack( byte[] assignedId, String alias ) 
+    public RegistrationAck( byte[] assignedId, String alias ) 
     {
         this.assignedId = assignedId;
         this.alias = alias;
     }
     
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
 
     public byte[] getAssignedId() 
     {

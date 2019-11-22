@@ -80,7 +80,7 @@ public class Disconnection implements IPCPData
         this.byClient = false;
     }
     
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
 
     /**
      *

@@ -21,7 +21,7 @@ public class GroupUserListRrq implements IPCPData
         this.senderId = senderId;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
     
     public byte[] getSenderId() 
     {

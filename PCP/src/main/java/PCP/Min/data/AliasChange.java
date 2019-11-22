@@ -34,7 +34,7 @@ public class AliasChange implements IPCPData
         this.newAlias = newAlias;
     }     
     
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
 
     /**
      *

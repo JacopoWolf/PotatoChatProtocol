@@ -41,7 +41,7 @@ public class GroupUsersList extends PCPVariablePayload
     private ArrayList<String> listOfUsers;
     
     
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
 
     public UpdateType getType() 
     {

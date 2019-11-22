@@ -20,7 +20,7 @@ public class MsgUserToUser extends PCPMessage
     private String destinationAlias;
 
 
-//<editor-fold defaultstate="collapsed" desc="getter and setters">
+//<editor-fold defaultstate="collapsed" desc="getters and setters">
     
     public byte[] getSenderId()
     {

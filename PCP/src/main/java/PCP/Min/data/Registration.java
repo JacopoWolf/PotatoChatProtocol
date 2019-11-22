@@ -24,7 +24,7 @@ public class Registration implements IPCPData
         this.topic = topic;
     }
 
-    //<editor-fold defaultstate="collapsed" desc="getter and setters">
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
 
     public String getAlias() 
     {
