@@ -153,7 +153,7 @@ public class PCPMinInterpreter_Test
     }
     
     @Test
-    public void interpretMsgUserToUser_singe() throws PCPException
+    public void interpretMsgUserToUser_single() throws PCPException
     {
         //expected
         Set<IPCPData> incompleteDataList = new HashSet<>();
