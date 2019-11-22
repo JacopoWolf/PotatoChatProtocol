@@ -166,12 +166,12 @@ public class PCPMinInterpreter implements IPCPInterpreter
        return aliasChange;
     }
     
-    private GroupUserListRrq createGroupUserListRrqFromBytes( byte[] data ) throws PCPException 
+    private GroupUsersListRrq createGroupUserListRrqFromBytes( byte[] data ) throws PCPException 
     {
         if ( data.length != 3 )
             throw new PCPException( ErrorCode.PackageMalformed );
         
-        GroupUserListRrq groupUserListRrq = new GroupUserListRrq( null );
+        GroupUsersListRrq groupUserListRrq = new GroupUsersListRrq( null );
         
         byte[] id = new byte[2];
         id[0] = data[1];

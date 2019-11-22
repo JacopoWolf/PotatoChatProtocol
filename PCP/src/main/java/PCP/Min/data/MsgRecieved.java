@@ -3,8 +3,8 @@
  */
 package PCP.Min.data;
 
-import PCP.data.PCPMessage;
 import PCP.*;
+import PCP.data.PCPMessage;
 import java.nio.charset.*;
 
 
@@ -31,12 +31,6 @@ public class MsgRecieved extends PCPMessage
 
 
     //<editor-fold defaultstate="collapsed" desc="constructors">
-        public MsgRecieved( String sourceAlias, String message )
-        {
-            super(message);
-            this.sourceAlias = sourceAlias;
-        }
-
         public MsgRecieved( String sourceAlias, OpCode code, String message )
         {
             super(code, message);
