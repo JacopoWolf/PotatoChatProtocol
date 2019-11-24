@@ -4,7 +4,6 @@
 
 package PCP.Min.data;
 
-import PCP.Min.data.MsgUserToGroup;
 import java.util.*;
 import org.junit.*;
 
@@ -12,25 +11,31 @@ import org.junit.*;
  *
  * @author gfurri20
  */
-public class PCPMsgUserToGroupPacket_Test
+public class GroupUsersList_Test
 {
     @Test
     public void testToBytesSingle()
     {
-        MsgUserToGroup packet = new MsgUserToGroup
+        ArrayList<String> listUsers = new ArrayList<>();
+        listUsers.add("user1");
+        listUsers.add("user2");
+        listUsers.add("user3");
+        
+        GroupUsersList packet = new GroupUsersList
         (
-            new byte[] {0,0},
-            "test"
+            GroupUsersList.UpdateType.complete,
+            listUsers
         );
         
         byte[] expectedResult = new byte[]
         { 
-            05, 
-            0,0,
-            116, 101, 115, 116,
+            51, 
+            0,
+            3,
+            91, 34, 117, 115, 101, 114, 49, 34, 44, 34, 117, 115, 101, 114, 50, 34, 44, 34, 117, 115, 101, 114, 51, 34, 93, 
             0
         };
-        
+                
         ArrayList<byte[]> results = new ArrayList<> (packet.toBytes());
         
         if ( results.size() != 1 )
