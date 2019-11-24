@@ -1,6 +1,6 @@
 <center>
 
-<h1>product documentation</h1>
+<h1>Product documentation</h1>
 
 </center>
 
