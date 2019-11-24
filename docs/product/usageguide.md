@@ -1,6 +1,5 @@
 <center>
 <h1>
-Potato Chat Protocol<br>
 Usage guide
 </h1>
 </center>

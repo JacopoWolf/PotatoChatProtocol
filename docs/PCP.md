@@ -1,27 +1,20 @@
 <center>
 
-<h1> 
-
-Potato Chat Protocol
-
-</h1>
-
-general exposition
+<h1>general exposition</h1>
 
 </center>
 
 
----
-1. [Overview](#overview)
-2. [Structure](#structure)
-   1. [client](#client)
-   2. [super-client](#super-client)
-   3. [server](#server)
-   4. [domain](#domain)
-3. [Types of comunications](#types-of-comunications)
-   1. [Two agents chat](#two-agents-chat)
-   2. [Multiple agents chat](#multiple-agents-chat)
-   3. [Group chat](#group-chat)
+- [Overview](#overview)
+- [Structure](#structure)
+  - [client](#client)
+  - [super-client](#super-client)
+  - [server](#server)
+  - [domain](#domain)
+- [Types of comunications](#types-of-comunications)
+  - [Two agents chat](#two-agents-chat)
+  - [Multiple agents chat](#multiple-agents-chat)
+  - [Group chat](#group-chat)
 
 ---
 
