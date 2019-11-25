@@ -44,70 +44,70 @@ Server Group:
 
 November 25, 2019
 
-# Revision History
+## Revision History
 |                   Name                   |    Date    | Reason for Changes | Version |
 | :--------------------------------------: | :--------: | :----------------: | :-----: |
 | [@gfurri20](https://github.com/gfurri20) | 25/11/2019 |  Initial Document  |   1.0   |
 |                                          |            |                    |         |
 
-# 1 Introduction
-## 1.1 Purpose
+## 1 Introduction
+### 1.1 Purpose
 
-## 1.2 Document Conventions
+### 1.2 Document Conventions
 
-## 1.3 Intended Audience and Reading Suggestions
+### 1.3 Intended Audience and Reading Suggestions
 
-## 1.4 Project Scope
+### 1.4 Project Scope
 
-## 1.5 References
-
-
-# 2 Overall Description
-
-## 2.1 Product Perspective
-
-## 2.2 Product Functions
-
-## 2.3 User Classes and Characteristics
-
-## 2.4 Operating Environment
-
-## 2.5 Design and Implementation Constraints
-
-## 2.6 User Documentation
-
-## 2.7 Assumptions and Dependencies
+### 1.5 References
 
 
-# 3 External Interface Requirements
+## 2 Overall Description
 
-## 3.1 User Interfaces
+### 2.1 Product Perspective
 
-## 3.2 Hardware Interfaces
+### 2.2 Product Functions
 
-## 3.3 Software Interfaces
+### 2.3 User Classes and Characteristics
 
-## 3.4 Communications Interfaces
+### 2.4 Operating Environment
 
+### 2.5 Design and Implementation Constraints
 
-# 4 System Feature
+### 2.6 User Documentation
 
-## 4.1 System Feature 1
-
-## 4.1 System Feature 2
-
-
-# 5 Other Nonfunctional Requirements
-
-## 5.1 Performance Requirements
-
-## 5.2 Safety Requirements
-
-## 5.3 Security Requirements
-
-## 5.4 Software Quality Attribute
-
-## 5.5 Business Rules
+### 2.7 Assumptions and Dependencies
 
 
-# 6 Optional Requirements
+## 3 External Interface Requirements
+
+### 3.1 User Interfaces
+
+### 3.2 Hardware Interfaces
+
+### 3.3 Software Interfaces
+
+### 3.4 Communications Interfaces
+
+
+## 4 System Feature
+
+### 4.1 System Feature 1
+
+### 4.1 System Feature 2
+
+
+## 5 Other Nonfunctional Requirements
+
+### 5.1 Performance Requirements
+
+### 5.2 Safety Requirements
+
+### 5.3 Security Requirements
+
+### 5.4 Software Quality Attribute
+
+### 5.5 Business Rules
+
+
+## 6 Optional Requirements
