@@ -7,7 +7,7 @@
 
 **Resources**
 - [Vision statement](visionstatement.md)
-- Software Requirements Specifications
+- [Software Requirements Specifications](srs.md)
 - Software Project Management plan
 - Release plan
 - Iteration plan
