@@ -16,9 +16,16 @@ import java.util.logging.*;
 
 
 /**
- *  a PCP server, serving on the port 53101.
- *  uses {@link Logger#getGlobal()} to log data. 
- *  to start the server, simply initalize it and the call {@link PCPServer#acceptAndServe()}
+ * A PCP server, serving on the port 53101.
+ * Uses {@link Logger#getGlobal()} to log data. 
+ * <p>
+ * To start the server, simply initalize it and the call {@link PCPServer#acceptAndServe()}.
+ * <p>
+ * This server is completely asyncronous and multithread; 
+ * And normally uses 9 threads (if not specified otherwise with {@link PCPServer#PCPServer(java.net.InetAddress, int, int)} ): <p>
+ * 1 for the server main thread, 3 for network I/O, 3 for sorting incoming data, 1 cache cleaning daemon,
+ * and 1 main core logic thread.
+ * Killing one of those might make unusable the server.
  * 
  * @author Jacopo_Wolf
  */
