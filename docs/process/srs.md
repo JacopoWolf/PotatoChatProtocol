@@ -10,11 +10,10 @@
 - [2 Overall Description](#2-overall-description)
   - [2.1 Product Perspective](#21-product-perspective)
   - [2.2 Product Functions](#22-product-functions)
-  - [2.3 User Classes and Characteristics](#23-user-classes-and-characteristics)
-  - [2.4 Operating Environment](#24-operating-environment)
-  - [2.5 Design and Implementation Constraints](#25-design-and-implementation-constraints)
-  - [2.6 User Documentation](#26-user-documentation)
-  - [2.7 Assumptions and Dependencies](#27-assumptions-and-dependencies)
+  - [2.3 Operating Environment](#23-operating-environment)
+  - [2.4 Design and Implementation Constraints](#24-design-and-implementation-constraints)
+  - [2.5 User Documentation](#25-user-documentation)
+  - [2.6 Assumptions and Dependencies](#26-assumptions-and-dependencies)
 - [3 External Interface Requirements](#3-external-interface-requirements)
   - [3.1 User Interfaces](#31-user-interfaces)
   - [3.2 Hardware Interfaces](#32-hardware-interfaces)
@@ -57,37 +56,42 @@ The purpose of this document is to present a detailed description of the PotatoC
 ### 1.2 Document Conventions
 This document is based on the IEEE template for System Requirement Specification (SRS) document.
 
+
 ### 1.3 Intended Audience and Reading Suggestions
 * Typical Users, such as developers, who want to use PCP to develop their chat applications.
-* Students who are interested to discover how a simple and volatile chat works.
-* Small realities who need a way to talk between rooms withouth yelling and withouth losing control of their messages
+* Students who are interested to discover how an extremely simple chat works.
+* Small realities who need a way to talk between rooms withouth yelling and withouth losing control of their messages.
 
 ### 1.4 Project Scope
+PotatoChatProtocol is a an extremely easy, portable and expandable protocol which can be used as base to develop a chat application.
 
 ### 1.5 References
 PCP's main page:
 [https://jacopowolf.github.io/PotatoChatProtocol](https://jacopowolf.github.io/PotatoChatProtocol) \
 PCP's Github page:
 [https://github.com/JacopoWolf/PotatoChatProtocol](https://github.com/JacopoWolf/PotatoChatProtocol) \
-PCP' Jitpack page:
+PCP's Jitpack page:
 [https://jitpack.io/#JacopoWolf/PotatoChatProtocol](https://jitpack.io/#JacopoWolf/PotatoChatProtocol) 
 
 
 ## 2 Overall Description
 
 ### 2.1 Product Perspective
+PCP is a protocol developed in order to have the possibility to implement an easy and portable chat application.
 
 ### 2.2 Product Functions
+Server side:
+* build a server ready to manage connected clients and exchange messages between them.
 
-### 2.3 User Classes and Characteristics
+### 2.3 Operating Environment
+All operating systems that have a java virtual machine.
 
-### 2.4 Operating Environment
+### 2.4 Design and Implementation Constraints
+This project is developed with Java using NetBeans as IDE. The packages are organized according to the protocol versions.
 
-### 2.5 Design and Implementation Constraints
+### 2.5 User Documentation
 
-### 2.6 User Documentation
-
-### 2.7 Assumptions and Dependencies
+### 2.6 Assumptions and Dependencies
 
 
 ## 3 External Interface Requirements
