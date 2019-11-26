@@ -52,14 +52,22 @@ November 25, 2019
 
 ## 1 Introduction
 ### 1.1 Purpose
+The purpose of this document is to present a detailed description of the PotatoChatProtocol standard. It will explain the purpose and features of the software, the interfaces of the software, what the software will do and the constraints under which it must operate. This document is intended for users of the software and also potential developers.
 
 ### 1.2 Document Conventions
+This document is based on the IEEE template for System Requirement Specification (SRS) document.
 
 ### 1.3 Intended Audience and Reading Suggestions
 
 ### 1.4 Project Scope
 
 ### 1.5 References
+PCP's main page:
+[https://jacopowolf.github.io/PotatoChatProtocol](https://jacopowolf.github.io/PotatoChatProtocol) \
+PCP's Github page:
+[https://github.com/JacopoWolf/PotatoChatProtocol](https://github.com/JacopoWolf/PotatoChatProtocol) \
+PCP' Jitpack page:
+[https://jitpack.io/#JacopoWolf/PotatoChatProtocol](https://jitpack.io/#JacopoWolf/PotatoChatProtocol) 
 
 
 ## 2 Overall Description
