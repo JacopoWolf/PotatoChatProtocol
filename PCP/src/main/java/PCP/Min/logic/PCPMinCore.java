@@ -6,6 +6,7 @@ package PCP.Min.logic;
 import PCP.data.*;
 import PCP.logic.*;
 import PCP.net.*;
+import java.util.logging.*;
 
 
 /**
@@ -16,8 +17,9 @@ class PCPMinCore implements IPCPCore
 {
 
     @Override
-    public void accept( IPCPData data )
+    public void accept( IPCPData data, IPCPUserInfo from )
     {
+        Logger.getGlobal().info("accepted something. But unfortunately I'm not yet implemented");
         throw new UnsupportedOperationException();
     }
 

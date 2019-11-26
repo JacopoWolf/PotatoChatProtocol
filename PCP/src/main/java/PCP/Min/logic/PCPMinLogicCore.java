@@ -3,11 +3,12 @@
  */
 package PCP.Min.logic;
 
+import PCP.Min.data.*;
 import PCP.*;
 import PCP.logic.*;
 import PCP.net.*;
 import java.util.*;
-import java.util.concurrent.*;
+import org.javatuples.*;
 
 /**
  * 
@@ -22,10 +23,12 @@ public class PCPMinLogicCore implements IPCPLogicCore
     private PCPMinCore core;
     private PCPMinInterpreter interpreter;
     
-    private LinkedBlockingQueue<byte[]> queue;
-    private int maxQueueLenght;
-    private int threshold;
-    private boolean waitForThreshold;
+    private LinkedList<Pair<byte[],IPCPUserInfo>> queue = new LinkedList<>();
+    private boolean waitForThreshold = false;
+    // those must be initialized externally
+    private int maxQueueLenght = -1; 
+    private int threshold = -1;
+    
     
     //<editor-fold defaultstate="collapsed" desc="getters and setters">
     @Override
@@ -41,7 +44,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
     }
     
     @Override
-    public Queue<byte[]> getQueue()
+    public Queue<Pair<byte[],IPCPUserInfo>> getQueue()
     {
         return this.queue;
     }
@@ -52,11 +55,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
         return this.manager;
     }
     
-    @Override
-    public void setManager( IPCPManager manager )
-    {
-        this.manager = manager;
-    }
+    
     
     
     @Override
@@ -107,7 +106,11 @@ public class PCPMinLogicCore implements IPCPLogicCore
     
     //<editor-fold defaultstate="collapsed" desc="constructor and disposer">
 
-    public PCPMinLogicCore() { }
+    public PCPMinLogicCore()
+    {
+        this.core = new PCPMinCore();
+        this.interpreter = new PCPMinInterpreter();
+    }
     
     private boolean disposed = false;
     @Override
@@ -116,11 +119,21 @@ public class PCPMinLogicCore implements IPCPLogicCore
         if ( !disposed )
         {
             this.queue.clear();
-            disposed = true;
+            this.disposed = true;
         }
     }
-//</editor-fold>
-      
+    
+    //</editor-fold>
+    
+    
+    @Override
+    public void setManager( IPCPManager manager )
+    {
+        this.manager = manager;
+        this.core.setManager(manager);
+        // todo: complete
+        //this.interpreter.setIncompleteDataList();
+    }
     
     @Override
     public boolean canAccept()
@@ -132,9 +145,13 @@ public class PCPMinLogicCore implements IPCPLogicCore
     } 
 
     @Override
-    public void enqueue( byte[] data )
+    public void enqueue( Pair<byte[],IPCPUserInfo> data )
     {
-       this.queue.offer(data);
+        synchronized ( queue )
+        {
+            this.queue.add(data);
+            this.queue.notify();
+        }
     }
     
     
@@ -142,7 +159,51 @@ public class PCPMinLogicCore implements IPCPLogicCore
     @Override
     public void run()
     {
-        throw new UnsupportedOperationException();
+        Pair<byte[],IPCPUserInfo> next;
+        
+        try
+        {
+            while ( !disposed ) // while this has not been disposed
+            {
+                if ( this.queue.size() < 1 ) // if queue is empty, wait for it to have some elemnts
+                {
+                    synchronized ( queue )
+                    {
+                        this.queue.wait(500);
+                    }
+                }
+                else
+                {
+                    // poll first element from the queue
+                    synchronized ( queue ) 
+                    {
+                        next = queue.poll(); 
+                    }
+                    try
+                    {
+                        // interpret and accept the next element
+                        this.core.accept
+                        (
+                            this.interpreter.interpret(next.getValue0()),
+                            next.getValue1()
+                        );
+                    }
+                    catch ( PCPException pcpe )
+                    {
+                        manager.send( new ErrorMsg(pcpe), next.getValue1().getAlias() );
+                    }
+                    finally
+                    {
+                        next = null; // remove reference of now useless object
+                    }
+                }
+            }
+        }
+        catch (InterruptedException ie)
+        {
+            this.dispose();
+            return;
+        }
     }
 
   

@@ -22,8 +22,9 @@ public interface IPCPCore
     /**
      * processes the specified data
      * @param data data to process
+     * @param from information of the sending user
      * @throws PCP.PCPException
      */
-    void accept ( IPCPData data ) throws PCPException;
+    void accept ( IPCPData data, IPCPUserInfo from ) throws PCPException;
     
 }

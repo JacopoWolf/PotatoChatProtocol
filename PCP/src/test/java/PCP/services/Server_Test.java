@@ -84,9 +84,6 @@ public class Server_Test
                         
                     Logger.getGlobal().log(Level.INFO, "TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
                     
-                    /*if (! Arrays.equals(  buffer ,  new byte[] {-1,-2}) )
-                        Assert.fail();*/
-                    
                 test.close();
     }
     

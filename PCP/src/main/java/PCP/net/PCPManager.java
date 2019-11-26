@@ -14,6 +14,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.*;
+import org.javatuples.*;
 
 
 /**
@@ -183,7 +184,8 @@ public class PCPManager implements IPCPManager
             // terminates all connections
             for ( IPCPChannel channel : this.getChannels() )
                 this.close(channel, new Disconnection(Reason.goneOffline));
-            this.sendingExecutor.shutdown(); // tells the executor to execute all pending tasks
+            // tells the executor to execute all pending tasks
+            this.sendingExecutor.shutdown(); 
 
             // closes cache cleaning daemon
             this.cleanService.shutdownNow();
@@ -242,13 +244,13 @@ public class PCPManager implements IPCPManager
             IPCPLogicCore core = channelsExecutionMap.get(from);
             if ( core.canAccept() ) 
             {
-                core.enqueue(data);
+                core.enqueue(Pair.with(data, from.getUserInfo()));
             }
             else
             {
                 // if the preferred core is not available then map on a new one
                 core = getCoreByVersion( from.getUserInfo().getVersion() );
-                    core.enqueue(data);
+                    core.enqueue(Pair.with(data, from.getUserInfo()));
                 channelsExecutionMap.put(from, core);
             }
         }
@@ -370,10 +372,10 @@ public class PCPManager implements IPCPManager
     {
         // initializes the new core
         IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
-        core.setManager(this);
-        core.setMaxQueueLenght(DefaultQueueMaxLenght);
-        core.setThreshold(defaultCoreThreshold);
-        core.getInterpreter().setIncompleteDataList(this.incompleteSetsMap.get(version).keySet());
+            core.setManager(this);
+            core.setMaxQueueLenght(DefaultQueueMaxLenght);
+            core.setThreshold(defaultCoreThreshold);
+            core.getInterpreter().setIncompleteDataList(this.incompleteSetsMap.get(version).keySet()); //todo implement pcpmanger managed incompletedatalist access methods
         
         // run the logicore on a new thread
         Thread thr = new Thread( core );
