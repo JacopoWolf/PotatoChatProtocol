@@ -52,12 +52,15 @@ November 25, 2019
 
 ## 1 Introduction
 ### 1.1 Purpose
-The purpose of this document is to present a detailed description of the PotatoChatProtocol standard. It will explain the purpose and features of the software, the interfaces of the software, what the software will do and the constraints under which it must operate. This document is intended for users of the software and also potential developers.
+The purpose of this document is to present a detailed description of the PotatoChatProtocol standard. It will explain the purpose and features of the software, the interfaces of the software, what the software will do and the constraints under which it must operate. This document is intended for developers who want to implement this protocol.
 
 ### 1.2 Document Conventions
 This document is based on the IEEE template for System Requirement Specification (SRS) document.
 
 ### 1.3 Intended Audience and Reading Suggestions
+* Typical Users, such as developers, who want to use PCP to develop their chat applications.
+* Students who are interested to discover how a simple and volatile chat works.
+* Small realities who need a way to talk between rooms withouth yelling and withouth losing control of their messages
 
 ### 1.4 Project Scope
 
