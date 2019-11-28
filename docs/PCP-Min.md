@@ -94,6 +94,9 @@ If the content results in a multiple of this number, an empty package will be se
 
 <table>
    <tr>
+     <th colspan="4"> header </th>
+     <th colspan="2"> payload </th>
+   <tr>
         <th> 1 byte </th>
         <th> 2 bytes </th>
         <th> string </th>
@@ -115,6 +118,10 @@ If the content results in a multiple of this number, an empty package will be se
 The destination client will then recieve a package with the destination alias changed to the source alias and no id.
 
 <table>
+   <tr>
+      <th colspan="3"> header </th>
+      <th colspan="2"> payload </th>
+   </tr>
    <tr>
       <th> 1 byte </th>
       <th> string </th>
@@ -142,6 +149,10 @@ If the content results in a multiple of this number, an empty package will be se
 
 <table>
     <tr>
+      <th colspan="2"> header </th>
+      <th colspan="2"> payload </th>
+    </tr>
+    <tr>
         <th> 1 byte </th>
         <th> 2 bytes </th>
         <th> string </th>
@@ -152,6 +163,29 @@ If the content results in a multiple of this number, an empty package will be se
         <td > id </td>
         <td > message </td>
         <td > 0 </td>
+    </tr>
+</table>
+
+The destination client will then recieve a package with the destination alias changed to the source alias and no id.
+
+<table>
+   <tr>
+      <th colspan="3"> header </th>
+      <th colspan="2"> payload </th>
+   </tr>
+   <tr>
+      <th> 1 byte </th>
+      <th> string </th>
+      <th> 1 byte </th>
+      <th> string </th>
+      <th> 1 byte </th>
+   </tr>
+   <tr>
+      <td> opcode (05) </td>
+      <td> source alias </td>
+      <td> 0 </td>
+      <td> message </td>
+      <td> 0 </td>
     </tr>
 </table>
 
@@ -322,7 +356,13 @@ Types:
 ["ALIAS1","ALIAS2","ALIAS3"]
 ```
 
-<table>
+In the event that the type is 1 or 2, the json list will contain only one user, the one who has connected or disconnected.
+
+  <table>
+    <tr>
+      <th colspan="3"> header </th>
+      <th colspan="2"> payload </th>
+    </tr>
     <tr>
         <th> 1 byte </th>
         <th> 1 byte </th>
