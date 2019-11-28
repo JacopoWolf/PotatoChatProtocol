@@ -87,12 +87,17 @@ Server side:
 All operating systems that have a java virtual machine.
 
 ### 2.4 Design and Implementation Constraints
-This project is developed with Java using NetBeans as IDE. The packages are organized according to the protocol versions.
+This project is developed with Java using NetBeans as IDE. The packages are organized according to the protocol versions. It uses a modular design where every feature is wrapped into a separate module and the modules depend on each other through well-written APIs.
 
 ### 2.5 User Documentation
+There is a quick guide which explains how to initialize a PCPServer:
+[https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md](https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md)
+
+Moreover there is the Javadoc, hosted on JitPack:
+[https://javadoc.jitpack.io/com/github/jacopowolf/potatochatprotocol/Min.a.3/javadoc/index.html](https://javadoc.jitpack.io/com/github/jacopowolf/potatochatprotocol/Min.a.3/javadoc/index.html)
 
 ### 2.6 Assumptions and Dependencies
-
+PCP is developed in Java so to start-up a server the machine requires a Java version 8 (recommended) or higher and JDK version 8 (recommended) or higher.
 
 ## 3 External Interface Requirements
 
