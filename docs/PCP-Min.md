@@ -96,6 +96,7 @@ If the content results in a multiple of this number, an empty package will be se
    <tr>
      <th colspan="4"> header </th>
      <th colspan="2"> payload </th>
+  </tr>
    <tr>
         <th> 1 byte </th>
         <th> 2 bytes </th>
