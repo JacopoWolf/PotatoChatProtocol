@@ -8,6 +8,7 @@ import PCP.logic.*;
 import PCP.net.*;
 import java.util.*;
 import java.util.logging.*;
+import java.util.stream.*;
 
 
 /**
@@ -37,10 +38,15 @@ class PCPMinCore implements IPCPCore, IMemoryAccess
         this.manager = manager;
     }
 
+    
     @Override
     public Set<String> getRoomNames()
     {
-        throw new UnsupportedOperationException();
+        Set<String> rooms = new HashSet<>();
+            rooms.add("general");
+            rooms.add( null );
+            
+        return rooms;
     }
 
     @Override
@@ -52,7 +58,10 @@ class PCPMinCore implements IPCPCore, IMemoryAccess
     @Override
     public Collection<IPCPUserInfo> getUsersByRoom( String roomName )
     {
-        throw new UnsupportedOperationException();
+        return getUsers()
+                .stream()
+                .filter( (inf) -> inf.getRoom().endsWith(roomName) )
+                .collect(Collectors.toList());
     }
     
 }

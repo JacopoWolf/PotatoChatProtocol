@@ -38,7 +38,18 @@ public interface IPCPUserInfo
      * @return the id associated with this connection
      */
     byte[] getId();
-    
+
+
+    /**
+     * 
+     * @param roomName 
+     */
+    void setRoom(String roomName);
+    /**
+     * 
+     * @return 
+     */
+    String getRoom();
 
     
     /**
