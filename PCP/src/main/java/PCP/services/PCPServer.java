@@ -35,12 +35,14 @@ public final class PCPServer extends Thread implements IPCPServer
     final AsynchronousServerSocketChannel assc;
     final ExecutorService managerExecutor;
     
+    
+    //<editor-fold defaultstate="collapsed" desc="getters and setters">
     @Override
     public IPCPManager getManager()
     {
         return middleware;
     }
-
+    
     @Override
     public IMemoryAccess getMemoryAccess()
     {
@@ -52,11 +54,15 @@ public final class PCPServer extends Thread implements IPCPServer
     {
         return this.assc;
     }
-
+//</editor-fold>
+    
+    
+    //<editor-fold defaultstate="collapsed" desc="constructor and finilizers">
+    
     /**
      * initialize a new PCP server with default values
      * @param address the address to bind the server to
-     * @throws IOException 
+     * @throws IOException
      */
     public PCPServer ( InetAddress address ) throws IOException
     {
@@ -68,7 +74,7 @@ public final class PCPServer extends Thread implements IPCPServer
      * @param address the address to bind the server to
      * @param listeningPoolSize number of threads dedicated to listen for incoming data and connections
      * @param middlewarePoolSize number of threads dedicated to execute the middleware
-     * @throws IOException 
+     * @throws IOException
      */
     public PCPServer( InetAddress address, int listeningPoolSize, int middlewarePoolSize ) throws IOException
     {
@@ -84,13 +90,13 @@ public final class PCPServer extends Thread implements IPCPServer
         try
         {
             this.assc = AsynchronousServerSocketChannel.open
+                        (
+                            AsynchronousChannelGroup.withThreadPool
                             (
-                                AsynchronousChannelGroup.withThreadPool
-                                (
-                                    Executors.newFixedThreadPool( listeningPoolSize )
-                                ) 
-                            );
-                    assc.bind(addr);
+                                Executors.newFixedThreadPool( listeningPoolSize )
+                            )
+                        );
+                assc.bind(addr);
             Logger.getGlobal().log(Level.INFO, "server threadpool successfully initialized and binded on {0}", addr.toString());
         }
         catch ( IOException ioe )
@@ -100,7 +106,24 @@ public final class PCPServer extends Thread implements IPCPServer
         }
         
     }
-      
+    
+    @Override
+    protected void finalize() throws Throwable
+    {
+        try
+        {
+            Logger.getGlobal().warning("server's finalizer has been called");
+            this.shutDown();
+        }
+        finally
+        {
+            super.finalize();
+        }
+        
+    }
+    
+//</editor-fold>
+    
  
     
     @Override
@@ -155,7 +178,7 @@ public final class PCPServer extends Thread implements IPCPServer
                     @Override
                     public void failed( Throwable exc, Void attachment )
                     {
-                        Logger.getGlobal().log(Level.WARNING,"rrror recieving new connection",exc);
+                        Logger.getGlobal().log(Level.WARNING,"error recieving new connection",exc);
                     }
                 }
             );
@@ -179,6 +202,7 @@ public final class PCPServer extends Thread implements IPCPServer
     {
         try
         {
+            Logger.getGlobal().info("server shutting down...");
             // disposes of in-use resources
             this.middleware.dispose();
             // closes socket
@@ -194,7 +218,7 @@ public final class PCPServer extends Thread implements IPCPServer
     
     
     
-
+    // provate variable used to manage incoming connections
     private CompletionHandler<Integer, IPCPChannel> channelDataRecieved = 
         new CompletionHandler<Integer, IPCPChannel>()
         {

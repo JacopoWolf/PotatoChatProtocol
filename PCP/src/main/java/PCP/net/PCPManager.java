@@ -7,8 +7,6 @@ import PCP.Min.data.Disconnection.Reason;
 import PCP.Min.data.*;
 import PCP.Min.logic.*;
 import PCP.*;
-import PCP.Min.data.*;
-import PCP.Min.logic.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -42,6 +40,10 @@ public class PCPManager implements IPCPManager
      */
     private final HashMap<PCP.Versions,HashMap<IPCPData,Integer>> incompleteSetsMap = new HashMap<>();
     
+    /**
+     * manages all possible IDS
+     */
+    private final IDmanager<byte[]> idmanager; // initialized in constructor
     
     
     /**
@@ -184,7 +186,22 @@ public class PCPManager implements IPCPManager
     {
         // initialized cleaning daemon service
         this.setCacheCleaningTimerMillis(cacheCleaningTimerMillis);
-
+        this.idmanager = new IDmanager<>
+        (
+            ( Set<byte[]> set) -> 
+            {
+                byte[] newkey = new byte[2];
+                Random rnd = new Random();
+                do
+                {
+                    rnd.nextBytes(newkey);
+                }
+                while( set.contains(newkey) );
+                
+                set.add(newkey);
+                return newkey;
+            }
+        );
     }
     
     private boolean isDisposed = false;
@@ -308,7 +325,7 @@ public class PCPManager implements IPCPManager
                 switch ( data[1] )
                 {
                     case 0: // PCP-Minimal
-                        
+                    {
                         // !    this is a known error. 
                         //      size of data sent with initial connections cannot be determinated because of shit Java APIs.
                         
@@ -326,12 +343,17 @@ public class PCPManager implements IPCPManager
                         
                         Logger.getGlobal().log(Level.FINEST, "Server recieved {0}", Arrays.toString(dataCopy));
                         Registration reg = (Registration)(new PCPMinInterpreter().interpret(dataCopy));
+                        
                         PCPMinUserInfo usrInf = new PCPMinUserInfo();
                             usrInf.setAlias(reg.getAlias());
-                            usrInf.setId(new byte[]{0,0}); //todo implement id generation
+                            usrInf.setId( idmanager.generateID() );
+                            usrInf.setRoom(reg.getTopic());
+                            
                         from.setUserInfo(usrInf);
+                        
                         send( new RegistrationAck(usrInf.getId(), usrInf.getAlias()) , from);
                         return;
+                    }
 
                     default:
                         throw new PCPException(ErrorCode.PackageMalformed);
@@ -535,6 +557,7 @@ public class PCPManager implements IPCPManager
         
         try
         {
+            //? got doubts on that .get() 
             if ( with != null )
                 sendingExecutor.submit( () -> pcpchannel.send(with.toBytes()) ).get();
         }
@@ -544,6 +567,9 @@ public class PCPManager implements IPCPManager
         }
         finally
         {
+            // frees the acquired id
+            idmanager.freeID(pcpchannel.getUserInfo().getId());
+            
             try
             {
                 pcpchannel.getChannel().close();

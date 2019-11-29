@@ -48,31 +48,27 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             case MsgUserToUser:
             {
                 MsgUserToUser msg = (MsgUserToUser) data;
-                MsgRecieved msgRecievedUserToUser = new MsgRecieved
+                MsgRecieved msg_tosend = new MsgRecieved
                     ( 
                         from.getAlias(),
                         msg.getOpCode(),
                         msg.getMessage() 
                     );
                 
-                manager.send( msgRecievedUserToUser, msg.getDestinationAlias() );
+                manager.send( msg_tosend, msg.getDestinationAlias() );
                 break;
             }
             
             case MsgUserToGroup:
             {
                 MsgUserToGroup msg = (MsgUserToGroup) data;
-                MsgRecieved msgRecievedUserToGroup = new MsgRecieved
+                MsgRecieved msg_tosend = new MsgRecieved
                     (
                         from.getAlias(),
                         msg.getMessage()
                     );
                 
-                manager.sendBroadcast
-                    ( 
-                        msgRecievedUserToGroup, 
-                        this.getAliasesByRoom( from.getRoom()) 
-                    );
+                manager.sendBroadcast( msg_tosend, this.getAliasesByRoom( from.getRoom() ) );
                 break;
             }
             
