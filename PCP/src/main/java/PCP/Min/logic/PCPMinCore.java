@@ -5,6 +5,7 @@ package PCP.Min.logic;
 
 import PCP.Min.data.*;
 import PCP.PCPException;
+import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
 import PCP.net.*;
@@ -15,6 +16,7 @@ import java.util.stream.*;
 /**
  *
  * @author Jacopo_Wolf
+ * @author Alessio789
  */
 class PCPMinCore implements IPCPCore, IMemoryAccess
 {
@@ -37,21 +39,36 @@ class PCPMinCore implements IPCPCore, IMemoryAccess
                 
             case GroupUsersListRrq:
                 Collection<IPCPUserInfo> userCollection = this.getUsersByRoom( from.getRoom() );
-                GroupUsersList groupUsersList = new GroupUsersList( GroupUsersList.UpdateType.complete, null);
-                manager.send( groupUsersList, from.getAlias() );
+                ArrayList<String> userList = new ArrayList<>();
+                for ( IPCPUserInfo user : userCollection ) 
+                    userList.add( user.getAlias() );
+                GroupUsersList gul = new GroupUsersList( GroupUsersList.UpdateType.complete, userList);
+                manager.send( gul, from.getAlias() );
                 break;   
             
             case Error:
                 ErrorMsg error = ( ErrorMsg ) data;
-                if ( PCPException.ErrorCode.requiresConnectionClose( error.getErrorCode() ) )
+                if ( ErrorCode.requiresConnectionClose( error.getErrorCode() ) )
                     manager.close( from.getAlias(), null );
                 else
-                    throw new PCP.PCPException( error.getErrorCode() );
+                    throw new PCPException( error.getErrorCode() );
+                break;
                 
             case Registration:
-                RegistrationAck registrationAck = new RegistrationAck( from.getId(), from.getAlias() );
-                GroupUsersList groupUsersListReg = new GroupUsersList( GroupUsersList.UpdateType.complete, null);
+                Registration reg = ( Registration ) data;
+                from.setRoom( reg.getTopic() );
+                Collection<IPCPUserInfo> uc = this.getUsersByRoom( from.getRoom() );
+                ArrayList<String> ul = new ArrayList<>();
+                for ( IPCPUserInfo user : uc ) 
+                    ul.add( user.getAlias() );
+                RegistrationAck regAck = new RegistrationAck( from.getId(), from.getAlias() );
+                GroupUsersList gulR = new GroupUsersList( GroupUsersList.UpdateType.complete, ul);
+                manager.send( regAck, from.getAlias() );
+                manager.send( gulR, from.getAlias() );   
+                break;
                 
+            default:
+                throw new PCPException( ErrorCode.Unspecified );
         }
     }
 
