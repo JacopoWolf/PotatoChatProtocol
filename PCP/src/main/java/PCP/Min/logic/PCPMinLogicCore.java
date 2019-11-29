@@ -179,6 +179,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
                     {
                         next = queue.poll(); 
                     }
+                    
                     try
                     {
                         // interpret and accept the next element
