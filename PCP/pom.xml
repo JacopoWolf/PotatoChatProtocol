@@ -8,9 +8,10 @@
     
     <groupId>edu.itimarconivr.quintaei</groupId>
     <artifactId>PCP</artifactId>
-    <version>Min.a.2</version>
-    
-    <name>PCP</name>
+    <name>Potato Chat Protocol - official APIs</name>
+    <version>Min.b</version> 
+    <!-- indicates only major and minor version (full version format is Maj.m.r ) -->
+
     <packaging>jar</packaging>
     
 
