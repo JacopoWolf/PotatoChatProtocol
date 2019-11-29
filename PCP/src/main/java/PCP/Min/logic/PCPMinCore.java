@@ -17,6 +17,7 @@ import java.util.stream.*;
  *
  * @author Jacopo_Wolf
  * @author Alessio789
+ * @author gfurri20
  */
 class PCPMinCore implements IPCPCore, IMemoryAccess
 {
@@ -57,14 +58,38 @@ class PCPMinCore implements IPCPCore, IMemoryAccess
             case Registration:
                 Registration reg = ( Registration ) data;
                 from.setRoom( reg.getTopic() );
-                Collection<IPCPUserInfo> uc = this.getUsersByRoom( from.getRoom() );
-                ArrayList<String> ul = new ArrayList<>();
-                for ( IPCPUserInfo user : uc ) 
-                    ul.add( user.getAlias() );
+                
+                ArrayList<String> ul = (ArrayList<String>) this.getAliasesByRoom( from.getRoom() );
+                
                 RegistrationAck regAck = new RegistrationAck( from.getId(), from.getAlias() );
                 GroupUsersList gulR = new GroupUsersList( GroupUsersList.UpdateType.complete, ul);
                 manager.send( regAck, from.getAlias() );
                 manager.send( gulR, from.getAlias() );   
+                break;
+            
+            case MsgUserToUser:
+                MsgUserToUser msgUserToUser = (MsgUserToUser) data;
+                MsgRecieved msgRecievedUserToUser = new MsgRecieved
+                ( 
+                    from.getAlias(),
+                    msgUserToUser.getOpCode(),
+                    msgUserToUser.getMessage() 
+                );
+                
+                manager.send( msgRecievedUserToUser, msgUserToUser.getDestinationAlias() );
+                break;
+            
+            case MsgUserToGroup:
+                MsgUserToGroup msgUserToGroup = (MsgUserToGroup) data;
+                MsgRecieved msgRecievedUserToGroup = new MsgRecieved
+                (
+                    from.getAlias(),
+                    msgUserToGroup.getMessage()
+                );
+                
+                ArrayList<String> userArrayList = (ArrayList<String>) this.getAliasesByRoom( from.getRoom() );
+                
+                manager.sendBroadcast( msgRecievedUserToGroup, userArrayList );
                 break;
                 
             default:
@@ -108,6 +133,16 @@ class PCPMinCore implements IPCPCore, IMemoryAccess
                 .stream()
                 .filter( (inf) -> inf.getRoom().endsWith(roomName) )
                 .collect(Collectors.toList());
+    }
+    
+    private Collection<String> getAliasesByRoom( String roomName )
+    {
+        Collection<IPCPUserInfo> userInfos = this.getUsersByRoom( roomName );
+        ArrayList<String> userArrayList = new ArrayList<>();
+        for ( IPCPUserInfo user : userInfos ) 
+            userArrayList.add( user.getAlias() );
+        
+        return userArrayList;
     }
     
 }
