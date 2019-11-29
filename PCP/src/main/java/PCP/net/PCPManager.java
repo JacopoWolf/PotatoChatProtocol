@@ -7,6 +7,8 @@ import PCP.Min.data.Disconnection.Reason;
 import PCP.Min.data.*;
 import PCP.Min.logic.*;
 import PCP.*;
+import PCP.Min.data.*;
+import PCP.Min.logic.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -14,6 +16,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.*;
+import java.util.stream.*;
 import org.javatuples.*;
 
 
@@ -144,9 +147,18 @@ public class PCPManager implements IPCPManager
     {
         this.DefaultkeepAlive = DefaultkeepAlive;
     }
+
     
     
-    
+    @Override
+    public Collection<IPCPUserInfo> allConnectedUsers()
+    {
+        return getChannels()
+                .stream()
+                .map( IPCPChannel::getUserInfo )
+                .collect( Collectors.toList() );
+                
+    }
     
     @Override
     public List<IPCPLogicCore> getCores()

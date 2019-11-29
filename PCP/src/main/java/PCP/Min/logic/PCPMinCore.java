@@ -6,6 +6,7 @@ package PCP.Min.logic;
 import PCP.data.*;
 import PCP.logic.*;
 import PCP.net.*;
+import java.util.*;
 import java.util.logging.*;
 
 
@@ -13,7 +14,7 @@ import java.util.logging.*;
  *
  * @author Jacopo_Wolf
  */
-class PCPMinCore implements IPCPCore 
+class PCPMinCore implements IPCPCore, IMemoryAccess
 {
 
     @Override
@@ -31,6 +32,24 @@ class PCPMinCore implements IPCPCore
 
     @Override
     public void setManager( IPCPManager manager )
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Set<String> getRoomNames()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Collection<IPCPUserInfo> getUsers()
+    {
+        return this.getManager().allConnectedUsers();
+    }
+
+    @Override
+    public Collection<IPCPUserInfo> getUsersByRoom( String roomName )
     {
         throw new UnsupportedOperationException();
     }

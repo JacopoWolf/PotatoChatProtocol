@@ -22,7 +22,7 @@ public interface IMemoryAccess
      * 
      * @return a set of every active users
      */
-    public Set<IPCPUserInfo> getUsers();
+    public Collection<IPCPUserInfo> getUsers();
     
     /**
      * @param roomName name of the room to filter. 
