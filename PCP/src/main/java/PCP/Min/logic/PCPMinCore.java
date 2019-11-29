@@ -3,11 +3,12 @@
  */
 package PCP.Min.logic;
 
+import PCP.Min.data.*;
+import PCP.PCPException;
 import PCP.data.*;
 import PCP.logic.*;
 import PCP.net.*;
 import java.util.*;
-import java.util.logging.*;
 import java.util.stream.*;
 
 
@@ -20,10 +21,38 @@ class PCPMinCore implements IPCPCore, IMemoryAccess
     private IPCPManager manager;
 
     @Override
-    public void accept( IPCPData data, IPCPUserInfo from )
+    public void accept( IPCPData data, IPCPUserInfo from ) throws PCPException
     {
-        Logger.getGlobal().info("accepted something. But unfortunately I'm not yet implemented");
-        throw new UnsupportedOperationException();
+        
+        switch ( data.getOpCode() ) 
+        {
+            case AliasChange:
+                AliasChange ac = (AliasChange) data;
+                from.setAlias( ac.getNewAlias() );
+                break;
+                
+            case Disconnection:
+                manager.close( from.getAlias(), null );
+                break;
+                
+            case GroupUsersListRrq:
+                Collection<IPCPUserInfo> userCollection = this.getUsersByRoom( from.getRoom() );
+                GroupUsersList groupUsersList = new GroupUsersList( GroupUsersList.UpdateType.complete, null);
+                manager.send( groupUsersList, from.getAlias() );
+                break;   
+            
+            case Error:
+                ErrorMsg error = ( ErrorMsg ) data;
+                if ( PCPException.ErrorCode.requiresConnectionClose( error.getErrorCode() ) )
+                    manager.close( from.getAlias(), null );
+                else
+                    throw new PCP.PCPException( error.getErrorCode() );
+                
+            case Registration:
+                RegistrationAck registrationAck = new RegistrationAck( from.getId(), from.getAlias() );
+                GroupUsersList groupUsersListReg = new GroupUsersList( GroupUsersList.UpdateType.complete, null);
+                
+        }
     }
 
     @Override
