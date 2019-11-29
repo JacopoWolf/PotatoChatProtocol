@@ -15,6 +15,7 @@ import java.util.logging.*;
  */
 class PCPMinCore implements IPCPCore 
 {
+    private IPCPManager manager;
 
     @Override
     public void accept( IPCPData data, IPCPUserInfo from )
@@ -26,13 +27,13 @@ class PCPMinCore implements IPCPCore
     @Override
     public IPCPManager getManager()
     {
-        throw new UnsupportedOperationException();
+        return manager;
     }
 
     @Override
     public void setManager( IPCPManager manager )
     {
-        throw new UnsupportedOperationException();
+        this.manager = manager;
     }
     
 }
