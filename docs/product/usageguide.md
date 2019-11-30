@@ -11,6 +11,7 @@ Usage guide
 - [2. Services](#2-services)
   - [PCPServer](#pcpserver)
     - [start](#start)
+    - [logging](#logging)
     - [interrupt](#interrupt)
 
 ---
@@ -62,6 +63,20 @@ server.acceptAndServe();
 ```
 be careful as all of those calls can throw an `IOException`.
 If the reson of this exception is a port already in use, make sure you don't have any other application unfortunately already occupying the port **53101**. If that's the case, restarting your computer might solve the issue.
+
+### logging
+PCPServer uses Java's `Logger.getGlobal()` to log every operation it does.
+By default, the global logger prints on the console with an `INFO` logging level. 
+
+If you want to change logging output, go look at Oracle's official [documentation](https://docs.oracle.com/javase/8/docs/api/java/util/logging/Logger.html) for complete usage information.
+
+To change the logging level to `FINEST`, allowing detailed printing of every action performed by the server, write those two instructions:
+```java
+// changes default console logging level
+Logger.getLogger("").getHandlers()[0].setLevel(Level.FINEST);
+// changes global configuration logging level
+Logger.getGlobal().setLevel(Level.FINEST);
+```
 
 ### interrupt
 
