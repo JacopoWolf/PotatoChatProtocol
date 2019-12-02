@@ -54,7 +54,9 @@ If you have performance problems, it might be your system is not good at managin
 
 ### start
 
-In the below example, a PCPServer is started on the loopback interface:
+To start a server write down in a meaven project these three lines of code.
+
+In the below example, a PCPServer is started on the loopback interface.
 
 ```java
 InetAddress address = InetAddress.getByName("127.0.0.1");
