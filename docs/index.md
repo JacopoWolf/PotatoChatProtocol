@@ -12,7 +12,7 @@
 
 ## Resources
 
-- [process documentation](project/prjdoc_index.md)
+- [process documentation](project/index.md)
 
 - [product documentation](product/index.md)
 
