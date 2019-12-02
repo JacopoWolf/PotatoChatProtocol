@@ -27,7 +27,7 @@
 
 ### [Javadoc](https://javadoc.jitpack.io/com/github/jacopowolf/potatochatprotocol/latest/javadoc/index.html)
 
-### [GitHub pages](docs/README.md)
+### [GitHub pages](docs/index.md)
 
 ---
 
