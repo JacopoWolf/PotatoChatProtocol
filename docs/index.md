@@ -10,20 +10,26 @@
 
 ---
 
-# Resources
+## Resources
+
+- [process documentation](project/prjdoc_index.md)
+
+- [product documentation](product/index.md)
+
+- [usage guide](product/usageguide.md), to learn how to use the APIs
 
 - [javadoc of the latest version](https://javadoc.jitpack.io/com/github/jacopowolf/potatochatprotocol/latest/javadoc/index.html), hosted on JitPack
 
-- [general description](PCP.md) of the initial protocol idea.
-
-- [usage guide](usage.md) to learn how to use the APIs
+- [general description](PCP.md), a draft of the initial protocol idea
 
 
-# Versions
 
-## [PCP-Minimal](PCP-Min.md) ![](https://img.shields.io/github/labels/jacopowolf/potatochatprotocol/PCP-Min?style=flat-square)
+
+## Versions
+
+### [PCP-Minimal](PCP-Min.md) ![](https://img.shields.io/github/labels/jacopowolf/potatochatprotocol/PCP-Min?style=flat-square)
 
 ![](https://img.shields.io/github/last-commit/jacopowolf/potatochatprotocol/dev-Min?color=informational&style=flat-square)
 ![](https://img.shields.io/github/issues/jacopowolf/potatochatprotocol/PCP-Min?style=flat-square)
 
-Minimal implementation of the protocol.
+Minimal and lightweight implementation of the protocol.

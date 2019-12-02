@@ -1,6 +1,5 @@
 <center>
 <h1>
-Potato Chat Protocol<br>
 PCP-Minimal
 </h1>
 </center>
@@ -23,7 +22,7 @@ PCP-Minimal
       - [server](#server)
     - [18 - change of alias](#18---change-of-alias)
   - [2x to 5x - control messages](#2x-to-5x---control-messages)
-    - [20 - registration hack](#20---registration-hack)
+    - [20 - registration ack](#20---registration-ack)
     - [50 - group users list request](#50---group-users-list-request)
     - [51 - group users list](#51---group-users-list)
   - [255 - errors](#255---errors)
