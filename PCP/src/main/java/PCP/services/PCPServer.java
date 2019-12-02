@@ -133,6 +133,11 @@ public final class PCPServer extends Thread implements IPCPServer
         Logger.getGlobal().log(Level.INFO, "server listening...");
     }
     
+    /**
+     * @param startWith
+     * @throws IOException 
+     * @throws UnsupportedOperationException
+     */
     @Override
     public void acceptAndServe( PCP.Versions startWith ) throws IOException
     {
@@ -178,7 +183,7 @@ public final class PCPServer extends Thread implements IPCPServer
                     @Override
                     public void failed( Throwable exc, Void attachment )
                     {
-                        Logger.getGlobal().log(Level.WARNING,"error recieving new connection",exc);
+                        Logger.getGlobal().log(Level.WARNING,"error recieving new connection", exc );
                     }
                 }
             );
@@ -190,7 +195,7 @@ public final class PCPServer extends Thread implements IPCPServer
         }
         catch( InterruptedException ex )
         {
-            Logger.getGlobal().log(Level.INFO, "server interrupted!", ex);
+            Logger.getGlobal().log(Level.INFO, "server info thread interrupted!", ex);
         }
     }
     
@@ -212,7 +217,7 @@ public final class PCPServer extends Thread implements IPCPServer
         }
         catch( IOException ex )
         {
-            Logger.getGlobal().log(Level.SEVERE, null, ex);
+            Logger.getGlobal().log(Level.SEVERE, "error during server shutdown! Resources might not have been correctly disposed", ex);
         }
     }
     
@@ -233,7 +238,7 @@ public final class PCPServer extends Thread implements IPCPServer
                         ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT());
                         
                         channel.getChannel().read(bb, channel, channelDataRecieved);
-
+                        
                         middleware.accept( Arrays.copyOfRange(bb.array(), 0, bytesRead), channel);
                     }
                 );
@@ -242,7 +247,9 @@ public final class PCPServer extends Thread implements IPCPServer
             @Override
             public void failed( Throwable exc, IPCPChannel attachment )
             {
-                Logger.getGlobal().log(Level.WARNING,"connection interrupted!");
+                // correctly disposes of the IPCPChannel and related UserInfo
+                middleware.close(attachment, null);
+                Logger.getGlobal().log(Level.WARNING,"connection interrupted");
             }
         };   
  

@@ -37,7 +37,7 @@ public final class IDmanager<T>
      * generates a new unique id
      * @return the generated id
      */
-    public T generateID()
+    public synchronized T generateID()
     {
         return this.generator.apply(IDset);
     }
@@ -46,7 +46,7 @@ public final class IDmanager<T>
      * frees the specified id
      * @param ID 
      */
-    public void freeID( T ID )
+    public synchronized void freeID( T ID )
     {
         IDset.remove(ID);
     }

@@ -4,6 +4,7 @@
 package PCP.net;
 
 import PCP.logic.*;
+import java.io.*;
 import java.nio.channels.*;
 import java.util.*;
 
@@ -43,7 +44,8 @@ public interface IPCPChannel
     /**
      * send the respective data to this socket
      * @param data 
+     * @throws java.io.IOException 
      */
-    void send( Collection<byte[]> data );
+    void send( Collection<byte[]> data ) throws IOException;
     
 }

@@ -211,8 +211,13 @@ public class PCPManager implements IPCPManager
         if ( !isDisposed )
         {
             // terminates all connections
-            for ( IPCPChannel channel : this.getChannels() )
-                this.close(channel, new Disconnection(Reason.goneOffline));
+            synchronized ( this.channelsExecutionMap )
+            {
+                // this way it doesn't throw a ConcurrentModificationException
+                while ( this.getChannels().size() > 0 )
+                    this.close(this.getChannels().iterator().next(), new  Disconnection(Reason.goneOffline) );
+            }
+            
             // tells the executor to execute all pending tasks
             this.sendingExecutor.shutdown(); 
 
@@ -265,12 +270,18 @@ public class PCPManager implements IPCPManager
     @Override
     public void accept( final byte[] data, final IPCPChannel from )
     {   
+        Logger.getGlobal().log( Level.FINEST,"recieved raw:\n{0}", Arrays.toString(data) );
+        
         // checks if the recieved data comes from a new connection
         if ( channelsExecutionMap.containsKey(from) )
         {
             // NOT a new connection 
             //checks for preferred logicCore
             IPCPLogicCore core = channelsExecutionMap.get(from);
+            if ( core == null )
+                channelsExecutionMap.put(from, getCoreByVersion(from.getUserInfo().getVersion()));
+            
+            
             if ( core.canAccept() ) 
             {
                 core.enqueue(Pair.with(data, from.getUserInfo()));
@@ -306,12 +317,12 @@ public class PCPManager implements IPCPManager
         }
 
         private boolean isAllZeros(byte[] b) 
-    {
-        for ( byte _b : b )
-            if ( _b != 0 )
-                return false;
-        return true;
-    }
+        {
+            for ( byte _b : b )
+                if ( _b != 0 )
+                    return false;
+            return true;
+        }
         
         @Override
         public void run()
@@ -341,9 +352,16 @@ public class PCPManager implements IPCPManager
                                 else
                                     firstZeroFound = true;
                         
-                        Logger.getGlobal().log(Level.FINEST, "Server recieved {0}", Arrays.toString(dataCopy));
+                        try
+                        {
+                            Logger.getGlobal().log(Level.FINE,"from {0} interpreting incoming connection",from.getChannel().getRemoteAddress().toString());
+                        }
+                        catch(IOException ioe){}
+                        
+                        // interpretation
                         Registration reg = (Registration)(new PCPMinInterpreter().interpret(dataCopy));
                         
+                        // creates the user info object
                         PCPMinUserInfo usrInf = new PCPMinUserInfo();
                             usrInf.setAlias(reg.getAlias());
                             usrInf.setId( idmanager.generateID() );
@@ -351,6 +369,16 @@ public class PCPManager implements IPCPManager
                             
                         from.setUserInfo(usrInf);
                         
+                        // new user connected
+                        channelsExecutionMap.put(from, null);
+                        
+                        Logger.getGlobal().log
+                        (
+                            Level.INFO, "new user [ {0} , {1} ] connected on channel {2}", 
+                            new Object[]{usrInf.getAlias(), Arrays.toString(usrInf.getId()), usrInf.getRoom()}
+                        );
+                        
+                        // acknowledges the connection
                         send( new RegistrationAck(usrInf.getId(), usrInf.getAlias()) , from);
                         return;
                     }
@@ -530,7 +558,20 @@ public class PCPManager implements IPCPManager
     @Override
     public void send( final IPCPData data, final IPCPChannel destination )
     {
-        sendingExecutor.submit( () -> destination.send(data.toBytes()) );
+        sendingExecutor.submit
+        ( 
+            () -> 
+            {
+                try
+                { 
+                    destination.send(data.toBytes());
+                }
+                catch ( IOException ioe )
+                {
+                    Logger.getGlobal().log(Level.WARNING, "error while sending data to {0}", destination.getUserInfo().getAlias());
+                }
+            } 
+        );
     }
     
     
@@ -553,32 +594,43 @@ public class PCPManager implements IPCPManager
     @Override
     public void close( IPCPChannel pcpchannel, IPCPData with )
     {
+        if (!this.channelsExecutionMap.containsKey(pcpchannel))
+            return;
+                
+        Logger.getGlobal().log
+        (
+            Level.INFO, "user [ {0} , {1} ] gone offline", 
+            new Object[]{pcpchannel.getUserInfo().getAlias(), Arrays.toString(pcpchannel.getUserInfo().getId())}
+        );
+        
         this.channelsExecutionMap.remove(pcpchannel);
         
-        try
-        {
-            //? got doubts on that .get() 
-            if ( with != null )
-                sendingExecutor.submit( () -> pcpchannel.send(with.toBytes()) ).get();
-        }
-        catch( InterruptedException | ExecutionException ex )
-        {
-            Logger.getGlobal().log( Level.WARNING, "Error while closing a connection:\n", ex );
-        }
-        finally
-        {
-            // frees the acquired id
-            idmanager.freeID(pcpchannel.getUserInfo().getId());
-            
-            try
+        sendingExecutor.submit
+        ( 
+            () -> 
             {
-                pcpchannel.getChannel().close();
+                try
+                {
+                    if ( with != null )
+                        pcpchannel.send(with.toBytes());
+
+                    pcpchannel.getChannel().close();
+                }
+                catch( IOException ex )
+                {
+                    Logger.getGlobal().log( Level.WARNING, "Error while closing a connection:\n", ex );
+                }
+                finally
+                {
+                    // frees the acquired id
+                    idmanager.freeID(pcpchannel.getUserInfo().getId());
+                }
             }
-            catch ( IOException ioe )
-            {
-                Logger.getGlobal().log( Level.WARNING, "Impossible to close channel:\n", ioe );
-            }
-        }
+        );
+       
+        
+        
+        
     }
 //</editor-fold>
     
