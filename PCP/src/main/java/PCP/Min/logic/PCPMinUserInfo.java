@@ -56,8 +56,11 @@ public class PCPMinUserInfo implements IPCPUserInfo
     {
         this.room = room;
     }
-    
-    
-       
+
+    @Override
+    public String toString()
+    {
+        return "User: " + getAlias() + " - Room: " + getRoom() + " - Version of the protocol: " + getVersion().FULL_NAME();
+    }
     
 }
