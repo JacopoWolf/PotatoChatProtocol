@@ -152,8 +152,19 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             
             case AliasChange:
             {
+                String oldAlias = from.getAlias();
+                manager.sendBroadcast(
+                        new GroupUsersList( GroupUsersList.UpdateType.disconnected, oldAlias ), 
+                        this.getAliasesByRoom( from.getRoom()) );
                 AliasChange ac = (AliasChange) data;
                 from.setAlias( ac.getNewAlias() );
+                manager.sendBroadcast(
+                        new GroupUsersList( GroupUsersList.UpdateType.joined, from.getAlias() ),
+                        this.getAliasesByRoom( from.getRoom() ) );
+                Logger.getGlobal().log( Level.INFO, "AliasChange packet received from {0}", from.toString() );
+                Logger.getGlobal().log( Level.INFO, "User {0} changed alias from {1} to {2}", new Object[]{from.toString(), oldAlias, from.getAlias()} );
+                Logger.getGlobal().log( Level.INFO, "GroupUsersList disconnected type sended with alias {0}", oldAlias);
+                Logger.getGlobal().log( Level.INFO, "GroupUsersList joined type sended with alias {0}", from.getAlias() );
                 break;
             }
                 
@@ -183,15 +194,15 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             case Error:
             {
                 ErrorMsg error = ( ErrorMsg ) data;
-                if ( ErrorCode.requiresConnectionClose( error.getErrorCode() ) )
+                Logger.getGlobal().log( Level.WARNING, "Error packet received from {0}", from.toString() );
+                if ( ErrorCode.requiresConnectionClose( error.getErrorCode() ) ) 
+                {
                     manager.close( from.getAlias(), null );
+                }
                 else
                     throw new PCPException( error.getErrorCode() );
                 break;
             }
-                
-            
-                
             default:
                 throw new PCPException( ErrorCode.Unspecified );
         }
