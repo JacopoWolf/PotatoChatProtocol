@@ -75,6 +75,7 @@ public class GroupUsersList extends PCPVariablePayload
     public GroupUsersList( UpdateType type , String user ) 
     {
         this.updateType = type;
+        // single user list
         this.listOfUsers = new ArrayList<>();
         this.listOfUsers.add(user);
     }
