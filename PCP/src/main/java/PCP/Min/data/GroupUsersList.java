@@ -3,8 +3,8 @@
  */
 package PCP.Min.data;
 
-import PCP.data.PCPVariablePayload;
 import PCP.*;
+import PCP.data.*;
 import com.google.gson.*;
 import java.util.*;
 
@@ -70,6 +70,13 @@ public class GroupUsersList extends PCPVariablePayload
     {
         this.updateType = type;
         this.listOfUsers = listOfUsers;
+    }
+    
+    public GroupUsersList( UpdateType type , String user ) 
+    {
+        this.updateType = type;
+        this.listOfUsers = new ArrayList<>();
+        this.listOfUsers.add(user);
     }
 
     @Override
