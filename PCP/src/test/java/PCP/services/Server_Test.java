@@ -41,7 +41,7 @@ public class Server_Test
     @Test
     public void serverMultipleConcurrentRequests () throws IOException, InterruptedException
     {    
-        for ( int i = 0; i < 1; i++ )
+        for ( int i = 0; i <= 5; i++ )
         {
             final int a = i;
             Thread t = new Thread
@@ -61,7 +61,7 @@ public class Server_Test
             t.start();
         }
         
-        Thread.sleep(999999999);
+        Thread.sleep(5000);
         
     }
  
@@ -72,7 +72,7 @@ public class Server_Test
                 Logger.getGlobal().log(Level.INFO, "TEST: open client on: {0}", test.getLocalSocketAddress().toString());
                     BufferedOutputStream bout = new BufferedOutputStream( test.getOutputStream() );
                     BufferedInputStream bin = new BufferedInputStream( test.getInputStream() );
-                    for ( byte[] buf : new Registration("testAlias", "").toBytes() )
+                    for ( byte[] buf : new Registration("test"+val +"Alias", "").toBytes() )
                     {
                         bout.write(buf);
                         bout.flush();
@@ -87,9 +87,9 @@ public class Server_Test
                         
                     Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
                     
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                     
-                    for ( byte[] buf : new MsgUserToUser( new byte[]{buffer[1],buffer[2]},"testAlias","messaggio di test, forse o" ).toBytes() )
+                    for ( byte[] buf : new MsgUserToUser( new byte[]{buffer[1],buffer[2]},"test" + val + "Alias","messaggio di test, forse o" ).toBytes() )
                     {
                         bout.write(buf);
                         bout.flush();

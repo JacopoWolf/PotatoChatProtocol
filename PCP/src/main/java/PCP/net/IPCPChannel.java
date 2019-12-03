@@ -5,6 +5,7 @@ package PCP.net;
 
 import PCP.logic.*;
 import java.io.*;
+import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
 
@@ -19,6 +20,14 @@ public interface IPCPChannel
      * @return the wrapped socket, rappresenting a PCP connection 
      */
     AsynchronousSocketChannel getChannel();
+    
+    
+    /**
+     * 
+     * @return the buffer of the current recieving data
+     */
+    ByteBuffer getBuffer();
+    
     
     /**
      * 

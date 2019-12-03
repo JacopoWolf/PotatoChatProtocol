@@ -230,8 +230,12 @@ public class PCPManager implements IPCPManager
 
             // closes all logicores
             this.initialRegistrationHandler.shutdownNow();
-            for ( IPCPLogicCore lcore : this.getCores() )
-                killCore(lcore);
+            
+            synchronized (this.cores)
+            {
+                while (this.cores.size() > 0)
+                    this.killCore(this.cores.getFirst());
+            }
 
 
             // awaits 1 minute for every disconnection data to be sent
@@ -270,7 +274,6 @@ public class PCPManager implements IPCPManager
     @Override
     public void accept( byte[] data, IPCPChannel from )
     {   
-        System.out.println("::----------------" + data);
         Logger.getGlobal().log( Level.FINEST,"recieved raw:\n{0}", Arrays.toString(data) );
         
         // checks if the recieved data comes from a new connection
@@ -633,10 +636,6 @@ public class PCPManager implements IPCPManager
                 }
             }
         );
-       
-        
-        
-        
     }
 //</editor-fold>
     

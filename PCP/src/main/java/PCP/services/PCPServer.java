@@ -8,7 +8,6 @@ import PCP.logic.*;
 import PCP.net.*;
 import java.io.*;
 import java.net.*;
-import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
 import java.util.concurrent.*;
@@ -155,25 +154,21 @@ public final class PCPServer extends Thread implements IPCPServer
                     @Override
                     public void completed( AsynchronousSocketChannel result, Void attachment )
                     {
-                        // allow to answer new connection
+                        // allows to answer new connection in loop
                         assc.accept(null, this);
                         
-                        // first read
-                        managerExecutor.submit
-                        ( 
-                            () -> 
-                            {
-                                final byte[] b = new byte[PCP.Versions.ALL.MAX_PACKET_LENGHT];
-                                ByteBuffer bb = ByteBuffer.wrap(b);
-                                IPCPChannel ch = new PCPChannel(result, null);
-                                result.read(bb, ch, channelDataRecieved);
-                                
-                                middleware.accept(b, ch);
-                            }
-                                
-                        );
-                        
+
+                        // initlizes variables
+                        IPCPChannel pcpchannel = new PCPChannel(result, null);
+                        PCPHandler handler = new PCPHandler();
+
+                        //calls the read async handler
+                        result.read(pcpchannel.getBuffer(), pcpchannel, handler);
+
+                        // logs info
                         Logger.getGlobal().log(Level.INFO, "successfully recieved new connection");
+                            
+                      
                     }
 
                     @Override
@@ -195,9 +190,6 @@ public final class PCPServer extends Thread implements IPCPServer
         }
     }
     
-    
-    
-    
     @Override
     public void shutDown()
     {
@@ -216,44 +208,50 @@ public final class PCPServer extends Thread implements IPCPServer
             Logger.getGlobal().log(Level.SEVERE, "error during server shutdown! Resources might not have been correctly disposed", ex);
         }
     }
-    
-    
-    
-    // provate variable used to manage incoming connections
-    private CompletionHandler<Integer, IPCPChannel> channelDataRecieved = 
-        new CompletionHandler<Integer, IPCPChannel>()
-        {
-            @Override
-            public void completed( Integer bytesRead, IPCPChannel channel )
-            {
-                // first reading
-                managerExecutor.submit
-                ( 
-                    () -> 
-                    {
-                        if ( bytesRead < 0 )
-                        {
-                            this.failed(null, channel);
-                            return;
-                        }
-                        
-                        
-                        ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT);
-                        
-                        channel.getChannel().read(bb, channel, channelDataRecieved);
-                        
-                        middleware.accept( Arrays.copyOfRange(bb.array(), 0, bytesRead), channel);
-                    }
-                );
-            }
-
-            @Override
-            public void failed( Throwable exc, IPCPChannel attachment )
-            {
-                // correctly disposes of the IPCPChannel and related UserInfo
-                middleware.close(attachment, null);
-                Logger.getGlobal().log(Level.WARNING,"connection interrupted");
-            }
-        };   
  
+    
+    
+    private class PCPHandler implements CompletionHandler<Integer, IPCPChannel>
+    {
+
+        @Override
+        public void completed( Integer result, IPCPChannel attachment )
+        {
+            if (result < 0) // if reached end of stream
+            {
+                this.failed(null, attachment);
+                return;
+            }
+            
+            // reads the buffer
+            byte[] b = attachment.getBuffer().array();
+            byte[] b1 = Arrays.copyOfRange(b, 0, result);
+            
+            // schedules next accepting 
+            managerExecutor.submit
+            (
+                () -> middleware.accept( b1 , attachment )
+            );
+            
+            attachment.getBuffer().clear();
+            
+            // allow to read next bytes
+            attachment.getChannel().read(attachment.getBuffer(), attachment, this);
+        }
+        
+
+        private boolean disposed = false;
+        @Override
+        public void failed( Throwable exc, IPCPChannel attachment )
+        {
+            if (disposed)
+                return;
+            
+            middleware.close(attachment, null);
+            
+            disposed = true;
+        }
+        
+    }
+    
 }
