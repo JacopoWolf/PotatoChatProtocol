@@ -5,7 +5,6 @@ package PCP.Min.logic;
 
 import PCP.Min.data.*;
 import PCP.*;
-import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -72,8 +71,9 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             {
                 MsgUserToGroup msg = (MsgUserToGroup) data;
                 MsgRecieved msg_tosend = new MsgRecieved
-                    (
+                   (
                         from.getAlias(),
+                        msg.getOpCode(),
                         msg.getMessage()
                     );
                 
@@ -172,7 +172,7 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
         // control messages
             case GroupUsersListRrq:     
             {
-                GroupUserListRrq gulr = (GroupUserListRrq) data;
+                GroupUsersListRrq gulr = (GroupUsersListRrq) data;
                 
                 GroupUsersList gul = new GroupUsersList
                 ( 

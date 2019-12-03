@@ -60,7 +60,7 @@ public class PCPMinUserInfo implements IPCPUserInfo
     @Override
     public String toString()
     {
-        return "User: " + getAlias() + " - Room: " + getRoom() + " - Version of the protocol: " + getVersion().FULL_NAME();
+        return "User: " + getAlias() + " - Room: " + getRoom() + " - Version of the protocol: " + getVersion().FULL_NAME;
     }
     
 }
