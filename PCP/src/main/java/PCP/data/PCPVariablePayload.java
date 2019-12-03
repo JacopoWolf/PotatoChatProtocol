@@ -33,7 +33,7 @@ public abstract class PCPVariablePayload implements IPCPData
         // necessary to calculation
         int msgRelativeMaxLenght = 
                 // MAX - header - payloadDelimitator
-                this.getVersion().MAX_PACKET_LENGHT() - header.length - 1;
+                this.getVersion().MAX_PACKET_LENGHT - header.length - 1;
         int nPacketsToSent = 
                 // ( msgTOT / msgREL ) + 1
                 ( this.getMessage().length() / msgRelativeMaxLenght ) + 1 ;
@@ -45,7 +45,7 @@ public abstract class PCPVariablePayload implements IPCPData
         {
             int bufferLenght = 
                     ( messageBytes.length - absMsgPointer ) > msgRelativeMaxLenght ? 
-                        this.getVersion().MAX_PACKET_LENGHT() : 
+                        this.getVersion().MAX_PACKET_LENGHT : 
                         (header.length + (messageBytes.length - absMsgPointer) + 1);
             byte[] buffer = new byte[ bufferLenght ];
                        

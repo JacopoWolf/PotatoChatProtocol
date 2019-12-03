@@ -53,7 +53,7 @@ public class PCPException extends Exception
         ServerExploded      (254), 
         
         /**
-         * 
+         * unspecified error
          */
         Unspecified         (255);
         
@@ -67,7 +67,7 @@ public class PCPException extends Exception
 
         /**
          *
-         * @return
+         * @return the code as a byte
          */
         public byte getByte()
         {
@@ -106,7 +106,7 @@ public class PCPException extends Exception
             }
         }
 
-        /*
+        /**
         * @param code
         * @return
         */

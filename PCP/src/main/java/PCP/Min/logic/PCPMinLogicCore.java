@@ -5,6 +5,8 @@ package PCP.Min.logic;
 
 import PCP.Min.data.*;
 import PCP.*;
+import PCP.Min.data.*;
+import PCP.data.*;
 import PCP.logic.*;
 import PCP.net.*;
 import java.util.*;
@@ -183,11 +185,10 @@ public class PCPMinLogicCore implements IPCPLogicCore
                     try
                     {
                         // interpret and accept the next element
-                        this.core.accept
-                        (
-                            this.interpreter.interpret(next.getValue0()),
-                            next.getValue1()
-                        );
+                        IPCPData data = this.interpreter.interpret(next.getValue0());
+                        
+                        if (data != null) // ensures data is ready to be accepted
+                            this.core.accept ( data, next.getValue1() );
                     }
                     catch ( PCPException pcpe )
                     {

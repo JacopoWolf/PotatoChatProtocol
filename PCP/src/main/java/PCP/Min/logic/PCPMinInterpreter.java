@@ -3,6 +3,7 @@
  */
 package PCP.Min.logic;
 
+import PCP.Min.data.*;
 import PCP.*;
 import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
@@ -184,7 +185,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
     
     private MsgUserToGroup createMsgUserToGroupFromBytes ( byte[] data ) throws PCPException
     {
-        if ( data.length > this.getVersion().MAX_PACKET_LENGHT() )
+        if ( data.length > this.getVersion().MAX_PACKET_LENGHT )
             throw new PCPException( ErrorCode.PackageMalformed );
         
         MsgUserToGroup msgUserToGroup = new MsgUserToGroup( null, null ); 
@@ -213,10 +214,10 @@ public class PCPMinInterpreter implements IPCPInterpreter
             MsgUserToGroup incompleteMsgUserToGroup = ( MsgUserToGroup ) incompletePackets.get();
             String completeMessage = incompleteMsgUserToGroup.getMessage() + msgUserToGroup.getMessage();
             incompleteMsgUserToGroup.setMessage( completeMessage );
-            if ( data.length < this.getVersion().MAX_PACKET_LENGHT() )
+            if ( data.length < this.getVersion().MAX_PACKET_LENGHT )
                 return incompleteMsgUserToGroup;
         } 
-        else if ( data.length == this.getVersion().MAX_PACKET_LENGHT() )
+        else if ( data.length == this.getVersion().MAX_PACKET_LENGHT )
         {
             this.addIncompleteData( msgUserToGroup );
         }
@@ -230,7 +231,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
     
     private MsgUserToUser createMsgUserToUserFromBytes ( byte[] data ) throws PCPException
     {
-        if ( data.length > this.getVersion().MAX_PACKET_LENGHT() )
+        if ( data.length > this.getVersion().MAX_PACKET_LENGHT )
             throw new PCPException( ErrorCode.PackageMalformed );
         
         MsgUserToUser msgUserToUser = new MsgUserToUser( null, null, null ); // src id , dst alias , message
@@ -279,10 +280,10 @@ public class PCPMinInterpreter implements IPCPInterpreter
             MsgUserToUser incompleteMsgUserToUser = ( MsgUserToUser ) incompletePackets.get();
             String completeMessage = incompleteMsgUserToUser.getMessage() + msgUserToUser.getMessage();
             incompleteMsgUserToUser.setMessage( completeMessage );
-            if ( data.length < this.getVersion().MAX_PACKET_LENGHT() )
+            if ( data.length < this.getVersion().MAX_PACKET_LENGHT )
                 return incompleteMsgUserToUser;
         } 
-        else if ( data.length == this.getVersion().MAX_PACKET_LENGHT() )
+        else if ( data.length == this.getVersion().MAX_PACKET_LENGHT )
         {
             this.addIncompleteData( msgUserToUser );
         }

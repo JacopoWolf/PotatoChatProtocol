@@ -25,7 +25,7 @@ import java.util.logging.*;
  * And normally uses 9 threads (if not specified otherwise with {@link PCPServer#PCPServer(java.net.InetAddress, int, int)} ): <p>
  * 1 for the server main thread, 3 for network I/O, 3 for sorting incoming data, 1 cache cleaning daemon,
  * and 1 main core logic thread.
- * Killing one of those might make unusable the server.
+ * Killing one of those threads might make unstable the server.
  * 
  * @author Jacopo_Wolf
  */
@@ -133,11 +133,7 @@ public final class PCPServer extends Thread implements IPCPServer
         Logger.getGlobal().log(Level.INFO, "server listening...");
     }
     
-    /**
-     * @param startWith
-     * @throws IOException 
-     * @throws UnsupportedOperationException
-     */
+
     @Override
     public void acceptAndServe( PCP.Versions startWith ) throws IOException
     {
@@ -167,7 +163,7 @@ public final class PCPServer extends Thread implements IPCPServer
                         ( 
                             () -> 
                             {
-                                final byte[] b = new byte[PCP.Versions.ALL.MAX_PACKET_LENGHT()];
+                                final byte[] b = new byte[PCP.Versions.ALL.MAX_PACKET_LENGHT];
                                 ByteBuffer bb = ByteBuffer.wrap(b);
                                 IPCPChannel ch = new PCPChannel(result, null);
                                 result.read(bb, ch, channelDataRecieved);
@@ -235,7 +231,7 @@ public final class PCPServer extends Thread implements IPCPServer
                 ( 
                     () -> 
                     {
-                        ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT());
+                        ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT);
                         
                         channel.getChannel().read(bb, channel, channelDataRecieved);
                         

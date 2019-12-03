@@ -11,6 +11,9 @@ package PCP;
 public interface IDisposable
 {
     
+    /**
+     * safely disposes manged resources
+     */
     void dispose();
     
 }
