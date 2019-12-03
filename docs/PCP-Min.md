@@ -80,15 +80,19 @@ Now clients can freely send messages between them as long as they remain connect
 
 
 ## 0x - messages
+There are two types of messages:
+* User to user
+* User to group
 
 ### 01 - user to user
-Once connected to the server, the user will have to know the other user's name to directly chat with him.
+Once connected to the server, the user will have to know the other user's alias to directly chat with him.
 
 It also sends it's unique id sent when initializing the connection.
 
 If message lenght is greater than [ 2043 - alias lenght ] it means the message has been splitted between multiple packages.
-Last package is notified with a message lenght lesser than 2043 - alias lenght.
-If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
+There are two ways to notify the last packet:
+* Message lenght lesser than [2043 - alias lenght].
+* If the content results in a multiple of this number, a packet with the message field empty.
 
 
 <table>
@@ -143,8 +147,9 @@ The destination client will then recieve a package with the destination alias ch
 The user sends this message to the chat room it's last connected to.
 
 If message lenght is greater than [ 2044 ] it means the message has been splitted between multiple packages.
-Last package is notified with a message lenght lesser than 2044.
-If the content results in a multiple of this number, an empty package will be sent to notify end of transmission.
+There are two ways to notify the last packet:
+* Message lenght lesser than 2044.
+* If the content results in a multiple of this number, a packet with the message field empty.
 
 
 <table>
