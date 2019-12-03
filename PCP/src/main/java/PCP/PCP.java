@@ -40,40 +40,20 @@ public final class PCP
         
         
         // variables
-        private final int MAX_PACKET_LENGHT;
-        
-        private final String FULL_NAME;
-        
-        private final byte VERSION_CODE;
-        
-        //<editor-fold defaultstate="collapsed" desc="assignment">
+        /**
+         * maximumm lenght of a packet
+         */
+        public final int MAX_PACKET_LENGHT;
         
         /**
-         * 
-         * @return maximum lenght of a single package
+         * full qualified name of the version
          */
-        public int MAX_PACKET_LENGHT()
-        {
-            return MAX_PACKET_LENGHT;
-        }
+        public final String FULL_NAME;
         
         /**
-         * 
-         * @return complete name of the version
+         * code used to identify this version
          */
-        public String FULL_NAME()
-        {
-            return FULL_NAME;
-        }
-
-        /**
-         * 
-         * @return code of this specific version
-         */
-        public byte VERSION_CODE()
-        {
-            return VERSION_CODE;
-        }
+        public final byte VERSION_CODE;
         
         
 
@@ -83,7 +63,7 @@ public final class PCP
             this.FULL_NAME = NAME;
             this.VERSION_CODE = (byte)code;
         }
-        //</editor-fold>
+
         
     }
     

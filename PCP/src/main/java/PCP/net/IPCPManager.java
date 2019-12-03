@@ -27,6 +27,13 @@ public interface IPCPManager extends IDisposable
      */
     Set<IPCPChannel> getChannels();
     
+    
+    /**
+     * 
+     * @return a collection of all of the currently connected users
+     */
+    Collection<IPCPUserInfo> allConnectedUsers();
+    
 
     /**
      * initialized a new logic core of the specifies version on a new thread.

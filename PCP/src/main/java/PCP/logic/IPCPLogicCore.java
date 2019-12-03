@@ -6,10 +6,11 @@ package PCP.logic;
 import PCP.*;
 import PCP.net.*;
 import java.util.*;
-
+import org.javatuples.*;
 
 /**
- *  the logic core of a server. Runs on a single thread and it's managed by the IPCPmanager middlewere.
+ * the logic core of a server. 
+ * Runs on a single thread and it's managed by an {@link IPCPManager}.
  * @author JacopoWolf
  */
 public interface IPCPLogicCore extends Runnable, IDisposable
@@ -52,7 +53,7 @@ public interface IPCPLogicCore extends Runnable, IDisposable
      *
      * @return the queue of packets to parse
      */
-    Queue<byte[]> getQueue();
+    Queue< Pair<byte[],IPCPUserInfo> > getQueue();
     
     /**
      *
@@ -97,9 +98,9 @@ public interface IPCPLogicCore extends Runnable, IDisposable
     
     /**
      * enqueues a new packet to be elaborated.
-     * @param data new byte packet to add to the queue 
+     * @param data new byte packet to add to the queue and information of the sender
      */
-    void enqueue( byte[] data );
+    void enqueue( Pair<byte[],IPCPUserInfo> data );
     
     /**
      * 
@@ -111,6 +112,12 @@ public interface IPCPLogicCore extends Runnable, IDisposable
      * 
      * @return if this LogicCore has been set to be keepen alive
      */
-    boolean keepAlive();
+    boolean isKeepAlive();
+    
+    /**
+     * @see IPCPLogicCore#isKeepAlive() 
+     * @param keepAlive 
+     */
+    void setKeepAlive( boolean keepAlive );
     
 }

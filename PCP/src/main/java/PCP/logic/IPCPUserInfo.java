@@ -7,7 +7,8 @@ import PCP.*;
 
 
 /**
- *
+ * information regarding an user.
+ * Version specfic.
  * @author Jacopo_Wolf
  */
 public interface IPCPUserInfo
@@ -37,7 +38,18 @@ public interface IPCPUserInfo
      * @return the id associated with this connection
      */
     byte[] getId();
-    
+
+
+    /**
+     * 
+     * @param roomName 
+     */
+    void setRoom(String roomName);
+    /**
+     * 
+     * @return 
+     */
+    String getRoom();
 
     
     /**

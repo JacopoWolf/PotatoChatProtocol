@@ -11,6 +11,7 @@ import PCP.logic.*;
 public class PCPMinUserInfo implements IPCPUserInfo
 {
     private String alias;
+    private String room;
     private byte[] id;
     private PCP.Versions version;
 
@@ -43,6 +44,23 @@ public class PCPMinUserInfo implements IPCPUserInfo
     {
         return PCP.Versions.Min;
     }
-       
+
+    @Override
+    public String getRoom()
+    {
+        return room;
+    }
+
+    @Override
+    public void setRoom( String room )
+    {
+        this.room = room;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "User: " + getAlias() + " - Room: " + getRoom() + " - Version of the protocol: " + getVersion().FULL_NAME();
+    }
     
 }

@@ -9,7 +9,7 @@ import java.util.*;
 
 /**
  * interface for version-specific interpreters.
- * interpreters do take {@code data[]} and parse it into a {@link PCP.data.IPCPData}
+ * interpreters do take {@code byte[]} and parse it into an {@link PCP.data.IPCPData}
  * @author JacopoWolf
  * @author Alessio789
  * @author gfurri20

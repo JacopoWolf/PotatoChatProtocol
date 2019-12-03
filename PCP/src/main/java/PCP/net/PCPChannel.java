@@ -4,6 +4,7 @@
 package PCP.net;
 
 import PCP.logic.*;
+import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
 import java.util.*;
@@ -65,22 +66,16 @@ public class PCPChannel implements IPCPChannel
     
 
     @Override
-    public void send( Collection<byte[]> data )
+    public void send( Collection<byte[]> data ) throws IOException
     {
         for ( byte[] b : data )
         {
             ByteBuffer bb = ByteBuffer.wrap(b);
-            try
-            {
-                this.channel.write(bb);
-                
-                Logger.getGlobal().log(Level.INFO, "sucessfully sent data to: {0}", this.getChannel().getRemoteAddress().toString());
-                Logger.getGlobal().log(Level.FINEST, "data sent to{0}:\n{1}", new Object[]{this.getChannel().getRemoteAddress(), Arrays.toString(b)});
-            }
-            catch ( Exception e )
-            {
-                return;
-            }
+
+            this.channel.write(bb);
+
+            Logger.getGlobal().log(Level.FINE, "sucessfully sent data to: {0}", this.getChannel().getRemoteAddress().toString());
+            Logger.getGlobal().log(Level.FINEST, "data sent to{0}:\n{1}", new Object[]{this.getChannel().getRemoteAddress(), Arrays.toString(b)});
         }
     }
     

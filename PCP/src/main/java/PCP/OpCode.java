@@ -8,7 +8,9 @@ import PCP.PCPException.ErrorCode;
 
 
 /**
- *
+ * option code, referring to all version of the PCP protocol.
+ * - use {@link #getByte() } to get the corresponding byte of an option
+ * - use {@link #getOpCodeFromByte(byte) } to do the inverted operation
  * @author Jacopo_Wolf
  * @author Alessio789
  * @author gfurri20

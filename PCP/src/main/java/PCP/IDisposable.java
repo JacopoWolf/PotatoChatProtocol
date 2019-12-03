@@ -5,12 +5,15 @@ package PCP;
 
 
 /**
- * base interface which allows for safe disposing of manged resources
+ * base interface allowing for safe disposing of manged resources
  * @author Jacopo_Wolf
  */
 public interface IDisposable
 {
     
+    /**
+     * safely disposes manged resources
+     */
     void dispose();
     
 }

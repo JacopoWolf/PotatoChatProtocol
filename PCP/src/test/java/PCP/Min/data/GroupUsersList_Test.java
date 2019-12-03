@@ -16,7 +16,7 @@ public class GroupUsersList_Test
     @Test
     public void testToBytesSingle()
     {
-        ArrayList<String> listUsers = new ArrayList<>();
+        Collection<String> listUsers = new ArrayList<>();
         listUsers.add("user1");
         listUsers.add("user2");
         listUsers.add("user3");
