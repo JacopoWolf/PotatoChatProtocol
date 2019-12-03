@@ -1,0 +1,7 @@
+<#if licenseFirst??>
+${licenseFirst}
+</#if>
+${licensePrefix}this is a school project under "The Unlicence".
+<#if licenseLast??>
+${licenseLast}
+</#if>
