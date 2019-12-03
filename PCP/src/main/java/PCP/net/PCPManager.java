@@ -279,7 +279,10 @@ public class PCPManager implements IPCPManager
             //checks for preferred logicCore
             IPCPLogicCore core = channelsExecutionMap.get(from);
             if ( core == null )
-                channelsExecutionMap.put(from, getCoreByVersion(from.getUserInfo().getVersion()));
+            {
+                core = getCoreByVersion(from.getUserInfo().getVersion());
+                channelsExecutionMap.put(from, core );
+            }
             
             
             if ( core.canAccept() ) 
@@ -290,7 +293,7 @@ public class PCPManager implements IPCPManager
             {
                 // if the preferred core is not available then map on a new one
                 core = getCoreByVersion( from.getUserInfo().getVersion() );
-                    core.enqueue(Pair.with(data, from.getUserInfo()));
+                core.enqueue(Pair.with(data, from.getUserInfo()));
                 channelsExecutionMap.put(from, core);
             }
         }
@@ -437,6 +440,8 @@ public class PCPManager implements IPCPManager
             core.setManager(this);
             core.setMaxQueueLenght(DefaultQueueMaxLenght);
             core.setThreshold(defaultCoreThreshold);
+            if ( this.incompleteSetsMap.get(version) == null ) // inits incomplete sets map if necessary
+                this.incompleteSetsMap.put(version, new HashMap<>());
             core.getInterpreter().setIncompleteDataList(this.incompleteSetsMap.get(version).keySet()); //todo implement pcpmanger managed incompletedatalist access methods
         
         // run the logicore on a new thread
