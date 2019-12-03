@@ -231,6 +231,13 @@ public final class PCPServer extends Thread implements IPCPServer
                 ( 
                     () -> 
                     {
+                        if ( bytesRead < 0 )
+                        {
+                            this.failed(null, channel);
+                            return;
+                        }
+                        
+                        
                         ByteBuffer bb = ByteBuffer.allocate(PCP.Versions.ALL.MAX_PACKET_LENGHT);
                         
                         channel.getChannel().read(bb, channel, channelDataRecieved);

@@ -87,9 +87,9 @@ public class Server_Test
                         
                     Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
                     
-                    Thread.sleep(200);
+                    Thread.sleep(1000);
                     
-                    for ( byte[] buf : new MsgUserToUser( new byte[]{buffer[1],buffer[2]},"testAlias","messaggio di test" ).toBytes() )
+                    for ( byte[] buf : new MsgUserToUser( new byte[]{buffer[1],buffer[2]},"testAlias","messaggio di test, forse o" ).toBytes() )
                     {
                         bout.write(buf);
                         bout.flush();

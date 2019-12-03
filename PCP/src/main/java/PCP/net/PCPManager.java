@@ -268,8 +268,9 @@ public class PCPManager implements IPCPManager
   
     
     @Override
-    public void accept( final byte[] data, final IPCPChannel from )
+    public void accept( byte[] data, IPCPChannel from )
     {   
+        System.out.println("::----------------" + data);
         Logger.getGlobal().log( Level.FINEST,"recieved raw:\n{0}", Arrays.toString(data) );
         
         // checks if the recieved data comes from a new connection
