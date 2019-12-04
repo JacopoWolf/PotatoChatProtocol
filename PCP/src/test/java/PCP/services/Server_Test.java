@@ -41,7 +41,7 @@ public class Server_Test
     @Test
     public void serverMultipleConcurrentRequests () throws IOException, InterruptedException
     {    
-        for ( int i = 0; i < 5; i++ )
+        for ( int i = 0; i <= 5; i++ )
         {
             final int a = i;
             Thread t = new Thread
@@ -61,7 +61,7 @@ public class Server_Test
             t.start();
         }
         
-        Thread.sleep(200);
+        Thread.sleep(5000);
         
     }
  
@@ -72,11 +72,11 @@ public class Server_Test
                 Logger.getGlobal().log(Level.INFO, "TEST: open client on: {0}", test.getLocalSocketAddress().toString());
                     BufferedOutputStream bout = new BufferedOutputStream( test.getOutputStream() );
                     BufferedInputStream bin = new BufferedInputStream( test.getInputStream() );
-                    for ( byte[] buffer : new Registration("testAlias", "").toBytes() )
+                    for ( byte[] buf : new Registration("test"+val +"Alias", "").toBytes() )
                     {
-                        bout.write(buffer);
+                        bout.write(buf);
                         bout.flush();
-                        Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " sent {0}", Arrays.toString(buffer));
+                        Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " sent {0}", Arrays.toString(buf));
                     }
                     
                     Thread.sleep(200);
@@ -87,6 +87,20 @@ public class Server_Test
                         
                     Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
                     
+                    Thread.sleep(100);
+                    
+                    for ( byte[] buf : new MsgUserToUser( new byte[]{buffer[1],buffer[2]},"test" + val + "Alias","messaggio di test, forse o" ).toBytes() )
+                    {
+                        bout.write(buf);
+                        bout.flush();
+                        Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " sent a message {0}", Arrays.toString(buf));
+                    }
+                    
+                    Thread.sleep(500);
+                    
+                    buffer = new byte[64];
+                    read = bin.read(buffer);
+                    
                 test.close();
 
     }
@@ -94,7 +108,6 @@ public class Server_Test
     @After
     public void stopServer() throws InterruptedException
     {
-        Thread.sleep(2000);
         server.shutDown();
     }
     
