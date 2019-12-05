@@ -74,7 +74,6 @@ PCP's Github page:
 PCP's Jitpack page:
 [https://jitpack.io/#JacopoWolf/PotatoChatProtocol](https://jitpack.io/#JacopoWolf/PotatoChatProtocol) 
 
-
 ## 2 Overall Description
 
 ### 2.1 Product Perspective
