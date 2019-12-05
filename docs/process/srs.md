@@ -74,7 +74,6 @@ PCP's Github page:
 PCP's Jitpack page:
 [https://jitpack.io/#JacopoWolf/PotatoChatProtocol](https://jitpack.io/#JacopoWolf/PotatoChatProtocol) 
 
-
 ## 2 Overall Description
 
 ### 2.1 Product Perspective
@@ -85,7 +84,7 @@ Server side:
 * build a server ready to manage connected clients and exchange messages between them.
 
 ### 2.3 Operating Environment
-All operating systems that have a java virtual machine.
+All operating systems that have a java virtual machine installed.
 
 ### 2.4 Design and Implementation Constraints
 This project is developed with Java using NetBeans as IDE. The packages are organized according to the protocol versions. It uses a modular design where every feature is wrapped into a separate module and the modules depend on each other through well-written APIs.
@@ -102,20 +101,16 @@ PCP is developed in Java so to start-up a server the machine requires a Java ver
 
 ## 3 External Interface Requirements
 
-### 3.1 User Interfaces
+The server implemented by PCP only print the logs. No graphical interfaces have been implemented. Clients that rely on PCP will implement it.
 
 ### 3.2 Hardware Interfaces
-
-### 3.3 Software Interfaces
-
-### 3.4 Communications Interfaces
-
+The protocol is very light, so you can activate it on most modern machines.
 
 ## 4 System Feature
 
-### 4.1 System Feature 1
-
-### 4.1 System Feature 2
+### 4.1 Server
+PCP offers the possibility to start a server which is able to manage the communication between several connected users. \
+A simple guide is avaible: [https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md](https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md)
 
 
 ## 5 Other Nonfunctional Requirements
