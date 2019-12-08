@@ -27,6 +27,11 @@ public interface IPCPManager extends IDisposable
      */
     Set<IPCPChannel> getChannels();
     
+    /**
+     * 
+     * @return the object used to manage ids
+     */
+    IDmanager<byte[]> getIdmanager();
     
     /**
      * 

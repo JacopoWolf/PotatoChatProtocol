@@ -25,7 +25,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
     private PCPMinCore core;
     private PCPMinInterpreter interpreter;
     
-    private LinkedList<Pair<byte[],IPCPUserInfo>> queue = new LinkedList<>();
+    private LinkedList<Pair<byte[],IPCPChannel>> queue = new LinkedList<>();
     private boolean waitForThreshold = false;
     // those must be initialized externally
     private int maxQueueLenght = -1; 
@@ -46,7 +46,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
     }
     
     @Override
-    public Queue<Pair<byte[],IPCPUserInfo>> getQueue()
+    public Queue<Pair<byte[],IPCPChannel>> getQueue()
     {
         return this.queue;
     }
@@ -147,7 +147,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
     } 
 
     @Override
-    public void enqueue( Pair<byte[],IPCPUserInfo> data )
+    public void enqueue( Pair<byte[],IPCPChannel> data )
     {
         synchronized ( queue )
         {
@@ -161,7 +161,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
     @Override
     public void run()
     {
-        Pair<byte[],IPCPUserInfo> next;
+        Pair<byte[],IPCPChannel> next;
         
         try
         {
@@ -193,7 +193,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
                     }
                     catch ( PCPException pcpe )
                     {
-                        manager.send( new ErrorMsg(pcpe), next.getValue1().getAlias() );
+                        manager.send( new ErrorMsg(pcpe), next.getValue1() );
                     }
                     finally
                     {

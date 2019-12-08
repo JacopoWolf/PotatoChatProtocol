@@ -53,7 +53,7 @@ public interface IPCPLogicCore extends Runnable, IDisposable
      *
      * @return the queue of packets to parse
      */
-    Queue< Pair<byte[],IPCPUserInfo> > getQueue();
+    Queue< Pair<byte[],IPCPChannel> > getQueue();
     
     /**
      *
@@ -100,7 +100,7 @@ public interface IPCPLogicCore extends Runnable, IDisposable
      * enqueues a new packet to be elaborated.
      * @param data new byte packet to add to the queue and information of the sender
      */
-    void enqueue( Pair<byte[],IPCPUserInfo> data );
+    void enqueue( Pair<byte[],IPCPChannel> data );
     
     /**
      * 
