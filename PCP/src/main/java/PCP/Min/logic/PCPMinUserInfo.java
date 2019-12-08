@@ -10,11 +10,20 @@ import PCP.logic.*;
 
 public class PCPMinUserInfo implements IPCPUserInfo
 {
-    private String alias;
-    private String room;
-    private byte[] id;
-    private PCP.Versions version;
+    private String alias = null;
+    private String room = null;
+    private byte[] id = null;
+    private PCP.Versions version = null;
 
+    /**
+     * initialized a new empty UserInfo.
+     */
+    public PCPMinUserInfo()
+    {
+        
+    }
+    
+    
     @Override
     public String getAlias()
     {
@@ -55,6 +64,12 @@ public class PCPMinUserInfo implements IPCPUserInfo
     public void setRoom( String room )
     {
         this.room = room;
+    }
+
+    @Override
+    public boolean isNew()
+    {
+        return this.alias == null && this.room == null && this.id == null && this.version == null;
     }
 
     @Override

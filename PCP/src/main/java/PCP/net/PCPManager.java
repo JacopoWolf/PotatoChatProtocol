@@ -7,6 +7,8 @@ import PCP.Min.data.Disconnection.Reason;
 import PCP.Min.data.*;
 import PCP.Min.logic.*;
 import PCP.*;
+import PCP.Min.data.*;
+import PCP.Min.logic.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -274,41 +276,53 @@ public class PCPManager implements IPCPManager
     @Override
     public void accept( byte[] data, IPCPChannel from )
     {   
-        Logger.getGlobal().log( Level.FINEST,"recieved raw:\n{0}", Arrays.toString(data) );
+        try
+        {
+            Logger.getGlobal().log
+            ( 
+                Level.FINEST,
+                "from recieved raw from {0}:\n{1}", 
+                new Object[] { from.getChannel().getRemoteAddress().toString(), Arrays.toString(data)} 
+            );
+        }catch(IOException e){}
+        
+        
+        IPCPLogicCore core;
         
         // checks if the recieved data comes from a new connection
         if ( channelsExecutionMap.containsKey(from) )
         {
             // NOT a new connection 
-            //checks for preferred logicCore
-            IPCPLogicCore core = channelsExecutionMap.get(from);
+            
+            // checks for preferred logicCore:
+            // getCore verifies the core is able to accept the connection,
+            // otherwise it initialized a new LogicCore
+            core = channelsExecutionMap.get(from);
             if ( core == null )
-            {
-                core = getCoreByVersion(from.getUserInfo().getVersion());
-                channelsExecutionMap.put(from, core );
-            }
+                core = getCoreByVersion(from.getUserInfo().getVersion()); 
             
+            channelsExecutionMap.put(from, core );
             
-            if ( core.canAccept() ) 
-            {
-                core.enqueue(Pair.with(data, from.getUserInfo()));
-            }
-            else
-            {
-                // if the preferred core is not available then map on a new one
-                core = getCoreByVersion( from.getUserInfo().getVersion() );
-                core.enqueue(Pair.with(data, from.getUserInfo()));
-                channelsExecutionMap.put(from, core);
-            }
         }
         else
         {
-            // new connection, handle it in another method
-            this.initialRegistrationHandler.submit( new IncomingConnectionsHandler(data, from) );
+            // a new connection
             
-            return;
+            PCP.Versions version = PCP.versionByVersionCode( data[1] );
+            if ( version == null )
+                close(from, new ErrorMsg(ErrorCode.PackageMalformed));
+            
+            core = getCoreByVersion( version );
+            if ( core == null )
+                close(from, new ErrorMsg(ErrorCode.PackageMalformed));
+            
+            channelsExecutionMap.put(from, core);
         }
 
+        // enqueues the data to elaborate
+        core.enqueue(Pair.with(data, from.getUserInfo()));
+
+        
     }
 
     
@@ -336,7 +350,6 @@ public class PCPManager implements IPCPManager
         {
             if ( isAllZeros(data) )
                 return;
-            
             
             try
             {
@@ -440,7 +453,7 @@ public class PCPManager implements IPCPManager
     public IPCPLogicCore initLogicCore( PCP.Versions version )
     {
         // initializes the new core
-        IPCPLogicCore core = PCP.getLogicCore_ByVersion(version);
+        IPCPLogicCore core = PCP.logicCoreByVersion(version);
             core.setManager(this);
             core.setMaxQueueLenght(DefaultQueueMaxLenght);
             core.setThreshold(defaultCoreThreshold);
@@ -512,7 +525,7 @@ public class PCPManager implements IPCPManager
                 ( 
                     core -> 
                     {
-                        if (!core.isKeepAlive() && core.getQueue().size() == 0 )
+                        if (!core.isKeepAlive() && core.getQueue().isEmpty() )
                             cores.remove(core);
                     }   
                 );

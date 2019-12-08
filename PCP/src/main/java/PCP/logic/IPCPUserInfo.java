@@ -58,4 +58,10 @@ public interface IPCPUserInfo
      */
     PCP.Versions getVersion();
     
+    
+    /**
+     * 
+     * @return if this UserInfo is from a new connection
+     */
+    boolean isNew();
 }
