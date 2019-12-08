@@ -189,6 +189,7 @@ public class PCPMinLogicCore implements IPCPLogicCore
                         
                         if (data != null) // ensures data is ready to be accepted
                             this.core.accept ( data, next.getValue1() );
+                        
                     }
                     catch ( PCPException pcpe )
                     {

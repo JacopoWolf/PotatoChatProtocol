@@ -26,7 +26,7 @@ public class Server_Test
         Logger.getGlobal().setLevel(Level.FINEST);
         
         server = new PCPServer(InetAddress.getLoopbackAddress());
-        server.start();   
+        server.start();
         Thread.sleep(200);
     }
     
@@ -50,7 +50,7 @@ public class Server_Test
                 {
                     try
                     {
-                        exec(a);  
+                        exec(a);
                     }
                     catch (IOException | InterruptedException e)
                     {
@@ -88,8 +88,8 @@ public class Server_Test
                     Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
                     
                     Thread.sleep(100);
-                    
-                    for ( byte[] buf : new MsgUserToUser( new byte[]{buffer[1],buffer[2]},"test" + val + "Alias","messaggio di test, forse o" ).toBytes() )
+               
+                    for ( byte[] buf : new MsgUserToGroup( new byte[]{buffer[1],buffer[2]},"test" + val + "Alias: messaggio di test, forse o" ).toBytes() )
                     {
                         bout.write(buf);
                         bout.flush();
