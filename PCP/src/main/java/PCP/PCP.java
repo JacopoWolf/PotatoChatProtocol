@@ -77,7 +77,7 @@ public final class PCP
      * @param version
      * @return 
      */
-    public static IPCPLogicCore getLogicCore_ByVersion( Versions version )
+    public static IPCPLogicCore logicCoreByVersion( Versions version )
     {
         switch ( version )
         {
@@ -86,6 +86,22 @@ public final class PCP
             default:
                 return null;
         }
+    }
+    
+    /**
+     * 
+     * @param vcode version code
+     * @return the version based on it's version code. Used to interpret Registrations.
+     */
+    public static Versions versionByVersionCode( byte vcode )
+    {
+        for( Versions v : Versions.values() )
+        {
+            if (v.VERSION_CODE == vcode)
+                return v;
+        }
+        
+        return null;
     }
     
 }

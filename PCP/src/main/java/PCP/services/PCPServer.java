@@ -21,8 +21,8 @@ import java.util.logging.*;
  * To start the server, simply initalize it and the call {@link PCPServer#acceptAndServe()}.
  * <p>
  * This server is completely asyncronous and multithread; 
- * And normally uses 9 threads (if not specified otherwise with {@link PCPServer#PCPServer(java.net.InetAddress, int, int)} ): <p>
- * 1 for the server main thread, 3 for network I/O, 3 for sorting incoming data, 1 cache cleaning daemon,
+ * And normally uses 6 threads (if not specified otherwise with {@link PCPServer#PCPServer(java.net.InetAddress, int, int)} ): <p>
+ * 1 for the server main thread, 3 for network I/O, 1 for sorting incoming data, 1 cache cleaning daemon,
  * and 1 main core logic thread.
  * Killing one of those threads might make unstable the server.
  * 
@@ -65,22 +65,21 @@ public final class PCPServer extends Thread implements IPCPServer
      */
     public PCPServer ( InetAddress address ) throws IOException
     {
-        this(address, 3, 2);
+        this(address, 3);
     }
     
     /**
      * initialize a new PCP server
      * @param address the address to bind the server to
      * @param listeningPoolSize number of threads dedicated to listen for incoming data and connections
-     * @param middlewarePoolSize number of threads dedicated to execute the middleware
      * @throws IOException
      */
-    public PCPServer( InetAddress address, int listeningPoolSize, int middlewarePoolSize ) throws IOException
+    public PCPServer( InetAddress address, int listeningPoolSize ) throws IOException
     {
         Logger.getGlobal().info("initializing server...");
         
         // middleware initialization
-        this.managerExecutor = Executors.newFixedThreadPool( middlewarePoolSize );
+        this.managerExecutor = Executors.newSingleThreadExecutor();
         this.middleware = new PCPManager();
         
         // socket binding
@@ -160,10 +159,10 @@ public final class PCPServer extends Thread implements IPCPServer
 
                         // initlizes variables
                         IPCPChannel pcpchannel = new PCPChannel(result, null);
-                        PCPHandler handler = new PCPHandler();
+                        PCPHandler handler = new PCPHandler(pcpchannel);
 
                         //calls the read async handler
-                        result.read(pcpchannel.getBuffer(), pcpchannel, handler);
+                        result.read(pcpchannel.getBuffer(), null, handler);
 
                         // logs info
                         Logger.getGlobal().log(Level.INFO, "successfully recieved new connection");
@@ -211,11 +210,19 @@ public final class PCPServer extends Thread implements IPCPServer
  
     
     
-    private class PCPHandler implements CompletionHandler<Integer, IPCPChannel>
+    private class PCPHandler implements CompletionHandler<Integer, Void>
     {
+        final IPCPChannel channel;
 
+        public PCPHandler( IPCPChannel channel )
+        {
+            this.channel = channel;
+        }
+        
+        
+        
         @Override
-        public void completed( Integer result, IPCPChannel attachment )
+        public void completed( Integer result, Void attachment )
         {
             if (result < 0) // if reached end of stream
             {
@@ -224,30 +231,30 @@ public final class PCPServer extends Thread implements IPCPServer
             }
             
             // reads the buffer
-            byte[] b = attachment.getBuffer().array();
+            byte[] b = channel.getBuffer().array();
             byte[] b1 = Arrays.copyOfRange(b, 0, result);
             
             // schedules next accepting 
             managerExecutor.submit
             (
-                () -> middleware.accept( b1 , attachment )
+                () -> middleware.accept( b1 , channel )
             );
             
-            attachment.getBuffer().clear();
+            channel.getBuffer().clear();
             
             // allow to read next bytes
-            attachment.getChannel().read(attachment.getBuffer(), attachment, this);
+            channel.getChannel().read(channel.getBuffer(), attachment, this);
         }
         
 
         private boolean disposed = false;
         @Override
-        public void failed( Throwable exc, IPCPChannel attachment )
+        public void failed( Throwable exc, Void attachment )
         {
             if (disposed)
                 return;
             
-            middleware.close(attachment, null);
+            middleware.close(channel, null);
             
             disposed = true;
         }

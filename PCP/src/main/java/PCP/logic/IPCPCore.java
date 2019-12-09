@@ -25,6 +25,6 @@ public interface IPCPCore
      * @param from information of the sending user
      * @throws PCP.PCPException
      */
-    void accept ( IPCPData data, IPCPUserInfo from ) throws PCPException;
+    void accept ( IPCPData data, IPCPChannel from ) throws PCPException;
     
 }
