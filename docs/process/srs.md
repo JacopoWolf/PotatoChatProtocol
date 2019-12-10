@@ -15,13 +15,9 @@
   - [2.5 User Documentation](#25-user-documentation)
   - [2.6 Assumptions and Dependencies](#26-assumptions-and-dependencies)
 - [3 External Interface Requirements](#3-external-interface-requirements)
-  - [3.1 User Interfaces](#31-user-interfaces)
   - [3.2 Hardware Interfaces](#32-hardware-interfaces)
-  - [3.3 Software Interfaces](#33-software-interfaces)
-  - [3.4 Communications Interfaces](#34-communications-interfaces)
 - [4 System Feature](#4-system-feature)
-  - [4.1 System Feature 1](#41-system-feature-1)
-  - [4.1 System Feature 2](#41-system-feature-2)
+  - [4.1 Server](#41-server)
 - [5 Other Nonfunctional Requirements](#5-other-nonfunctional-requirements)
   - [5.1 Performance Requirements](#51-performance-requirements)
   - [5.2 Safety Requirements](#52-safety-requirements)
@@ -88,6 +84,11 @@ All operating systems that have a java virtual machine installed.
 
 ### 2.4 Design and Implementation Constraints
 This project is developed with Java using NetBeans as IDE. The packages are organized according to the protocol versions. It uses a modular design where every feature is wrapped into a separate module and the modules depend on each other through well-written APIs.
+
+This is the structure of the API:
+
+<center><img src="../img/server_architecture.svg" width="300px" max-height="100%" style="align:center"></center>
+
 
 ### 2.5 User Documentation
 There is a quick guide which explains how to initialize a PCPServer:
