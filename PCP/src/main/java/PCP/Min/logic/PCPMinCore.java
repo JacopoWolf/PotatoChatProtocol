@@ -198,8 +198,7 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             
             case Disconnection:
             {
-                // close the connection
-                manager.close( from.getAlias(), null );
+                
                 
                 // all user in the room except the sender
                 ArrayList<String> ul = new ArrayList<>(this.getAliasesByRoom( from.getRoom() ));
@@ -212,10 +211,14 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
                     new GroupUsersList( GroupUsersList.UpdateType.disconnected, from.getAlias() ),
                     ul
                 );
+                Logger.getGlobal().log(Level.INFO, "GroupUserList update sended in broadcast");
+                
+                // close the connection
+                manager.close( channel, null );
                 
                 // logs informations about the disconnection
                 Logger.getGlobal().log(Level.INFO, "Connection with {0} closed", from.toString());
-                Logger.getGlobal().log(Level.INFO, "GroupUserList update sended in broadcast");
+                
                 
                 break;
             }   

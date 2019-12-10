@@ -506,6 +506,7 @@ public class PCPManager implements IPCPManager
             (
                 this.getChannels()
                         .stream()
+                        .filter( pcps -> pcps != null )
                         .filter( pcps -> pcps.getUserInfo().getAlias().equals(alias) )
                         .findFirst()
                         .get(),
@@ -514,7 +515,7 @@ public class PCPManager implements IPCPManager
     }
     
     @Override
-    public void close( IPCPChannel pcpchannel, IPCPData with )
+    public synchronized void close( IPCPChannel pcpchannel, IPCPData with )
     {
         if (!this.channelsExecutionMap.containsKey(pcpchannel))
             return;

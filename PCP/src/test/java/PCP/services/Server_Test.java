@@ -30,6 +30,15 @@ public class Server_Test
         Thread.sleep(200);
     }
     
+    @Test
+    public void double_concurrent_same() throws IOException, InterruptedException
+    {
+        serverMultipleConcurrentRequests();
+        Thread.sleep(4000);
+        serverMultipleConcurrentRequests();
+        Thread.sleep(10000);
+    }
+    
     @Test @Ignore
     public void serverSingleRequest() throws IOException, InterruptedException
     {
@@ -38,7 +47,6 @@ public class Server_Test
        
     }
     
-    @Test
     public void serverMultipleConcurrentRequests () throws IOException, InterruptedException
     {    
         for ( int i = 1; i <= 5; i++ )
@@ -61,7 +69,7 @@ public class Server_Test
             t.start();
         }
         
-        Thread.sleep(5000);
+       
         
     }
  

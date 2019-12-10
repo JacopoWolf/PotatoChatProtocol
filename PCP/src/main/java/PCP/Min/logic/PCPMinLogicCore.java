@@ -10,6 +10,7 @@ import PCP.data.*;
 import PCP.logic.*;
 import PCP.net.*;
 import java.util.*;
+import java.util.logging.*;
 import org.javatuples.*;
 
 /**
@@ -193,7 +194,15 @@ public class PCPMinLogicCore implements IPCPLogicCore
                     }
                     catch ( PCPException pcpe )
                     {
-                        manager.send( new ErrorMsg(pcpe), next.getValue1() );
+                        try
+                        {
+                            manager.send( new ErrorMsg(pcpe), next.getValue1() );
+                        }
+                        catch(NullPointerException | NoSuchElementException nsee)
+                        {
+                            manager.getChannels().remove(next.getValue1());
+                            Logger.getGlobal().log(Level.SEVERE,"manged exeption while recieving data\n",nsee);
+                        }
                     }
                     finally
                     {
