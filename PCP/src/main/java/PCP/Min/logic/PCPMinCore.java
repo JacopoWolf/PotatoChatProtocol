@@ -4,7 +4,6 @@
 package PCP.Min.logic;
 
 
-import PCP.Min.data.*;
 import PCP.*;
 import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
@@ -245,6 +244,8 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
                     new GroupUsersList( GroupUsersList.UpdateType.joined, from.getAlias() ),
                     ul
                 );
+                
+                //logs the change of alias
                 Logger.getGlobal().log( Level.INFO, "AliasChange packet received from {0}", from.toString() );
                 Logger.getGlobal().log
                 ( 
@@ -252,6 +253,8 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
                     "User {0} changed alias from {1} to {2}", 
                     new Object[]{from.toString(), oldAlias, from.getAlias()} 
                 );
+                
+                //logs the GroupUsersLists sended to all users 
                 Logger.getGlobal().log( Level.INFO, "GroupUsersList disconnected type sended with alias {0}", oldAlias);
                 Logger.getGlobal().log( Level.INFO, "GroupUsersList joined type sended with alias {0}", from.getAlias() );
                 break;
@@ -282,7 +285,11 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             case Error:
             {
                 ErrorMsg error = ( ErrorMsg ) data;
+                
+                //logs the error message
                 Logger.getGlobal().log( Level.WARNING, "Error packet received from {0}", from.toString() );
+                
+                //if the error requires a connection close
                 if ( ErrorCode.requiresConnectionClose( error.getErrorCode() ) ) 
                 {
                     manager.close( from.getAlias(), null );
