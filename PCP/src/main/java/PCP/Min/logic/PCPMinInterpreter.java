@@ -5,10 +5,10 @@ package PCP.Min.logic;
 
 import PCP.Min.data.*;
 import PCP.*;
-import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -91,19 +91,24 @@ public class PCPMinInterpreter implements IPCPInterpreter
     {
         
         Registration registration = new Registration( null, null );
+        
         int start = 2;
         
         ArrayList<byte[]> variableElements = new ArrayList<>();
+        
+        
         for ( int i = 2; i < data.length; i++ ) 
         {
             if ( data[i] == 0 ) 
             {
                 variableElements.add( Arrays.copyOfRange( data, start, i ) );
-                start = i + 1;
+                start = i + 1; 
             }
-            if ( data[i] == 040 )
+            
+            if ( data[i] == 040 ) 
                 throw new PCPException( ErrorCode.InvalidAlias );
         }
+        
         
         if ( variableElements.get(0).length < 6 || variableElements.get(0).length > 32 )
             throw new PCPException( ErrorCode.InvalidAlias );
@@ -111,9 +116,10 @@ public class PCPMinInterpreter implements IPCPInterpreter
         if ( variableElements.get(1).length != 0 && ( variableElements.get(1).length < 6 || variableElements.get(1).length > 32 ) )
             throw new PCPException( ErrorCode.InvalidRoomName );
         
-        registration.setAlias( new String( variableElements.get( 0 ) ) );
+        registration.setAlias( new String( variableElements.get( 0 ), StandardCharsets.ISO_8859_1 ) );
+        
         if ( variableElements.get(1).length != 0 )
-            registration.setTopic( new String( variableElements.get( 1 ) ) );
+            registration.setTopic( new String( variableElements.get( 1 ) , StandardCharsets.ISO_8859_1));
        
         return registration;
     }
@@ -161,8 +167,8 @@ public class PCPMinInterpreter implements IPCPInterpreter
                throw new PCPException( ErrorCode.InvalidAlias );
        }
        
-       aliasChange.setOldAlias( new String (aliasList.get(0)));
-       aliasChange.setNewAlias( new String (aliasList.get(1)));
+       aliasChange.setOldAlias( new String ( aliasList.get( 0 ), StandardCharsets.ISO_8859_1 ) );
+       aliasChange.setNewAlias( new String ( aliasList.get( 1 ), StandardCharsets.ISO_8859_1 ) );
        
        return aliasChange;
     }
@@ -195,7 +201,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
         byte[] message = Arrays.copyOfRange( data, 3, data.length - 1 );
         
         msgUserToGroup.setSenderId(id);
-        msgUserToGroup.setMessage( new String( message ) );
+        msgUserToGroup.setMessage( new String( message, StandardCharsets.ISO_8859_1 ) );
        
         Optional<IPCPData> incompletePackets = this.getIncompleteDataList().stream()
             .filter( incompleteData -> 
@@ -260,8 +266,8 @@ public class PCPMinInterpreter implements IPCPInterpreter
             throw new PCPException( ErrorCode.InvalidAlias );
         
         msgUserToUser.setSenderId( id );
-        msgUserToUser.setDestinationAlias( new String( variableElements.get(0) ) );
-        msgUserToUser.setMessage( new String( variableElements.get(1) ) );
+        msgUserToUser.setDestinationAlias( new String( variableElements.get( 0 ), StandardCharsets.ISO_8859_1 ) );
+        msgUserToUser.setMessage( new String( variableElements.get( 1 ), StandardCharsets.ISO_8859_1 ) );
         
         Optional<IPCPData> incompletePackets = this.getIncompleteDataList().stream()
             .filter( incompleteData -> 
