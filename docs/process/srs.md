@@ -87,9 +87,12 @@ This project is developed with Java using NetBeans as IDE. The packages are orga
 
 This is the structure of the API:
 
+
 <p align="center">
     <img src="../img/server_architecture.svg" width="300px" max-width="100%">
 </p>
+
+
 ### 2.5 User Documentation
 There is a quick guide which explains how to initialize a PCPServer:
 [https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md](https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md)
