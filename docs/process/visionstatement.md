@@ -26,7 +26,7 @@
 |            **Approach** | Scrum                                                                                                                                                                |
 |            **Schedule** | view [project's sprints](https://github.com/JacopoWolf/PotatoChatProtocol/projects?utf8=%E2%9C%93&query=)                                                            |
 |          **Priorities** | Develop a functioning, bug-free, server.                                                                                                                             |
-| **Development<br>team** | <ul><li>[@JacopoWolf](https://github.com/JacopoWolf)</li><li>[@gfurri20](https://github.com/gfurri20)</li><li>[@Alessio789](https://github.com/Alessio789)</li></ul> |
+| **Development<br>team** | [@JacopoWolf](https://github.com/JacopoWolf) - [@gfurri20](https://github.com/gfurri20) - [@Alessio789](https://github.com/Alessio789) |
 
 Note: dates are in dd/mm/yyyy format
 
