@@ -120,7 +120,7 @@ public class PCPMinInterpreter implements IPCPInterpreter
         
         
         //if the topic is present and invalid
-        if ( variableElements.get(1).length != 0 && ( variableElements.get(1).length < 6 || variableElements.get(1).length > 32 ) )
+        if ( variableElements.get(1).length != 0 && ( variableElements.get(1).length < 3 || variableElements.get(1).length > 64 ) )
             throw new PCPException( ErrorCode.InvalidRoomName );
         
         registration.setAlias( new String( variableElements.get( 0 ), StandardCharsets.ISO_8859_1 ) );
