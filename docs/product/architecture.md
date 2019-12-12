@@ -3,7 +3,7 @@
 </center>
 
 - [Hierarchy](#hierarchy)
-- [Components](#components)
+- [Class scheme](#class-scheme)
 - [Execution](#execution)
 
 ---
@@ -12,7 +12,9 @@
 
 <img src="../img/server-architecture.svg" style="max-height:800px">
 
-# Components
+
+---
+
 
 <h4 style="background:orangered">NETWORK</h4>
 
@@ -65,6 +67,15 @@ Data generated from this tier are then sent through the `IPCPManager`
 
 In this implementation, it is embedded in the logic core since the Minimal version of the protocol doesn't require long term storage. It is composed of the data structures necessary to keep the server working.
 
+
+# Class scheme
+
+Below is rappresented the main class scheme.
+Data and secondary classes have been omitted for semplicity.
+
+
+
+<img src="../img/server_mainClasses.svg" style="max-height:800px">
 
 
 

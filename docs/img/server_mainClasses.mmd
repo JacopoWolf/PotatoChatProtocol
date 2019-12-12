@@ -1,0 +1,80 @@
+classDiagram
+  
+PCPServer o-- "1" PCPManager
+
+PCPChannel "*" --* PCPManager : keeps track
+PCPChannel o-- "1" IPCPUserInfo
+
+PCPManager "1" *--o "*" IPCPLogicCore
+
+IPCPLogicCore o-- "1" IPCPInterpreter
+IPCPLogicCore o-- "1" IPCPCore
+IPCPCore o-- "1" PCPManager : references
+
+
+
+
+class PCPServer {
+  IMemoryAccess DAO
+  IPCPManager manager
+
+  acceptAndServe()
+  shutDown()
+
+}
+
+class PCPManager {
+  List<IPCPLogicCore> cores
+  Set<IPCPChannel> channels
+  IDManager<byte[]> idgenerator
+  
+  initLogicCore(version)
+
+  accept(data,channel)
+
+  send(data,destination)
+  close(channel,with)
+}
+
+class PCPChannel {
+  SocketChannel sktchannel
+  ByteBuffer bb
+  PCPUserInfo info
+  int timeLeftAwake
+
+  send(data)
+
+}
+
+class IPCPUserInfo{
+<<interface>>
+  String alias
+  byte[] id
+  String room
+  Version version
+}
+
+class IPCPLogicCore{
+<<interface>>
+Version version
+IPCPManager manager
+IPCPCore core
+IPCPIterpreter interpreter
+Queue<(byte[],IPCPChannel)> queue
+
+run()
+dispose()
+
+}
+
+class IPCPInterpreter{
+  <<interface>>
+  Version version
+  interpret(byte[])
+}
+
+class IPCPCore{
+  <<interface>>
+  IPCPManager manager
+  accept(data,from)
+}
