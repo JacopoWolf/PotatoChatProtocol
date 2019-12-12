@@ -379,7 +379,7 @@ In the event that the type is 1 or 2, the json list will contain only one user, 
   <tr>
       <td > opcode ( 51 ) </td>
       <td > type  </td>
-      <td > list lenght </td>
+      <td > list length </td>
       <td > json content </td>
       <td > 0 </td>
   </tr>
