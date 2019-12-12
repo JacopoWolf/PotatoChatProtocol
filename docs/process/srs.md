@@ -15,13 +15,9 @@
   - [2.5 User Documentation](#25-user-documentation)
   - [2.6 Assumptions and Dependencies](#26-assumptions-and-dependencies)
 - [3 External Interface Requirements](#3-external-interface-requirements)
-  - [3.1 User Interfaces](#31-user-interfaces)
   - [3.2 Hardware Interfaces](#32-hardware-interfaces)
-  - [3.3 Software Interfaces](#33-software-interfaces)
-  - [3.4 Communications Interfaces](#34-communications-interfaces)
 - [4 System Feature](#4-system-feature)
-  - [4.1 System Feature 1](#41-system-feature-1)
-  - [4.1 System Feature 2](#41-system-feature-2)
+  - [4.1 Server](#41-server)
 - [5 Other Nonfunctional Requirements](#5-other-nonfunctional-requirements)
   - [5.1 Performance Requirements](#51-performance-requirements)
   - [5.2 Safety Requirements](#52-safety-requirements)
@@ -44,6 +40,7 @@ Server Group:
 November 25, 2019
 
 ## Revision History
+
 |                   Name                   |    Date    | Reason for Changes | Version |
 | :--------------------------------------: | :--------: | :----------------: | :-----: |
 | [@gfurri20](https://github.com/gfurri20) | 25/11/2019 |  Initial Document  |   1.0   |
@@ -71,8 +68,7 @@ PCP's main page:
 PCP's Github page:
 [https://github.com/JacopoWolf/PotatoChatProtocol](https://github.com/JacopoWolf/PotatoChatProtocol) \
 PCP's Jitpack page:
-[https://jitpack.io/#JacopoWolf/PotatoChatProtocol](https://jitpack.io/#JacopoWolf/PotatoChatProtocol) 
-
+[https://jitpack.io/#JacopoWolf/PotatoChatProtocol](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
 
 ## 2 Overall Description
 
@@ -84,10 +80,18 @@ Server side:
 * build a server ready to manage connected clients and exchange messages between them.
 
 ### 2.3 Operating Environment
-All operating systems that have a java virtual machine.
+All operating systems that have a java virtual machine installed.
 
 ### 2.4 Design and Implementation Constraints
 This project is developed with Java using NetBeans as IDE. The packages are organized according to the protocol versions. It uses a modular design where every feature is wrapped into a separate module and the modules depend on each other through well-written APIs.
+
+This is the structure of the API:
+
+
+<center>
+    <img src="../img/server-architecture.svg" width="100%" style="max-height:750px">
+</center>
+
 
 ### 2.5 User Documentation
 There is a quick guide which explains how to initialize a PCPServer:
@@ -101,20 +105,16 @@ PCP is developed in Java so to start-up a server the machine requires a Java ver
 
 ## 3 External Interface Requirements
 
-### 3.1 User Interfaces
+The server implemented by PCP only print the logs. No graphical interfaces have been implemented. Clients that rely on PCP will implement it.
 
 ### 3.2 Hardware Interfaces
-
-### 3.3 Software Interfaces
-
-### 3.4 Communications Interfaces
-
+The protocol is very light, so you can activate it on most modern machines.
 
 ## 4 System Feature
 
-### 4.1 System Feature 1
-
-### 4.1 System Feature 2
+### 4.1 Server
+PCP offers the possibility to start a server which is able to manage the communication between several connected users. \
+A simple guide is avaible: [https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md](https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md)
 
 
 ## 5 Other Nonfunctional Requirements

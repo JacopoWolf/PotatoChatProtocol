@@ -1,0 +1,58 @@
+graph BT
+
+    c3[DATA ACCESS]
+    c2---c3
+
+    subgraph CORE
+        
+        c2[LOGIC]
+        c1[INTERPRETATION]
+
+        c1--IPCPData-->c2
+        q[queue]
+    end
+
+     q-->c1
+     
+
+    c2--IPCPData-->mw
+    mw-."byte[],IPCPChannel".->q
+
+    subgraph WORKLOAD
+        mw[Middleware]
+    end
+
+    chn---mw   
+    chn1---mw
+    chn2---mw 
+
+    subgraph CONNECTION
+        chn(PCPChannel)
+        chn1("[...]")
+        chn2(PCPChannel)
+    end
+
+
+
+    net--"byte[]"---chn
+    net--"byte[]"---chn1
+    net--"byte[]"---chn2
+
+    net[NETWORK]
+
+style c3 fill:lightgreen
+style c2 fill:lightblue
+style c1 fill:aquamarine
+
+style q fill:plum
+style mw fill:plum
+
+classDef chn fill:orange
+class chn,chn1,chn2 chn
+
+style net fill:orangered
+
+
+
+classDef nol stroke-width:0;
+class net,chn,chn1,chn2,mw,q,c1,c2,c3 nol;

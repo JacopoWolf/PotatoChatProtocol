@@ -7,8 +7,8 @@ Usage guide
 - [Overview](#overview)
   - [Description](#description)
   - [javadoc](#javadoc)
-- [1. API structure](#1-api-structure)
-- [2. Services](#2-services)
+- [API structure](#api-structure)
+- [Services](#services)
   - [PCPServer](#pcpserver)
     - [start](#start)
     - [logging](#logging)
@@ -27,8 +27,7 @@ This is a short tutorial on how to use the APIs of this simple chat.
 This project is published with [JitPack](https://jitpack.io/), JavaDocs and releases are hosted on their servers for everyone to use.
 
 
-# 1. API structure
-
+# API structure
 The root package, `PCP` contains the common important variables:
 - `PCP`: static class containing common protocol variables, like **PCP.PORT** or the **Versions** enumerator
 - `OpCode`: enumerator conaining all operational codes, convertable to their respective *byte*, and a function to retrive the opcode from a byte.
@@ -43,7 +42,7 @@ The API is then divided in 4 main generic packages:
 Version-specific packages, named with their version name, like `Min` contain their specific implementation of said root packages.
 Again, they are organized in the same way. For example the PCP-Min implementation of **IPCPUserInfo** is located under `PCP.Min.logic`.
 
-# 2. Services
+# Services
 
 ## PCPServer
 `PCP.services.PCPServer` is the main implementation of a PCP server.

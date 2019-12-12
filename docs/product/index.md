@@ -7,7 +7,7 @@
 **resources**
 
 - [User Guide](usageguide.md) 
-- Architecture
+- [Architecture](architecture.md)
 - Coding standards
 - Testing specifications
 - System documentation

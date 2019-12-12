@@ -1,0 +1,498 @@
+<svg id="mermaid-1576171221517" width="656.75" xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="-10 -10 444.5 552"><style>
+
+
+
+#mermaid-1576171221517 .label {
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  color: #333; }
+
+#mermaid-1576171221517 .label text {
+  fill: #333; }
+
+#mermaid-1576171221517 .node rect,
+#mermaid-1576171221517 .node circle,
+#mermaid-1576171221517 .node ellipse,
+#mermaid-1576171221517 .node polygon {
+  fill: #eee;
+  stroke: #999;
+  stroke-width: 1px; }
+
+#mermaid-1576171221517 .node .label {
+  text-align: center; }
+
+#mermaid-1576171221517 .node.clickable {
+  cursor: pointer; }
+
+#mermaid-1576171221517 .arrowheadPath {
+  fill: #333333; }
+
+#mermaid-1576171221517 .edgePath .path {
+  stroke: #666;
+  stroke-width: 1.5px; }
+
+#mermaid-1576171221517 .edgeLabel {
+  background-color: white;
+  text-align: center; }
+
+#mermaid-1576171221517 .cluster rect {
+  fill: #eaf2fb;
+  stroke: #26a;
+  stroke-width: 1px; }
+
+#mermaid-1576171221517 .cluster text {
+  fill: #333; }
+
+#mermaid-1576171221517 div.mermaidTooltip {
+  position: absolute;
+  text-align: center;
+  max-width: 200px;
+  padding: 2px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 12px;
+  background: #eaf2fb;
+  border: 1px solid #26a;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 100; }
+
+#mermaid-1576171221517 .actor {
+  stroke: #999;
+  fill: #eee; }
+
+#mermaid-1576171221517 text.actor {
+  fill: #333;
+  stroke: none; }
+
+#mermaid-1576171221517 .actor-line {
+  stroke: #666; }
+
+#mermaid-1576171221517 .messageLine0 {
+  stroke-width: 1.5;
+  stroke-dasharray: '2 2';
+  stroke: #333; }
+
+#mermaid-1576171221517 .messageLine1 {
+  stroke-width: 1.5;
+  stroke-dasharray: '2 2';
+  stroke: #333; }
+
+#mermaid-1576171221517 #arrowhead {
+  fill: #333; }
+
+#mermaid-1576171221517 .sequenceNumber {
+  fill: white; }
+
+#mermaid-1576171221517 #sequencenumber {
+  fill: #333; }
+
+#mermaid-1576171221517 #crosshead path {
+  fill: #333 !important;
+  stroke: #333 !important; }
+
+#mermaid-1576171221517 .messageText {
+  fill: #333;
+  stroke: none; }
+
+#mermaid-1576171221517 .labelBox {
+  stroke: #999;
+  fill: #eee; }
+
+#mermaid-1576171221517 .labelText {
+  fill: #333;
+  stroke: none; }
+
+#mermaid-1576171221517 .loopText {
+  fill: #333;
+  stroke: none; }
+
+#mermaid-1576171221517 .loopLine {
+  stroke-width: 2;
+  stroke-dasharray: '2 2';
+  stroke: #999; }
+
+#mermaid-1576171221517 .note {
+  stroke: #777700;
+  fill: #ffa; }
+
+#mermaid-1576171221517 .noteText {
+  fill: black;
+  stroke: none;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 14px; }
+
+#mermaid-1576171221517 .activation0 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+#mermaid-1576171221517 .activation1 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+#mermaid-1576171221517 .activation2 {
+  fill: #f4f4f4;
+  stroke: #666; }
+
+
+#mermaid-1576171221517 .mermaid-main-font {
+  font-family: "trebuchet ms", verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 .section {
+  stroke: none;
+  opacity: 0.2; }
+
+#mermaid-1576171221517 .section0 {
+  fill: #80b3e6; }
+
+#mermaid-1576171221517 .section2 {
+  fill: #80b3e6; }
+
+#mermaid-1576171221517 .section1,
+#mermaid-1576171221517 .section3 {
+  fill: white;
+  opacity: 0.2; }
+
+#mermaid-1576171221517 .sectionTitle0 {
+  fill: #333; }
+
+#mermaid-1576171221517 .sectionTitle1 {
+  fill: #333; }
+
+#mermaid-1576171221517 .sectionTitle2 {
+  fill: #333; }
+
+#mermaid-1576171221517 .sectionTitle3 {
+  fill: #333; }
+
+#mermaid-1576171221517 .sectionTitle {
+  text-anchor: start;
+  font-size: 11px;
+  text-height: 14px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+
+#mermaid-1576171221517 .grid .tick {
+  stroke: #e6e6e6;
+  opacity: 0.3;
+  shape-rendering: crispEdges; }
+#mermaid-1576171221517   .grid .tick text {
+    font-family: 'trebuchet ms', verdana, arial;
+    font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 .grid path {
+  stroke-width: 0; }
+
+
+#mermaid-1576171221517 .today {
+  fill: none;
+  stroke: #d42;
+  stroke-width: 2px; }
+
+
+
+#mermaid-1576171221517 .task {
+  stroke-width: 2; }
+
+#mermaid-1576171221517 .taskText {
+  text-anchor: middle;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 .taskText:not([font-size]) {
+  font-size: 11px; }
+
+#mermaid-1576171221517 .taskTextOutsideRight {
+  fill: #333;
+  text-anchor: start;
+  font-size: 11px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 .taskTextOutsideLeft {
+  fill: #333;
+  text-anchor: end;
+  font-size: 11px; }
+
+
+#mermaid-1576171221517 .task.clickable {
+  cursor: pointer; }
+
+#mermaid-1576171221517 .taskText.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+#mermaid-1576171221517 .taskTextOutsideLeft.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+#mermaid-1576171221517 .taskTextOutsideRight.clickable {
+  cursor: pointer;
+  fill: #003163 !important;
+  font-weight: bold; }
+
+
+#mermaid-1576171221517 .taskText0,
+#mermaid-1576171221517 .taskText1,
+#mermaid-1576171221517 .taskText2,
+#mermaid-1576171221517 .taskText3 {
+  fill: white; }
+
+#mermaid-1576171221517 .task0,
+#mermaid-1576171221517 .task1,
+#mermaid-1576171221517 .task2,
+#mermaid-1576171221517 .task3 {
+  fill: #26a;
+  stroke: #1a4d80; }
+
+#mermaid-1576171221517 .taskTextOutside0,
+#mermaid-1576171221517 .taskTextOutside2 {
+  fill: #333; }
+
+#mermaid-1576171221517 .taskTextOutside1,
+#mermaid-1576171221517 .taskTextOutside3 {
+  fill: #333; }
+
+
+#mermaid-1576171221517 .active0,
+#mermaid-1576171221517 .active1,
+#mermaid-1576171221517 .active2,
+#mermaid-1576171221517 .active3 {
+  fill: #eee;
+  stroke: #1a4d80; }
+
+#mermaid-1576171221517 .activeText0,
+#mermaid-1576171221517 .activeText1,
+#mermaid-1576171221517 .activeText2,
+#mermaid-1576171221517 .activeText3 {
+  fill: #333 !important; }
+
+
+#mermaid-1576171221517 .done0,
+#mermaid-1576171221517 .done1,
+#mermaid-1576171221517 .done2,
+#mermaid-1576171221517 .done3 {
+  stroke: #666;
+  fill: #bbb;
+  stroke-width: 2; }
+
+#mermaid-1576171221517 .doneText0,
+#mermaid-1576171221517 .doneText1,
+#mermaid-1576171221517 .doneText2,
+#mermaid-1576171221517 .doneText3 {
+  fill: #333 !important; }
+
+
+#mermaid-1576171221517 .crit0,
+#mermaid-1576171221517 .crit1,
+#mermaid-1576171221517 .crit2,
+#mermaid-1576171221517 .crit3 {
+  stroke: #b1361b;
+  fill: #d42;
+  stroke-width: 2; }
+
+#mermaid-1576171221517 .activeCrit0,
+#mermaid-1576171221517 .activeCrit1,
+#mermaid-1576171221517 .activeCrit2,
+#mermaid-1576171221517 .activeCrit3 {
+  stroke: #b1361b;
+  fill: #eee;
+  stroke-width: 2; }
+
+#mermaid-1576171221517 .doneCrit0,
+#mermaid-1576171221517 .doneCrit1,
+#mermaid-1576171221517 .doneCrit2,
+#mermaid-1576171221517 .doneCrit3 {
+  stroke: #b1361b;
+  fill: #bbb;
+  stroke-width: 2;
+  cursor: pointer;
+  shape-rendering: crispEdges; }
+
+#mermaid-1576171221517 .milestone {
+  transform: rotate(45deg) scale(0.8, 0.8); }
+
+#mermaid-1576171221517 .milestoneText {
+  font-style: italic; }
+
+#mermaid-1576171221517 .doneCritText0,
+#mermaid-1576171221517 .doneCritText1,
+#mermaid-1576171221517 .doneCritText2,
+#mermaid-1576171221517 .doneCritText3 {
+  fill: #333 !important; }
+
+#mermaid-1576171221517 .activeCritText0,
+#mermaid-1576171221517 .activeCritText1,
+#mermaid-1576171221517 .activeCritText2,
+#mermaid-1576171221517 .activeCritText3 {
+  fill: #333 !important; }
+
+#mermaid-1576171221517 .titleText {
+  text-anchor: middle;
+  font-size: 18px;
+  fill: #333;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 g.classGroup text {
+  fill: #999;
+  stroke: none;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family);
+  font-size: 10px; }
+#mermaid-1576171221517   g.classGroup text .title {
+    font-weight: bolder; }
+
+#mermaid-1576171221517 g.classGroup rect {
+  fill: #eee;
+  stroke: #999; }
+
+#mermaid-1576171221517 g.classGroup line {
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 .classLabel .box {
+  stroke: none;
+  stroke-width: 0;
+  fill: #eee;
+  opacity: 0.5; }
+
+#mermaid-1576171221517 .classLabel .label {
+  fill: #999;
+  font-size: 10px; }
+
+#mermaid-1576171221517 .relation {
+  stroke: #999;
+  stroke-width: 1;
+  fill: none; }
+
+#mermaid-1576171221517 #compositionStart {
+  fill: #999;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 #compositionEnd {
+  fill: #999;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 #aggregationStart {
+  fill: #eee;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 #aggregationEnd {
+  fill: #eee;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 #dependencyStart {
+  fill: #999;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 #dependencyEnd {
+  fill: #999;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 #extensionStart {
+  fill: #999;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 #extensionEnd {
+  fill: #999;
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 .commit-id,
+#mermaid-1576171221517 .commit-msg,
+#mermaid-1576171221517 .branch-label {
+  fill: lightgrey;
+  color: lightgrey;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 .pieTitleText {
+  text-anchor: middle;
+  font-size: 25px;
+  fill: #333;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 .slice {
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 g.stateGroup text {
+  fill: #999;
+  stroke: none;
+  font-size: 10px;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+#mermaid-1576171221517 g.stateGroup text {
+  fill: #999;
+  stroke: none;
+  font-size: 10px; }
+
+#mermaid-1576171221517 g.stateGroup .state-title {
+  font-weight: bolder;
+  fill: black; }
+
+#mermaid-1576171221517 g.stateGroup rect {
+  fill: #eee;
+  stroke: #999; }
+
+#mermaid-1576171221517 g.stateGroup line {
+  stroke: #999;
+  stroke-width: 1; }
+
+#mermaid-1576171221517 .transition {
+  stroke: #999;
+  stroke-width: 1;
+  fill: none; }
+
+#mermaid-1576171221517 .stateGroup .composit {
+  fill: white;
+  border-bottom: 1px; }
+
+#mermaid-1576171221517 .stateGroup .alt-composit {
+  fill: #e0e0e0;
+  border-bottom: 1px; }
+
+#mermaid-1576171221517 .state-note {
+  stroke: #777700;
+  fill: #ffa; }
+#mermaid-1576171221517   .state-note text {
+    fill: black;
+    stroke: none;
+    font-size: 10px; }
+
+#mermaid-1576171221517 .stateLabel .box {
+  stroke: none;
+  stroke-width: 0;
+  fill: #eee;
+  opacity: 0.5; }
+
+#mermaid-1576171221517 .stateLabel text {
+  fill: black;
+  font-size: 10px;
+  font-weight: bold;
+  font-family: 'trebuchet ms', verdana, arial;
+  font-family: var(--mermaid-font-family); }
+
+:root {
+  --mermaid-font-family: '"trebuchet ms", verdana, arial';
+  --mermaid-font-family: "Comic Sans MS", "Comic Sans", cursive; }
+
+:root { --mermaid-font-family: "trebuchet ms", verdana, arial;}</style><style>#mermaid-1576171221517 {
+    color: rgb(0, 0, 0);
+    font: ;
+  }</style><g></g><defs><marker id="extensionStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 1,7 L18,13 V 1 Z"></path></marker></defs><defs><marker id="extensionEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 1,1 V 13 L18,7 Z"></path></marker></defs><defs><marker id="compositionStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="compositionEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="aggregationStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="aggregationEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="dependencyStart" class="extension" refX="0" refY="7" markerWidth="190" markerHeight="240" orient="auto"><path d="M 5,7 L9,13 L1,7 L9,1 Z"></path></marker></defs><defs><marker id="dependencyEnd" refX="19" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L14,7 L9,1 Z"></path></marker></defs><g id="classId10498" class="classGroup" transform="translate(99.75,5 )"><rect x="0" y="0" width="118" height="78"></rect><text y="15" x="0"><tspan class="title" x="33.5">PCPServer</tspan></text><line x1="0" y1="21" y2="21" x2="118"></line><text x="5" y="31" fill="white" class="classText"><tspan x="5">IMemoryAccess DAO</tspan><tspan x="5" dy="10">IPCPManager manager</tspan></text><line x1="0" y1="47" y2="47" x2="118"></line><text x="5" y="62" fill="white" class="classText"><tspan x="5">acceptAndServe()</tspan><tspan x="5" dy="10">shutDown()</tspan></text></g><g id="classId10499" class="classGroup" transform="translate(89.25,138 )"><rect x="0" y="0" width="159" height="108"></rect><text y="15" x="0"><tspan class="title" x="50">PCPManager</tspan></text><line x1="0" y1="21" y2="21" x2="159"></line><text x="5" y="31" fill="white" class="classText"><tspan x="5">List&lt;IPCPLogicCore&gt; cores</tspan><tspan x="5" dy="10">Set&lt;IPCPChannel&gt; channels</tspan><tspan x="5" dy="10">IDManager&lt;byte[]&gt; idgenerator</tspan></text><line x1="0" y1="57" y2="57" x2="159"></line><text x="5" y="72" fill="white" class="classText"><tspan x="5">initLogicCore(version)</tspan><tspan x="5" dy="10">accept(data,channel)</tspan><tspan x="5" dy="10">send(data,destination)</tspan><tspan x="5" dy="10">close(channel,with)</tspan></text></g><g id="classId10500" class="classGroup" transform="translate(287.5,0 )"><rect x="0" y="0" width="128" height="88"></rect><text y="15" x="0"><tspan class="title" x="36">PCPChannel</tspan></text><line x1="0" y1="21" y2="21" x2="128"></line><text x="5" y="31" fill="white" class="classText"><tspan x="5">SocketChannel sktchannel</tspan><tspan x="5" dy="10">ByteBuffer bb</tspan><tspan x="5" dy="10">PCPUserInfo info</tspan><tspan x="5" dy="10">int timeLeftAwake</tspan></text><line x1="0" y1="67" y2="67" x2="128"></line><text x="5" y="82" fill="white" class="classText"><tspan x="5">send(data)</tspan></text></g><g id="classId10501" class="classGroup" transform="translate(298.5,151.5 )"><rect x="0" y="0" width="126" height="81"></rect><text y="15" x="0"><tspan x="37.5">«interface»</tspan><tspan class="title" dy="10" x="32">IPCPUserInfo</tspan></text><line x1="0" y1="31" y2="31" x2="126"></line><text x="5" y="41" fill="white" class="classText"><tspan x="5">String alias</tspan><tspan x="5" dy="10">byte[] id</tspan><tspan x="5" dy="10">String room</tspan><tspan x="5" dy="10">Version version</tspan></text><line x1="0" y1="77" y2="77" x2="126"></line><text x="5" y="92" fill="white" class="classText"></text></g><g id="classId10502" class="classGroup" transform="translate(0,296 )"><rect x="0" y="0" width="178" height="118"></rect><text y="15" x="0"><tspan x="63.5">«interface»</tspan><tspan class="title" dy="10" x="54">IPCPLogicCore</tspan></text><line x1="0" y1="31" y2="31" x2="178"></line><text x="5" y="41" fill="white" class="classText"><tspan x="5">Version version</tspan><tspan x="5" dy="10">IPCPManager manager</tspan><tspan x="5" dy="10">IPCPCore core</tspan><tspan x="5" dy="10">IPCPIterpreter interpreter</tspan><tspan x="5" dy="10">Queue&lt;(byte[],IPCPChannel)&gt; queue</tspan></text><line x1="0" y1="87" y2="87" x2="178"></line><text x="5" y="102" fill="white" class="classText"><tspan x="5">run()</tspan><tspan x="5" dy="10">dispose()</tspan></text></g><g id="classId10503" class="classGroup" transform="translate(8.5,464 )"><rect x="0" y="0" width="141" height="68"></rect><text y="15" x="0"><tspan x="45">«interface»</tspan><tspan class="title" dy="10" x="32">IPCPInterpreter</tspan></text><line x1="0" y1="31" y2="31" x2="141"></line><text x="5" y="41" fill="white" class="classText"><tspan x="5">Version version</tspan></text><line x1="0" y1="47" y2="47" x2="141"></line><text x="5" y="62" fill="white" class="classText"><tspan x="5">interpret(byte[])</tspan></text></g><g id="classId10504" class="classGroup" transform="translate(199.5,464 )"><rect x="0" y="0" width="118" height="68"></rect><text y="15" x="0"><tspan x="33.5">«interface»</tspan><tspan class="title" dy="10" x="37">IPCPCore</tspan></text><line x1="0" y1="31" y2="31" x2="118"></line><text x="5" y="41" fill="white" class="classText"><tspan x="5">IPCPManager manager</tspan></text><line x1="0" y1="47" y2="47" x2="118"></line><text x="5" y="62" fill="white" class="classText"><tspan x="5">accept(data,from)</tspan></text></g><path d="M158.75,83L158.75,88C158.75,93,158.75,103,159.27742616033757,112.16666666666667C159.8048523206751,121.33333333333333,160.85970464135022,129.66666666666666,161.3871308016878,133.83333333333334L161.91455696202533,138" id="edge8642" class="relation" marker-start="url(#aggregationStart)"></path><g class="cardinality"><text class="type2" x="165.3052219952611" y="124.97105565932557" fill="black" font-size="6">1</text></g><path d="M290.1231884057971,88L284.31099033816423,92.16666666666667C278.4987922705314,96.33333333333333,266.8743961352657,104.66666666666667,256.499961780713,113C246.12552742616035,121.33333333333333,237.00105485232066,129.66666666666666,232.43881856540085,133.83333333333334L227.876582278481,138" id="edge8643" class="relation" marker-end="url(#compositionEnd)"></path><g class="classLabel"><rect class="box" x="228.12191772460938" y="99.79961395263672" width="60" height="16"></rect><text class="label" x="257.6219199661463" y="111.29961062167175" fill="red" text-anchor="middle">keeps track</text></g><g class="cardinality"><text class="type1" x="277.0508397869675" y="91.2192703502164" fill="black" font-size="6">*</text></g><path d="M357.8768115942029,88L358.4806763285024,92.16666666666667C359.0845410628019,96.33333333333333,360.292270531401,104.66666666666667,360.8961352657005,115.25C361.5,125.83333333333333,361.5,138.66666666666666,361.5,145.08333333333334L361.5,151.5" id="edge8644" class="relation" marker-start="url(#aggregationStart)"></path><g class="cardinality"><text class="type2" x="366.5" y="139" fill="black" font-size="6">1</text></g><path d="M114.2373417721519,246L110.03111814345992,250.16666666666666C105.82489451476793,254.33333333333334,97.41244725738397,262.6666666666667,93.20622362869199,271C89,279.3333333333333,89,287.6666666666667,89,291.8333333333333L89,296" id="edge8645" class="relation" marker-start="url(#compositionStart)" marker-end="url(#aggregationEnd)"></path><g class="cardinality"><text class="type1" x="98.3192651856574" y="247.6925831697427" fill="black" font-size="6">1</text></g><g class="cardinality"><text class="type2" x="99" y="283.5" fill="black" font-size="6">*</text></g><path d="M81.97619047619048,414L81.48015873015873,418.1666666666667C80.98412698412699,422.3333333333333,79.9920634920635,430.6666666666667,79.49603174603175,439C79,447.3333333333333,79,455.6666666666667,79,459.8333333333333L79,464" id="edge8646" class="relation" marker-start="url(#aggregationStart)"></path><g class="cardinality"><text class="type2" x="84" y="451.5" fill="black" font-size="6">1</text></g><path d="M152.03869047619048,414L156.4905753968254,418.1666666666667C160.94246031746033,422.3333333333333,169.84623015873015,430.6666666666667,179.9301772262577,439C190.01412429378533,447.3333333333333,201.27824858757063,455.6666666666667,206.9103107344633,459.8333333333333L212.54237288135593,464" id="edge8647" class="relation" marker-start="url(#aggregationStart)"></path><g class="cardinality"><text class="type2" x="205.46717194118906" y="452.5461128145829" fill="black" font-size="6">1</text></g><path d="M264.26271186440675,464L264.9689265536723,459.8333333333333C265.67514124293785,455.6666666666667,267.08757062146896,447.3333333333333,267.79378531073445,429.1666666666667C268.5,411,268.5,383,268.5,355C268.5,327,268.5,299,263.23892405063293,280.8333333333333C257.9778481012658,262.6666666666667,247.45569620253164,254.33333333333334,242.19462025316457,250.16666666666666L236.93354430379748,246" id="edge8648" class="relation" marker-start="url(#aggregationStart)"></path><g class="classLabel"><rect class="box" x="241" y="336.0447082519531" width="56" height="16"></rect><text class="label" x="268.5" y="347.54471376217765" fill="red" text-anchor="middle">references</text></g><g class="cardinality"><text class="type2" x="243.62835341588968" y="257.68030525939486" fill="black" font-size="6">1</text></g></svg>
