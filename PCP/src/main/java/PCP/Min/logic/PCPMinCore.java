@@ -3,8 +3,9 @@
  */
 package PCP.Min.logic;
 
-import PCP.Min.data.*;
+
 import PCP.*;
+import PCP.Min.data.*;
 import PCP.PCPException.ErrorCode;
 import PCP.data.*;
 import PCP.logic.*;
@@ -40,8 +41,10 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
     
     
     @Override
-    public void accept( IPCPData data, IPCPUserInfo from ) throws PCPException
+    public void accept( IPCPData data, IPCPChannel channel ) throws PCPException
     {
+        IPCPUserInfo from = channel.getUserInfo();
+        
         switch ( data.getOpCode() ) 
         {
             
@@ -61,7 +64,12 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
                 manager.send( msg_tosend, msg.getDestinationAlias() );
                 
                 // logs information about the message
-                Logger.getGlobal().log(Level.INFO, "MsgUserToUser received from {0} -- send to {1}", new Object[]{from.toString(), msg.getDestinationAlias()});
+                Logger.getGlobal().log
+                (
+                    Level.INFO, 
+                    "MsgUserToUser received from {0} -- send to {1}", 
+                    new Object[]{from.toString(), msg.getDestinationAlias()}
+                );
                 Logger.getGlobal().log(Level.FINE, "Content of the message:\n{0}", msg_tosend.getMessage());
                 
                 break;
@@ -69,6 +77,18 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             
             case MsgUserToGroup:
             {
+                // to avoid a user to group when the client room is null
+                if ( from.getRoom() == null )
+                {
+                    Logger.getGlobal().log
+                    (
+                        Level.FINE, 
+                        "{0} sent an User-to-chat message outside of a group! Chat denied", 
+                        from.getAlias()
+                    );
+                    throw new PCPException( ErrorCode.ChatDenied );
+                }
+                
                 MsgUserToGroup msg = (MsgUserToGroup) data;
                 MsgRecieved msg_tosend = new MsgRecieved
                    (
@@ -76,14 +96,23 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
                         msg.getOpCode(),
                         msg.getMessage()
                     );
-                
+
+                // all user in the room except the sender
+                ArrayList<String> ul = new ArrayList<>(this.getAliasesByRoom( from.getRoom() ));
+                // remove the sender
+                ul.remove( from.getAlias() );
+
                 // send the message to every user in a specific room
-                manager.sendBroadcast( msg_tosend, this.getAliasesByRoom( from.getRoom() ) );
-                
+                manager.sendBroadcast
+                (
+                    msg_tosend,
+                    ul
+                );
+
                 // logs informations about the message
                 Logger.getGlobal().log(Level.INFO, "MsgUserToGroup received from {0} -- send broadcast", from.toString());
                 Logger.getGlobal().log(Level.FINE, "Content of the message:\n{0}", msg_tosend.getMessage());
-                
+
                 break;
             }
             
@@ -93,6 +122,26 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             case Registration:
             {
                 Registration reg = ( Registration ) data;
+                
+                
+                // handles new connections
+                if ( from == null )
+                {
+                    channel.setUserInfo( new PCPMinUserInfo() );
+                        from = channel.getUserInfo();
+                    
+                    from.setAlias(reg.getAlias());
+                    from.setId( manager.getIdmanager().generateID() );
+                    Logger.getGlobal().log
+                        (
+                            Level.INFO, "new user [ {0} , {1} ] connected on channel {2}", 
+                            new Object[]{from.getAlias(), Arrays.toString(from.getId()), from.getRoom()}
+                        );
+                }
+                else
+                    Logger.getGlobal().log(Level.INFO, "Registration received from {0}", from.toString());
+                
+                
                 from.setRoom( reg.getTopic() );
                 
                 // send the registration ack to the user
@@ -101,28 +150,46 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
                     new RegistrationAck( from.getId(), from.getAlias() ), 
                     from.getAlias() 
                 );
-                
-                // all user in the room
-                ArrayList<String> ul = new ArrayList<>(this.getAliasesByRoom( from.getRoom() ));
-                // send the complete user list
-                manager.send
-                ( 
-                    new GroupUsersList( GroupUsersList.UpdateType.complete, ul), 
-                    from.getAlias() 
-                );
-
-                // send to everyone the new user
-                manager.sendBroadcast
+                Logger.getGlobal().log
                 (
-                    new GroupUsersList( GroupUsersList.UpdateType.joined, from.getAlias() ),
-                    ul
+                    Level.INFO, 
+                    "Registration Ack (id assigned: {0} - new room: {1}) sended to {2}", 
+                    new Object[]{ Arrays.toString(from.getId()), from.toString(), from.getRoom()}
                 );
                 
-                // logs informations about the message
-                Logger.getGlobal().log(Level.INFO, "Registration received from {0}", from.toString());
-                Logger.getGlobal().log(Level.INFO, "Registration Ack (id assigned: {0} - new room: {1}) sended to {2}", new Object[]{from.getId(), from.toString(), from.getRoom()});
-                Logger.getGlobal().log(Level.INFO, "GroupUserList of all user sended to {0}", from.getAlias());
-                Logger.getGlobal().log(Level.INFO, "GroupUserList update sended in broadcast");
+                
+                
+                
+                // send the complete user list
+                if ( from.getRoom() != null )
+                {
+                    
+                    manager.send
+                    ( 
+                        new GroupUsersList( GroupUsersList.UpdateType.complete, this.getAliasesByRoom( from.getRoom())), 
+                        from.getAlias() 
+                    );
+                    Logger.getGlobal().log(Level.INFO, "GroupUserList of all user sended to {0}", from.getAlias());
+
+                    
+                    // all user in the room except the sender
+                    ArrayList<String> ul = new ArrayList<>(this.getAliasesByRoom( from.getRoom() ));
+                
+                    // remove the sender
+                    ul.remove( from.getAlias() );
+                    
+                    // send to everyone the new user
+                    manager.sendBroadcast
+                    (
+                        new GroupUsersList( GroupUsersList.UpdateType.joined, from.getAlias() ),
+                        ul
+                    );
+                    
+                    Logger.getGlobal().log(Level.INFO, "GroupUserList update sended in broadcast");
+                }
+                
+                
+                
 
                 
                 break;
@@ -130,11 +197,12 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             
             case Disconnection:
             {
-                // close the connection
-                manager.close( from.getAlias(), null );
                 
-                // all user in the room
+                
+                // all user in the room except the sender
                 ArrayList<String> ul = new ArrayList<>(this.getAliasesByRoom( from.getRoom() ));
+                // remove the sender
+                ul.remove( from.getAlias() );
                 
                 // send to everyone the disconnected user
                 manager.sendBroadcast
@@ -142,10 +210,14 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
                     new GroupUsersList( GroupUsersList.UpdateType.disconnected, from.getAlias() ),
                     ul
                 );
+                Logger.getGlobal().log(Level.INFO, "GroupUserList update sended in broadcast");
+                
+                // close the connection
+                manager.close( channel, null );
                 
                 // logs informations about the disconnection
                 Logger.getGlobal().log(Level.INFO, "Connection with {0} closed", from.toString());
-                Logger.getGlobal().log(Level.INFO, "GroupUserList update sended in broadcast");
+                
                 
                 break;
             }   
@@ -153,16 +225,36 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             case AliasChange:
             {
                 String oldAlias = from.getAlias();
-                manager.sendBroadcast(
+                manager.sendBroadcast
+                (
                         new GroupUsersList( GroupUsersList.UpdateType.disconnected, oldAlias ), 
-                        this.getAliasesByRoom( from.getRoom()) );
+                        this.getAliasesByRoom( from.getRoom())
+                );
+                
                 AliasChange ac = (AliasChange) data;
                 from.setAlias( ac.getNewAlias() );
-                manager.sendBroadcast(
-                        new GroupUsersList( GroupUsersList.UpdateType.joined, from.getAlias() ),
-                        this.getAliasesByRoom( from.getRoom() ) );
+                
+                // all user in the room except the sender
+                ArrayList<String> ul = new ArrayList<>(this.getAliasesByRoom( from.getRoom() ));
+                // remove the sender
+                ul.remove( from.getAlias() );
+                
+                manager.sendBroadcast
+                (
+                    new GroupUsersList( GroupUsersList.UpdateType.joined, from.getAlias() ),
+                    ul
+                );
+                
+                //logs the change of alias
                 Logger.getGlobal().log( Level.INFO, "AliasChange packet received from {0}", from.toString() );
-                Logger.getGlobal().log( Level.INFO, "User {0} changed alias from {1} to {2}", new Object[]{from.toString(), oldAlias, from.getAlias()} );
+                Logger.getGlobal().log
+                ( 
+                    Level.INFO, 
+                    "User {0} changed alias from {1} to {2}", 
+                    new Object[]{from.toString(), oldAlias, from.getAlias()} 
+                );
+                
+                //logs the GroupUsersLists sended to all users 
                 Logger.getGlobal().log( Level.INFO, "GroupUsersList disconnected type sended with alias {0}", oldAlias);
                 Logger.getGlobal().log( Level.INFO, "GroupUsersList joined type sended with alias {0}", from.getAlias() );
                 break;
@@ -172,8 +264,7 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
         // control messages
             case GroupUsersListRrq:     
             {
-                GroupUsersListRrq gulr = (GroupUsersListRrq) data;
-                
+                // list to send
                 GroupUsersList gul = new GroupUsersList
                 ( 
                     GroupUsersList.UpdateType.complete,
@@ -194,7 +285,11 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
             case Error:
             {
                 ErrorMsg error = ( ErrorMsg ) data;
+                
+                //logs the error message
                 Logger.getGlobal().log( Level.WARNING, "Error packet received from {0}", from.toString() );
+                
+                //if the error requires a connection close
                 if ( ErrorCode.requiresConnectionClose( error.getErrorCode() ) ) 
                 {
                     manager.close( from.getAlias(), null );
@@ -223,7 +318,7 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
     }
     
     @Override
-    public Collection<IPCPUserInfo> getUsers()
+    public synchronized Collection<IPCPUserInfo> getUsers()
     {
         return this.getManager().allConnectedUsers();
     }
@@ -246,7 +341,8 @@ public class PCPMinCore implements IPCPCore, IMemoryAccess
     {
         return getUsers()
                 .stream()
-                .filter( (inf) -> inf.getRoom().endsWith(roomName) )
+                .filter( inf -> inf != null )
+                .filter( inf -> inf.getRoom().endsWith(roomName) )
                 .map( IPCPUserInfo::getAlias )
                 .collect( Collectors.toList() );
     }

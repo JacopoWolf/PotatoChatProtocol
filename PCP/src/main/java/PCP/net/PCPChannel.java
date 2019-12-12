@@ -16,8 +16,12 @@ import java.util.logging.*;
  */
 public class PCPChannel implements IPCPChannel 
 {
-
+    
     final AsynchronousSocketChannel channel;
+    
+    private byte[] b = new byte[PCP.PCP.Versions.ALL.MAX_PACKET_LENGHT];
+    final ByteBuffer bb = ByteBuffer.wrap(b);
+    
     
     
     private IPCPUserInfo userInfo;
@@ -27,6 +31,12 @@ public class PCPChannel implements IPCPChannel
     {
         this.channel = channel;
         this.userInfo = userInfo;
+    }
+
+    @Override
+    public ByteBuffer getBuffer()
+    {
+        return this.bb;
     }
 
     

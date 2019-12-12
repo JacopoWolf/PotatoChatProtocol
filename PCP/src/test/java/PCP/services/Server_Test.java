@@ -26,8 +26,17 @@ public class Server_Test
         Logger.getGlobal().setLevel(Level.FINEST);
         
         server = new PCPServer(InetAddress.getLoopbackAddress());
-        server.start();   
+        server.start();
         Thread.sleep(200);
+    }
+    
+    @Test
+    public void double_concurrent_same() throws IOException, InterruptedException
+    {
+        serverMultipleConcurrentRequests();
+        Thread.sleep(4000);
+        serverMultipleConcurrentRequests();
+        Thread.sleep(10000);
     }
     
     @Test @Ignore
@@ -38,10 +47,9 @@ public class Server_Test
        
     }
     
-    @Test
     public void serverMultipleConcurrentRequests () throws IOException, InterruptedException
     {    
-        for ( int i = 0; i < 5; i++ )
+        for ( int i = 1; i <= 5; i++ )
         {
             final int a = i;
             Thread t = new Thread
@@ -50,7 +58,7 @@ public class Server_Test
                 {
                     try
                     {
-                        exec(a);  
+                        exec(a);
                     }
                     catch (IOException | InterruptedException e)
                     {
@@ -61,7 +69,7 @@ public class Server_Test
             t.start();
         }
         
-        Thread.sleep(200);
+       
         
     }
  
@@ -72,11 +80,11 @@ public class Server_Test
                 Logger.getGlobal().log(Level.INFO, "TEST: open client on: {0}", test.getLocalSocketAddress().toString());
                     BufferedOutputStream bout = new BufferedOutputStream( test.getOutputStream() );
                     BufferedInputStream bin = new BufferedInputStream( test.getInputStream() );
-                    for ( byte[] buffer : new Registration("testAlias", "").toBytes() )
+                    for ( byte[] buf : new Registration("test"+val +"Alias", "general").toBytes() )
                     {
-                        bout.write(buffer);
+                        bout.write(buf);
                         bout.flush();
-                        Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " sent {0}", Arrays.toString(buffer));
+                        Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " sent {0}", Arrays.toString(buf));
                     }
                     
                     Thread.sleep(200);
@@ -84,8 +92,24 @@ public class Server_Test
                     byte[] buffer = new byte[18];
                     int read = bin.read(buffer);
                     buffer = Arrays.copyOfRange(buffer, 0, read);
-                        
                     Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " recieved {0}", Arrays.toString(buffer));
+                    
+                    
+                    Thread.sleep(200);
+               
+                    for ( byte[] buf : new MsgUserToGroup( new byte[]{buffer[1],buffer[2]},"test" + val + "Alias: messaggio di test, forse. Mannaggia." ).toBytes() )
+                    {
+                        bout.write(buf);
+                        bout.flush();
+                        Logger.getGlobal().log(Level.INFO, "TEST: TESTSOCKET n." + val + " sent a message {0}", Arrays.toString(buf));
+                    }
+                    
+                    
+                    buffer = new byte[64];
+                    read = bin.read(buffer);
+                    
+                    Thread.sleep(2000);
+                    
                     
                 test.close();
 
@@ -94,7 +118,6 @@ public class Server_Test
     @After
     public void stopServer() throws InterruptedException
     {
-        Thread.sleep(2000);
         server.shutDown();
     }
     
