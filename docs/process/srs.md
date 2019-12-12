@@ -88,9 +88,9 @@ This project is developed with Java using NetBeans as IDE. The packages are orga
 This is the structure of the API:
 
 
-<p align="center">
-    <img src="../img/server_architecture.svg" width="300px" max-width="100%">
-</p>
+<center>
+    <img src="../img/server-architecture.svg" width="100%" style="max-height:750px">
+</center>
 
 
 ### 2.5 User Documentation
