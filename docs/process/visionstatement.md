@@ -22,7 +22,7 @@
 |            **End Date** | 06/12/2019                                                                                                                                                           |
 |             **Purpose** | A simple, local-network confined, chatting system.                                                                                                                   |
 |   **Goals & Objective** | Design a chat protocol and implement useful APIs for said protocol, with a focus on a functioning, optimized and easy-to-use server.                                 |
-|        **Project cost** | Time of the developers' lifes.                                                                                                                                       |
+|        **Project cost** | Time of the developers' lives.                                                                                                                                       |
 |            **Approach** | Scrum                                                                                                                                                                |
 |            **Schedule** | view [project's sprints](https://github.com/JacopoWolf/PotatoChatProtocol/projects?utf8=%E2%9C%93&query=)                                                            |
 |          **Priorities** | Develop a functioning, bug-free, server.                                                                                                                             |
