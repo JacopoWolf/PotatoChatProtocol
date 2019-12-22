@@ -9,7 +9,6 @@
   - [purpose and scope](#purpose-and-scope)
   - [goals and objectives](#goals-and-objectives)
   - [project deliverables](#project-deliverables)
-  - [assumptions](#assumptions)
   - [constraints](#constraints)
   - [Schedule](#schedule)
   - [budget](#budget)
@@ -62,14 +61,49 @@ The ideal target machine for this implementation should be servers, but due to t
 Being a server, instead of an UI it uses a logging system, expandable to allow persistent logs.
 
 ## goals and objectives
-
+- develop easy-to-use APIs for the PCP protocol
+- create a server with the following characteristics
+  - functioning
+  - easy-to-use
+  - performant
+  - light
+  - working public chat
+- instruct the group about:
+  - Git 
+  - GitHub
+  - scrum
+  - normal development workflow
 
 ## project deliverables
-## assumptions
+
+|                    Deliverable | Date       |
+| -----------------------------: | :--------- |
+|                 Iteration plan | 20/10/2019 |
+|              packets - Min.a.1 | 14/11/2019 |
+| interpretation layer - Min.a.2 | 18/11/2019 |
+|           core logic - Min.b.0 | 03/12/2019 |
+|        final version - Min.1.0 | 12/12/2019 |
+|         complete documentation | 06/01/2019 |
+
+
 ## constraints
+- project manager will be Maven
+
 ## Schedule
 ## budget
+on paper, based on the average cost of the respective work position:
+
+|                     name                     |                  role                  |        frequency         |  hrs  |  €/h  | cost [€] |
+| :------------------------------------------: | :------------------------------------: | :----------------------: | :---: | :---: | :------- |
+| [@JacopoWolf](https://github.com/JacopoWolf) | project manager/ <br> junior developer | 6 to 10 h/week * 8 weeks |  64   |  60   | 3.840    |
+|   [@gfurri20](https://github.com/gfurri20)   |            junior developer            | 5 to 9 h/week * 8 weeks  |  56   |  40   | 2.240    |
+| [@Alessio789](https://github.com/Alessio789) |            junior developer            | 5 to 9 h/week * 8 weeks  |  56   |  40   | 2.240    |
+|                                              |                                        |                          |       |       | 8.320    |
+
+
 ## success criteria
+A working server.
+
 ## definitions
 
 
