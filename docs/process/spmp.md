@@ -45,8 +45,6 @@ Server Group:
 * [@gfurri20](https://github.com/gfurri20)
 * [@Alessio789](https://github.com/Alessio789)
 
-December 19, 2019
-
 ---
 
 # Overview
@@ -90,6 +88,8 @@ Being a server, instead of an UI it uses a logging system, expandable to allow p
 - project manager will be Maven
 
 ## Schedule
+![](../img/schedule.svg)
+
 ## budget
 on paper, based on the average cost of the respective work position:
 
