@@ -20,15 +20,8 @@
   - [technical process](#technical-process)
   - [tools](#tools)
 - [Work plan](#work-plan)
-  - [resource estimate](#resource-estimate)
   - [release plan](#release-plan)
-    - [plan by feature](#plan-by-feature)
-    - [flow chart](#flow-chart)
   - [Iteration plans](#iteration-plans)
-    - [Min.alpha.1](#minalpha1)
-    - [Min.alpha.2](#minalpha2)
-    - [Min.beta.x](#minbetax)
-    - [Min.1.0](#min10)
 - [Control plan](#control-plan)
   - [monitoring and control](#monitoring-and-control)
   - [configuration management plan](#configuration-management-plan)
@@ -105,27 +98,46 @@ on paper, based on the average cost of the respective work position:
 A working server.
 
 ## definitions
-
+| term           | definition                                |
+| :------------- | :---------------------------------------- |
+| Server         | the APIs used to instantiate a PCP server |
+| "the protocol" | the Potato Chat Protocol specification    |
 
 
 # Startup plan
 ## team organization
+|      Role       | Actors                                          | Responsability                                                                                                                                                                        |
+| :-------------: | :---------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Project manager | Comparin Jacopo                                 | Call team meetings, coordinate communications within group, coordinate communications outside group, break out tasks, assign them to teammates                                        |
+|    Developer    | Comparin Jacopo, Geremia Furri, Trentin Alessio | Develop software based on requirement and architect specifications                                                                                                                    |
+|    Debugger     | "                                               | Fix reported errors in the code                                                                                                                                                       |
+|     Tester      | "                                               | Write test cases, perform unit testing of test cases against incremental release of code, perform integrated testing of test cases against incremental release of code, report issues |
+
 ## project comunications
+| Event            | Information                                                                                                     | Audience                   | Format                                                                          | Frequency |
+| ---------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------- | --------- |
+| Team meating     | Task status: completed since last meeting & planned for next; obstacles encountered; change requests in process | All team members           | Informational meeting upon starting to work on the project in the same location | As needed |
+| Notifications    | A Telegram notificaion on the group specifically created                                                        | All team members           | A telegram message                                                              | as needed |
+| End users doubts | Informal meeting whith beta users to discuss bugs and code enhacements                                          | End users and team members | Infomational meeting                                                            | As needed |
+
 ## technical process    
+An iterative and incremental development process is planned.  Feedback will be used from each iteration to improve the next.  The first iteration will focus on basic functionality of the application.  Subsequent iterations will build upon that and incorporate more features as time allows.
+
 ## tools
+- Programming languages:
+  - Markup
+  - Java
+- JDK 1.8 (platform)
+- GitHub (VCS) 
+- NetBeans (IDE)
 
 
 
 # Work plan
-## resource estimate
 ## release plan
-### plan by feature
-### flow chart
+The release plan is in a [specific document](../404.md)
 ## Iteration plans
-### Min.alpha.1
-### Min.alpha.2
-### Min.beta.x
-### Min.1.0
+The iteration plan is in a [specific document](../404.md)
 
 
 
