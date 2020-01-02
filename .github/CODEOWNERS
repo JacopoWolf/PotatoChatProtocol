@@ -6,12 +6,11 @@
 /docs/img/                @JacopoWolf
 /docs/process/srs.md      @gfurri20
 /docs/img/*.docx          @Alessio789
+/docs/img/*.pdf          @Alessio789
 
 
 # code owners
-PCP/*                     @JacopoWolf @gfurri20 @Alessio789
-PCP/Min/data/             @gfurri20 @Alessio789
-PCP/Min/logic/            @JacopoWolf @gfurri20 @Alessio789
+**/PCP/Min/data/             @gfurri20 @Alessio789
 
 
 # default test owners
