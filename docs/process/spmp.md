@@ -22,9 +22,6 @@
 - [Work plan](#work-plan)
   - [release plan](#release-plan)
   - [Iteration plans](#iteration-plans)
-- [Control plan](#control-plan)
-  - [monitoring and control](#monitoring-and-control)
-  - [configuration management plan](#configuration-management-plan)
 
 ---
 
@@ -138,9 +135,3 @@ An iterative and incremental development process is planned.  Feedback will be u
 The release plan is in a [specific document](../404.md)
 ## Iteration plans
 The iteration plan is in a [specific document](../404.md)
-
-
-
-# Control plan
-## monitoring and control
-## configuration management plan
