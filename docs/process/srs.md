@@ -28,7 +28,7 @@ Version 1.0 approved
 Prepared by [@gfurri20](https://github.com/gfurri20)
 
 Server Group:
-* [@JacopoWolf](https://github.com/JacopoWolf)
+* [@JacopoWolf](https://github.com/JacopoWolf) - Team leader
 * [@gfurri20](https://github.com/gfurri20)
 * [@Alessio789](https://github.com/Alessio789)
 
@@ -71,7 +71,13 @@ PCP is a protocol developed in order to have the possibility to implement an eas
 
 
 ### 2.2 Product Functions
-Mainly PCP takes care of supplying the protocol standards in a clear and simple way, then it implements a server related to the last release version. \
+Mainly PCP takes care of supplying the protocol standards in a clear and simple way, then it implements a server related to the last release version.
+
+Protocol specifications:
+* the structure of the packets that will be exchanged between the server and client-side applications.
+* error and exception handling
+* the procedures necessary for logging, disconnecting and exchanging messages between client and server.
+
 Server side:
 * build a server ready to manage connected clients and exchange messages between them.
 
