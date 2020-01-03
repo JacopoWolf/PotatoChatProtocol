@@ -95,6 +95,7 @@ on paper, based on the average cost of the respective work position:
 A working server.
 
 ## definitions
+
 | term           | definition                                |
 | :------------- | :---------------------------------------- |
 | Server         | the APIs used to instantiate a PCP server |
@@ -103,6 +104,7 @@ A working server.
 
 # Startup plan
 ## team organization
+
 |      Role       | Actors                                          | Responsability                                                                                                                                                                        |
 | :-------------: | :---------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Project manager | Comparin Jacopo                                 | Call team meetings, coordinate communications within group, coordinate communications outside group, break out tasks, assign them to teammates                                        |
@@ -111,6 +113,7 @@ A working server.
 |     Tester      | "                                               | Write test cases, perform unit testing of test cases against incremental release of code, perform integrated testing of test cases against incremental release of code, report issues |
 
 ## project comunications
+
 | Event            | Information                                                                                                     | Audience                   | Format                                                                          | Frequency |
 | ---------------- | --------------------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------- | --------- |
 | Team meating     | Task status: completed since last meeting & planned for next; obstacles encountered; change requests in process | All team members           | Informational meeting upon starting to work on the project in the same location | As needed |
