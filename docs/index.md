@@ -12,9 +12,11 @@
 
 ## Resources
 
-- [process documentation](process/index.md)
+- ![](https://img.shields.io/github/issues/jacopowolf/potatochatprotocol/documentation?style=flat-square)
 
-- [product documentation](product/index.md)
+  - [process documentation](process/index.md)
+
+  - [product documentation](product/index.md)
 
 - [usage guide](product/usageguide.md), to learn how to use the APIs
 
@@ -29,7 +31,7 @@
 
 ### [PCP-Minimal](PCP-Min.md) ![](https://img.shields.io/github/labels/jacopowolf/potatochatprotocol/PCP-Min?style=flat-square)
 
-![](https://img.shields.io/github/last-commit/jacopowolf/potatochatprotocol/dev-Min?color=informational&style=flat-square)
+![](https://img.shields.io/badge/development-completed-success?style=flat-square)
 ![](https://img.shields.io/github/issues/jacopowolf/potatochatprotocol/PCP-Min?style=flat-square)
 
 Minimal and lightweight implementation of the protocol.
