@@ -1,11 +1,14 @@
 ![](https://img.shields.io/badge/warning-School%20Project-important?style=for-the-badge)
+
 ![](https://img.shields.io/github/license/JacopoWolf/PotatoChatProtocol?style=for-the-badge)
 
-![](https://img.shields.io/maintenance/yes/2020?style=for-the-badge)
-![](https://img.shields.io/github/commit-activity/m/JacopoWolf/PotatoChatProtocol?color=blueviolet&style=for-the-badge)
+![Maintenance](https://img.shields.io/maintenance/yes/2019?style=for-the-badge)
 
 [![](https://img.shields.io/jitpack/v/github/jacopowolf/potatochatprotocol?label=Jitpack%20latest%20release&style=for-the-badge)](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
-![](https://img.shields.io/jitpack/dm/github/jacopowolf/potatochatprotocol?color=darkblue&style=for-the-badge)
+![JitPack - Downloads](https://img.shields.io/jitpack/dm/github/jacopowolf/potatochatprotocol?color=darkblue&style=for-the-badge)
+
+![](https://img.shields.io/badge/IDE-NetBeans-lightgray?style=for-the-badge&logo=apache%20netbeans%20ide&logoColor=white)
+![](https://img.shields.io/badge/language-Java-lightblue?style=for-the-badge&logo=java&logoColor=red)
 
 
 ---
@@ -22,7 +25,7 @@
 
 - [javadoc of the latest version](https://javadoc.jitpack.io/com/github/jacopowolf/potatochatprotocol/latest/javadoc/index.html), hosted on JitPack
 
-- [general description](PCP.md), a draft of the initial protocol idea
+- [draft](PCP.md) of the initial protocol idea
 
 
 
