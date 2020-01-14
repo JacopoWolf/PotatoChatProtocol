@@ -2,7 +2,7 @@
 <h1>Project Success Criteria</h1>
 </center>
 
-## The PCP (**P**otato**C**hat**P**rotocol) Project will be considered a success if:
+### The PCP (**P**otato**C**hat**P**rotocol) Project will be considered a success if:
 * **A basic version test system is delivered on (or before) December 13th 2019.**
  
   Version 1.0 must be published by the specified date. To consider the version 1.0 completed, it must allow users to use all the basic functions of the server through a client application. 
