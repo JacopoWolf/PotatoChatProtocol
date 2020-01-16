@@ -33,17 +33,19 @@
 ---
 
 ### Branch naming
-* `master` is for documentation only. Protected.
-* `dev-{M version}` is for major versions. Those are tagged for releases. Protected.
-* `plan-{M version}-{scope}` are for planning and designing base classes.
-* `feature-{M version}-{feature name}` are for developing a feature for the dev-* branch. Can contain documentation.
-* `docs-{M version}` are for writing **only** additional documentation.
+
+- `master` is for documentation only. Protected.
+- `dev-{M version}` is for major versions. Those are tagged for releases. Protected.
+- `plan-{M version}-{scope}` are for planning and designing base classes.
+- `feature-{M version}-{feature name}` are for developing a feature for the dev-* branch. Can contain documentation.
+- `docs-{M version}` are for writing **only** additional documentation.
   
 names like `USERNAME-master-feature1` are **NOT** accepted.
 
 
 
 ## Download
+
 - visit [JitPack](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
 
 - if you're using maven simply copy this to your **pom.xml**, substitute _TAG_ with the version you need.

@@ -68,12 +68,14 @@ Now clients can freely send messages between them as long as they remain connect
 ## Specifics
 
 ### General
+
 - The protocol uses a **TCP** connection
 - Package maximum lenght is **2048 bytes**
 - Text encoding is **ISO/IEC-8859-1**
 - Text must not contain an all to 0 character
 
 ### Naming
+
 - Names *must not* contain spaces
 - Alias lenght is min **6** to max **32** characters.
 - Topics lenght is min **3** to max **64** characters
@@ -81,8 +83,9 @@ Now clients can freely send messages between them as long as they remain connect
 
 ## 0x - messages
 There are two types of messages:
-* User to user
-* User to group
+
+- User to user
+- User to group
 
 ### 01 - user to user
 Once connected to the server, the user will have to know the other user's alias to directly chat with him.
@@ -91,8 +94,9 @@ It also sends it's unique id sent when initializing the connection.
 
 If message lenght is greater than [ 2043 - alias lenght ] it means the message has been splitted between multiple packages.
 There are two ways to notify the last packet:
-* Message lenght lesser than [2043 - alias lenght].
-* If the content results in a multiple of this number, a packet with the message field empty.
+
+- Message lenght lesser than [2043 - alias lenght].
+- If the content results in a multiple of this number, a packet with the message field empty.
 
 
 <table>
@@ -148,8 +152,9 @@ The user sends this message to the chat room it's last connected to.
 
 If message lenght is greater than [ 2044 ] it means the message has been splitted between multiple packages.
 There are two ways to notify the last packet:
-* Message lenght lesser than 2044.
-* If the content results in a multiple of this number, a packet with the message field empty.
+
+- Message lenght lesser than 2044.
+- If the content results in a multiple of this number, a packet with the message field empty.
 
 
 <table>
@@ -253,6 +258,7 @@ Sent when the client wants to disconnect from the server.
 #### server
 
 sent by the server with the following possible opcodes:
+
 - 0 no reason
 - 1 timeout
   <br>This package is sent after 15 minutes client inactivity.
@@ -353,6 +359,7 @@ The names are sended in a JSON list.
 Like in the following example:
 
 Types:
+
 - 0 complete users list
 - 1 joined user
 - 2 disconnected user

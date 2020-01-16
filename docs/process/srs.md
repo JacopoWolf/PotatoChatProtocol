@@ -28,6 +28,7 @@ Version 1.0 approved
 Prepared by [@gfurri20](https://github.com/gfurri20)
 
 Server Group:
+
 - [@JacopoWolf](https://github.com/JacopoWolf) - Team leader
 - [@gfurri20](https://github.com/gfurri20)
 - [@Alessio789](https://github.com/Alessio789)
@@ -45,6 +46,7 @@ This document is based on the IEEE template for System Requirement Specification
 
 
 ### 1.3 Intended Audience and Reading Suggestions
+
 - Typical Users, such as developers, who want to use PCP to develop their chat applications.
 - Students who are interested to discover how an extremely simple chat works.
 - Small realities who need a way to talk between rooms withouth yelling and withouth losing control of their messages.
@@ -74,11 +76,13 @@ PCP is a protocol developed in order to have the possibility to implement an eas
 Mainly PCP takes care of supplying the protocol standards in a clear and simple way, then it implements a server related to the last release version.
 
 Protocol specifications:
+
 - the structure of the packets that will be exchanged between the server and client-side applications.
 - error and exception handling
 - the procedures necessary for logging, disconnecting and exchanging messages between client and server.
 
 Server side:
+
 - build a server ready to manage connected clients and exchange messages between them.
 
 

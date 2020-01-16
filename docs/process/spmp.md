@@ -31,9 +31,10 @@ For **PotatoChatProtocol**, version 1.0 approved
 Prepared by [@JacopoWolf](https://github.com/JacopoWolf)
 
 Server Group:
-* [@JacopoWolf](https://github.com/JacopoWolf)
-* [@gfurri20](https://github.com/gfurri20)
-* [@Alessio789](https://github.com/Alessio789)
+
+- [@JacopoWolf](https://github.com/JacopoWolf)
+- [@gfurri20](https://github.com/gfurri20)
+- [@Alessio789](https://github.com/Alessio789)
 
 ---
 
@@ -49,6 +50,7 @@ The ideal target machine for this implementation should be servers, but due to t
 Being a server, instead of an UI it uses a logging system, expandable to allow persistent logs.
 
 ## goals and objectives
+
 - develop easy-to-use APIs for the PCP protocol
 - create a server with the following characteristics
   - functioning
@@ -75,6 +77,7 @@ Being a server, instead of an UI it uses a logging system, expandable to allow p
 
 
 ## constraints
+
 - project manager will be Maven
 
 ## Schedule
@@ -124,6 +127,7 @@ A working server.
 An iterative and incremental development process is planned.  Feedback will be used from each iteration to improve the next.  The first iteration will focus on basic functionality of the application.  Subsequent iterations will build upon that and incorporate more features as time allows.
 
 ## tools
+
 - Programming languages:
   - Markup
   - Java

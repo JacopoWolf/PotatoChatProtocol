@@ -67,6 +67,7 @@ if (a<b||foo>el.param) // explaination on what this does
 
 ### Naming
 #### classes
+
 - classes follow the Camel case notation.
 - Interfaces always begin with a capital `I` and it's always the first letter in an interface name.
 - PCP specic classes start with capital `PCP`
