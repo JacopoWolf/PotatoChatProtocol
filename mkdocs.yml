@@ -1,0 +1,14 @@
+site_name: 2020_5EI_Team6
+nav:
+    - 'General Exposition': 'PCP.md'
+    - 'Software Project Management Plan': 'process/spmp.md'
+    - 'Software Requirements Specification': 'process/srs.md'
+    - 'Vision Statement': 'process/visionstatement.md'
+    - 'Architecture': 'product/architecture.md'
+    - 'Project Model Canvas': 'img/Project_Model_Canvas.pdf'
+    - 'Business Model Canvas': 'img/business_model_canvas.pdf'
+
+theme:
+    name: readthedocs
+
+use_directory_urls: true
