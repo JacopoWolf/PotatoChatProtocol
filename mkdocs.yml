@@ -1,6 +1,6 @@
 site_name: 2020_5EI_Team6
 nav:
-    - 'General Exposition': 'PCP.md'
+    - 'Initial protocol draft idea': 'PCP.md'
     - 'Software Project Management Plan': 'process/spmp.md'
     - 'Software Requirements Specification': 'process/srs.md'
     - 'Vision Statement': 'process/visionstatement.md'
