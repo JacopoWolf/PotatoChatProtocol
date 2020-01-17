@@ -69,9 +69,9 @@ methods follow camel case with lower first letter.
 
 ## Documentation standards
 
-In every folder an `index.md` file is present, and it's the list of the folder's content.
+A document title is written in html at the beginning og the document.
 
-A document title is written in html at the beginning og the document, then there's the Table of contents, followed by a markdown line divisor.
+The highest header in the document is **h2**, written as `## Title` in markdown.
 
 Before every section an additional empty line must be inserted.
 
@@ -79,12 +79,6 @@ Before every section an additional empty line must be inserted.
 <center>
 <h1>Title here</h1>
 </center>
-
-- Section
-    - Subsection
-    - Subsection
-
---- 
 
 ## Section
 section content

@@ -5,7 +5,7 @@
 
 # Hierarchy
 
-<img src="../img/server-architecture.svg" style="max-height:800px">
+![](../img/server-architecture.svg)
 
 
 ---
@@ -69,9 +69,7 @@ Below is rappresented the main class scheme.
 Data and secondary classes have been omitted for semplicity.
 
 
-
-<img src="../img/server_mainClasses.svg" style="max-height:800px">
-
+![](../img/server_mainClasses.svg)
 
 
 # Execution

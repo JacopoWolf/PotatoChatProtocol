@@ -1,21 +1,6 @@
 <center>
-<h1>Protovol draft</h1>
+<h1>Protocol draft</h1>
 </center>
-
-
-- [Overview](#overview)
-- [Structure](#structure)
-  - [client](#client)
-  - [super-client](#super-client)
-  - [server](#server)
-  - [domain](#domain)
-- [Types of comunications](#types-of-comunications)
-  - [Two agents chat](#two-agents-chat)
-  - [Multiple agents chat](#multiple-agents-chat)
-  - [Group chat](#group-chat)
-
----
-
 
 ## Overview
 
