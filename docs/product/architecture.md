@@ -2,11 +2,6 @@
 <h1> Architecture </h1>
 </center>
 
-- [Hierarchy](#hierarchy)
-- [Class scheme](#class-scheme)
-- [Execution](#execution)
-
----
 
 # Hierarchy
 

@@ -1,20 +1,7 @@
 <center>
-<h1>
-Usage guide
-</h1>
+<h1>Usage guide</h1>
 </center>
 
-- [Overview](#overview)
-  - [Description](#description)
-  - [javadoc](#javadoc)
-- [API structure](#api-structure)
-- [Services](#services)
-  - [PCPServer](#pcpserver)
-    - [start](#start)
-    - [logging](#logging)
-    - [interrupt](#interrupt)
-
----
 
 # Overview
 

@@ -5,26 +5,6 @@
 </center>
 
 
-- [Overview](#overview)
-  - [purpose and scope](#purpose-and-scope)
-  - [goals and objectives](#goals-and-objectives)
-  - [project deliverables](#project-deliverables)
-  - [constraints](#constraints)
-  - [Schedule](#schedule)
-  - [budget](#budget)
-  - [success criteria](#success-criteria)
-  - [definitions](#definitions)
-- [Startup plan](#startup-plan)
-  - [team organization](#team-organization)
-  - [project comunications](#project-comunications)
-  - [technical process](#technical-process)
-  - [tools](#tools)
-- [Work plan](#work-plan)
-  - [release plan](#release-plan)
-  - [Iteration plans](#iteration-plans)
-
----
-
 
 For **PotatoChatProtocol**, version 1.0 approved
 

@@ -2,15 +2,6 @@
 <h1> Vision statement </h1>
 </center>
 
-- [Charter](#charter)
-- [Scope](#scope)
-  - [For who](#for-who)
-  - [What](#what)
-    - [The protocol](#the-protocol)
-    - [The server](#the-server)
-  - [Why](#why)
-
----
 
 ## Charter
 

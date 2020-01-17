@@ -2,16 +2,6 @@
 <h1>Coding standards</h1>
 </center>
 
-- [Coding standards](#coding-standards)
-  - [Braces](#braces)
-  - [Indentations](#indentations)
-  - [Comments](#comments)
-  - [Naming](#naming)
-    - [classes](#classes)
-    - [methods](#methods)
-- [Documentation standards](#documentation-standards)
-
----
 
 ## Coding standards
 Below are described the standards for writing code.

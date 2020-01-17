@@ -1,7 +1,5 @@
 <center>
-
-<h1>general exposition</h1>
-
+<h1>Protovol draft</h1>
 </center>
 
 
