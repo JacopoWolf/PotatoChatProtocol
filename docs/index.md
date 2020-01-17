@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/School-School%20Project-important?style=for-the-badge)
+![](https://img.shields.io/badge/Project%20type-School%20Project-important?style=for-the-badge)
 ![](https://img.shields.io/github/license/JacopoWolf/PotatoChatProtocol?style=for-the-badge)
 
 ![Maintenance](https://img.shields.io/maintenance/yes/2019?style=for-the-badge)
