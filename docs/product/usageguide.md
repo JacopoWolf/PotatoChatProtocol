@@ -1,20 +1,7 @@
 <center>
-<h1>
-Usage guide
-</h1>
+<h1>Usage guide</h1>
 </center>
 
-- [Overview](#overview)
-  - [Description](#description)
-  - [javadoc](#javadoc)
-- [API structure](#api-structure)
-- [Services](#services)
-  - [PCPServer](#pcpserver)
-    - [start](#start)
-    - [logging](#logging)
-    - [interrupt](#interrupt)
-
----
 
 # Overview
 
@@ -29,11 +16,13 @@ This project is published with [JitPack](https://jitpack.io/), JavaDocs and rele
 
 # API structure
 The root package, `PCP` contains the common important variables:
+
 - `PCP`: static class containing common protocol variables, like **PCP.PORT** or the **Versions** enumerator
 - `OpCode`: enumerator conaining all operational codes, convertable to their respective *byte*, and a function to retrive the opcode from a byte.
 - `PCPException`: manages all possible errors planned by the protocol.
 
 The API is then divided in 4 main generic packages:
+
 - `services`: high level APIs who expose simple-to-use services, like **PCPServer**
 - `logic`: logic and data layers, includes interfaces to implement correctly the logical level of the server and to access data.
 - `data`: common data types. **PCPVariablePayload** is a really useful class to extend.

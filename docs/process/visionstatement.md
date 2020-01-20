@@ -2,15 +2,6 @@
 <h1> Vision statement </h1>
 </center>
 
-- [Charter](#charter)
-- [Scope](#scope)
-  - [For who](#for-who)
-  - [What](#what)
-    - [The protocol](#the-protocol)
-    - [The server](#the-server)
-  - [Why](#why)
-
----
 
 ## Charter
 
@@ -39,11 +30,13 @@ PCP and its official implementation are aimed at small groups who need a complet
 ### What
 
 #### The protocol
+
 - **open source**: everyone can contribute with new useful ideas 
 - **extremely simple**: meaning low resources needed for parsing and easy custom implementations
 - **local**: nothing goes through a server located who-knows-where, data is controlled in your network.
 
 #### The server
+
 - **open source**: bugs and flaws will have a short life
 - **simple usage**: the server is extremely simple to boot up and in very short time, without the need to learn complicated interfaces and confusing configuration files.
 - **optimized**: requires low resources on the host machine
