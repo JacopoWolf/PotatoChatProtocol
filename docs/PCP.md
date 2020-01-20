@@ -17,7 +17,7 @@ Group chats are also based on a super-client, which could be any online and acti
 illustration of an hypotetical PCP domain
 
 
-<img src="img/structure.svg" width="70%" style="margin:auto">
+![](img/structure.svg)
 
 
 
