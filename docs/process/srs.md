@@ -78,7 +78,7 @@ This project is developed with Java using NetBeans as IDE. The packages are orga
 This is the structure of the API:
 
 
-![API's structure](/docs/img/server-architecture.svg)
+![API](../img/server-architecture.svg)
 
 
 ### 2.5 User Documentation
@@ -99,7 +99,7 @@ The server implemented by PCP only print the logs. No graphical interfaces have 
 
 ### 3.2 Hardware Interfaces
 The protocol is very light, if you implement a small chat you can start the server on most multi cores processors.
-When the size increases accordingly the number of threads used will increase, this requires better performing processors. \
+When the size increases accordingly the number of threads used will increase, this requires better performing processors.
 The minimum amount of RAM required is 4 GB.
 
 
@@ -107,14 +107,15 @@ The minimum amount of RAM required is 4 GB.
 
 
 ### 4.1 Server
-PCP offers the possibility to start a server which is able to manage the communication between several connected users. \
+PCP offers the possibility to start a server which is able to manage the communication between several connected users.
+
 A simple guide is avaible: [https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md](https://github.com/JacopoWolf/PotatoChatProtocol/blob/master/docs/usage.md)
 
 
 ## 5 Other Nonfunctional Requirements
 
 ### 5.1 Safety Requirements
-To keep the server at the latest version, you need to update the software each time an update is released. \
+To keep the server at the latest version, you need to update the software each time an update is released.
 This allows you to keep the server updated to avoid bugs or problems.
 
 
