@@ -68,7 +68,7 @@ on paper, based on the average cost of the respective work position:
 
 |                     name                     |                  role                  |        frequency         |  hrs  |  €/h  | cost [€] |
 | :------------------------------------------: | :------------------------------------: | :----------------------: | :---: | :---: | :------- |
-| [@JacopoWolf](https://github.com/JacopoWolf) | project manager/ <br> junior developer | 6 to 10 h/week * 8 weeks |  64   |  60   | 3.840    |
+| [@JacopoWolf](https://github.com/JacopoWolf) | project manager / junior developer | 6 to 10 h/week * 8 weeks |  64   |  60   | 3.840    |
 |   [@gfurri20](https://github.com/gfurri20)   |            junior developer            | 5 to 9 h/week * 8 weeks  |  56   |  40   | 2.240    |
 | [@Alessio789](https://github.com/Alessio789) |            junior developer            | 5 to 9 h/week * 8 weeks  |  56   |  40   | 2.240    |
 |                                              |                                        |                          |       |       | 8.320    |
