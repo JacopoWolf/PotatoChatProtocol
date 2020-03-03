@@ -7,16 +7,16 @@
 # Results
 
 ## Project Metrics
-|                                    |                                                                  |                                          |
-| ---------------------------------- | ---------------------------------------------------------------- | ---------------------------------------- |
-| **Project Name**                   | Potato Chat Protocol                                             |
-| **Manager**                        | Comparin Jacopo ( [@JacopoWolf](https://github.com/JacopoWolf) ) |
-| **Scope**                          | see the [vision statement](visionstatement.md)                   |
-| **Project Type**                   | New Development and protocol Design                              | *New development, Mantainence, Learning* |
-| **Problem Domain**                 | Comunications                                                    | *Comunications, Finance, Healtcare*      |
-| **Initial Technology Familiarity** | 4                                                                | *0-10 where 10 = very familiar*          |
-| **Start-Finish Dates**             | 20/10/2019 - 12/12/2019                                          | **relative to development phase*         |
-| **Duration (weeks)**               | 7,6                                                              |
+|                                    |                                                |                                          |
+| ---------------------------------- | ---------------------------------------------- | ---------------------------------------- |
+| **Project Name**                   | Potato Chat Protocol                           |
+| **Manager**                        | [@JacopoWolf](https://github.com/JacopoWolf)   |
+| **Scope**                          | see the [vision statement](visionstatement.md) |
+| **Project Type**                   | New Development and protocol Design            | *New development, Mantainence, Learning* |
+| **Problem Domain**                 | Comunications                                  | *Comunications, Finance, Healtcare*      |
+| **Initial Technology Familiarity** | 4                                              | *0-10 where 10 = very familiar*          |
+| **Start-Finish Dates**             | 20/10/2019 - 12/12/2019                        | **relative to development phase*         |
+| **Duration (weeks)**               | 7,6                                            |
 
 
 ## Effort Distribution
@@ -44,3 +44,9 @@ See the **budget** section in the [software project management plan](spmp.md)
 
 ## Cost
 The final effective monetary cost of the project is **0€**
+
+## Pulse
+
+See the Pulse graph on **GitHub**
+
+https://github.com/JacopoWolf/PotatoChatProtocol/graphs/contributors

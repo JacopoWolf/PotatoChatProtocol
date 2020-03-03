@@ -19,3 +19,8 @@ dist/
 nbdist/
 .nb-gradle/
 /PCP/nbproject/
+
+# vscode
+**/.settings/**
+.classpath
+.project
