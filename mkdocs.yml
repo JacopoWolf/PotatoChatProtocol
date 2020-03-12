@@ -1,12 +1,27 @@
 site_name: 2020_5EI_Team6
 nav:
     - 'Initial protocol draft idea': 'PCP.md'
-    - 'Software Project Management Plan': 'process/spmp.md'
-    - 'Software Requirements Specification': 'process/srs.md'
     - 'Vision Statement': 'process/visionstatement.md'
-    - 'Architecture': 'product/architecture.md'
+
+    - 'Software Requirements Specification': 'process/srs.md'
+    - 'Software Project Management Plan': 'process/spmp.md'
+    - 'Project Success Criteria' : 'process/projectsuccesscriteria.md'
+    
+    # 'Memo of Understanding' : 'process/memoofunderstanding.md'
+    # 'Project Status Report' : 'process/statusreport.md'
+    - 'Project Closure Report': 'process/closurereport.md'
+    # 'Project Release Plan' : 'process/releaseplan.md'
+    
     - 'Project Model Canvas': 'img/Project_Model_Canvas.pdf'
     - 'Business Model Canvas': 'img/business_model_canvas.pdf'
+
+    - 'Architecture': 'product/architecture.md'
+    - 'Coding Standards' : 'product/codingstandards.md'
+    - 'System Documentation' : 'product/systemdocumentation.md'
+    - 'Testing Specifications' : 'product/testingspecifications.md'
+    - 'User Guide' : 'product/usageguide.md'
+    
+    
 
 theme:
     name: readthedocs
