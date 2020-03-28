@@ -10,12 +10,10 @@
 
 ![](https://img.shields.io/badge/-School%20Project-important)
 ![](https://img.shields.io/github/license/JacopoWolf/PotatoChatProtocol)
-![Maintenance](https://img.shields.io/maintenance/yes/2019)
+
+![Maintenance](https://img.shields.io/maintenance/no/2020)
 
 [![](https://img.shields.io/jitpack/v/github/jacopowolf/potatochatprotocol?label=Jitpack%20latest%20release)](https://jitpack.io/#JacopoWolf/PotatoChatProtocol)
-![JitPack - Downloads](https://img.shields.io/jitpack/dm/github/jacopowolf/potatochatprotocol?color=darkblue)
-
-![](https://img.shields.io/github/issues/jacopowolf/potatochatprotocol/documentation)
 
 </center>
 
