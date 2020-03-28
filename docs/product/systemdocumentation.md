@@ -28,6 +28,7 @@ It also offers APIs for an optimized and easily expandable server that allows th
 To start-up a PCP server the device requires a Java version 8 (recommended) or higher and JDK version 8 (recommended) or higher. The protocol is very light, if you implement a small chat you can start the server on most multi cores processors. When the size increases accordingly the number of threads used will increase, this requires better performing processors. The minimum amount of RAM required is 4 GB.
 
 ### 2.2 Installation Code
+Note: the word "TAG" must be replaced with the version (eg "Min.1.0")
 
 #### 2.2.1 Maven
 1. Add the repository:
@@ -109,4 +110,4 @@ To start-up a PCP server the device requires a Java version 8 (recommended) or h
     ```
 ---
 ## 3. System Maintenance
-The PCPServer has no graphical interface. Once the application has started, you can see the server logs. The server logs show whatever the server is doing: new connections, disconnections, messages sent ....
+The PCPServer has no graphical interface. Once the application has started, you can see the server logs. The server logs show whatever the server is doing: new connections, disconnections, messages sent...
