@@ -25,3 +25,5 @@ nav:
    
 
 use_directory_urls: true
+theme:
+    name: readthedocs
