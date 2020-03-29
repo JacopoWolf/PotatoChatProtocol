@@ -26,6 +26,6 @@ nav:
     
 
 theme:
-    name: readthedocs
+    name: alabaster
 
 use_directory_urls: true
