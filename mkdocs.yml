@@ -22,10 +22,6 @@ nav:
     # 'System Documentation': 'product/systemdocumentation.md'
     # 'Testing Specifications': 'product/testingspecifications.md'
     - 'User Guide': 'product/usageguide.md'
-    
-    
-
-theme:
-    name: alabaster
+   
 
 use_directory_urls: true
