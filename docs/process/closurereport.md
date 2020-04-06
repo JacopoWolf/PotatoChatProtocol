@@ -7,6 +7,7 @@
 # Results
 
 ## Project Metrics
+
 |                                    |                                                |                                          |
 | ---------------------------------- | ---------------------------------------------- | ---------------------------------------- |
 | **Project Name**                   | Potato Chat Protocol                           |
@@ -21,6 +22,8 @@
 
 ## Effort Distribution
 Effort is calculated assigning numbers on the fibonacci sequence (1,2,3,5,8,13,...)
+
+
 |                      |     |
 | -------------------- | --- |
 | **Requirements**     | 3   |
@@ -31,6 +34,7 @@ Effort is calculated assigning numbers on the fibonacci sequence (1,2,3,5,8,13,.
 | **Proj. Management** | 13  |
 | **Training**         | 21  |
 | **TOTAL**            | 296 |
+
 
 ![](../img/effortchart.svg)
 
