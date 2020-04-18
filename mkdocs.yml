@@ -22,6 +22,8 @@ nav:
     - 'System Documentation': 'product/systemdocumentation.md'
     - 'Testing Specifications': 'product/testingspecifications.md'
     - 'User Guide': 'product/usageguide.md'
+
+    - 'PDF version': 'PCP.pdf'
    
 
 use_directory_urls: true
